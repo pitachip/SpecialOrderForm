@@ -5,8 +5,7 @@ import SpecialOrder from "./components/SpecialOrder";
 
 function App() {
 	return (
-		<div className="ui container">
-			This is the App.js
+		<div>
 			<SpecialOrder />
 		</div>
 	);
