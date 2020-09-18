@@ -2,11 +2,33 @@ import React from "react";
 import { connect } from "react-redux";
 import Card from "react-bootstrap/Card";
 import filter from "lodash/filter";
+import { setMenuItem } from "../actions";
 import MenuItemsHeader from "./menuItemsHeader";
+import MenuItemDetailModal from "./modals/menuItemDetail";
 
 import "../css/menuItems.scss";
 
 class MenuItems extends React.Component {
+	state = { showModal: false };
+
+	handleMenuItemDetailModalClose = () => {
+		this.setState({ showModal: false });
+	};
+
+	handleMenuItemDetailModalOpen = () => {
+		this.setState({ showModal: true });
+	};
+
+	//put selected menu item in redux
+	menuItemSelected = async (item) => {
+		await this.props.setMenuItem(
+			item,
+			this.props.menuCategoryId,
+			this.props.menuCategories
+		);
+		this.handleMenuItemDetailModalOpen();
+	};
+
 	renderMenuItems = () => {
 		const menuCategory = filter(this.props.menuCategories, {
 			_id: this.props.menuCategoryId,
@@ -16,18 +38,20 @@ class MenuItems extends React.Component {
 		return (
 			<div>
 				<MenuItemsHeader />
+				{this.props.menuItemId ? (
+					<MenuItemDetailModal
+						show={this.state.showModal}
+						close={this.handleMenuItemDetailModalClose}
+					/>
+				) : null}
 				{this.props.menuCategoryId
 					? menuItems.map((item) => {
-							console.log(item);
 							return (
 								<div
 									key={item.name}
 									data-div_id={item._id}
 									onClick={(e) =>
-										console.log(
-											"Item Clicked: ",
-											e.currentTarget.dataset.div_id
-										)
+										this.menuItemSelected(e.currentTarget.dataset.div_id)
 									}
 								>
 									<Card className="menuItem">
@@ -57,7 +81,8 @@ const mapStateToProps = (state) => {
 	return {
 		menuCategoryId: state.menu.menuCategoryId,
 		menuCategories: state.menu.menu.categories,
+		menuItemId: state.menu.menuItemId,
 	};
 };
 
-export default connect(mapStateToProps, {})(MenuItems);
+export default connect(mapStateToProps, { setMenuItem })(MenuItems);
