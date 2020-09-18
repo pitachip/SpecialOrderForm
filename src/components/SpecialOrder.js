@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import NavBar from "./navBar";
 import Disclaimer from "./disclaimer";
 import MenuCategories from "./menuCategories";
-import MenuDetails from "./menuDetails";
+import MenuItems from "./menuItems";
 import ShoppingCart from "./shoppingCart";
 
 class SpecialOrder extends React.Component {
@@ -20,7 +20,7 @@ class SpecialOrder extends React.Component {
 						<MenuCategories />
 					</Col>
 					<Col md={7}>
-						<MenuDetails />
+						<MenuItems />
 					</Col>
 					<Col md={3}>
 						<ShoppingCart />

@@ -2,8 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import Card from "react-bootstrap/Card";
 import filter from "lodash/filter";
+import MenuItemsHeader from "./menuItemsHeader";
 
-class MenuDetails extends React.Component {
+import "../css/menuItems.scss";
+
+class MenuItems extends React.Component {
 	renderMenuItems = () => {
 		const menuCategory = filter(this.props.menuCategories, {
 			_id: this.props.menuCategoryId,
@@ -12,11 +15,22 @@ class MenuDetails extends React.Component {
 
 		return (
 			<div>
+				<MenuItemsHeader />
 				{this.props.menuCategoryId
 					? menuItems.map((item) => {
+							console.log(item);
 							return (
-								<div key={item.name}>
-									<Card>
+								<div
+									key={item.name}
+									data-div_id={item._id}
+									onClick={(e) =>
+										console.log(
+											"Item Clicked: ",
+											e.currentTarget.dataset.div_id
+										)
+									}
+								>
+									<Card className="menuItem">
 										<Card.Body>
 											<Card.Title>{item.name}</Card.Title>
 											<Card.Subtitle className="mb-2 text-muted">
@@ -46,4 +60,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, {})(MenuDetails);
+export default connect(mapStateToProps, {})(MenuItems);
