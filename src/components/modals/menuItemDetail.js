@@ -1,6 +1,10 @@
+//libs
 import React from "react";
 import { connect } from "react-redux";
-//UI components
+import each from "lodash/each";
+import findKey from "lodash/findKey";
+import omit from "lodash/omit";
+//ui components
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -9,6 +13,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 //app componenets
 import ItemQuantity from "../utils/itemQuantity";
+import { validateModifiers } from "../utils/menuItemValidation";
 
 class MenuItemDetail extends React.Component {
 	/**
@@ -17,7 +22,7 @@ class MenuItemDetail extends React.Component {
 	 *
 	 */
 
-	state = { formControls: {} };
+	state = { selection: {} };
 	modiferOptionSelected = async (option) => {
 		/*
 		console.log("Target: ", option.target);
@@ -32,26 +37,48 @@ class MenuItemDetail extends React.Component {
 		const category = option.target.getAttribute("data-category");
 		const checked = option.target.checked;
 
-		await this.setState({
-			formControls: {
-				...this.state.formControls,
-				[id]: {
-					name,
-					category,
-					checked,
+		/**Check to see if object needs to be removed
+		 * from the state because it has been unchecked
+		 */
+		if (!option.target.checked) {
+			const objectToRemove = findKey(this.state.selection, {
+				name: option.target.name,
+			});
+			await this.setState({
+				selection: omit(this.state.selection, objectToRemove),
+			});
+		} else {
+			await this.setState({
+				selection: {
+					...this.state.selection,
+					[id]: {
+						name,
+						category,
+						checked,
+					},
 				},
-			},
-		});
-		console.log("Form Controls: ", this.state.formControls);
+			});
+		}
 	};
 
 	formSubmitted = (e) => {
+		const { modifiers } = this.props.menuItem[0];
+		console.log("Submit Clicked");
+		e.preventDefault();
 		/**VALIDATION POC
 		 * iterate over entire formControls object (e.g. for each section header...)
 		 * maybe need to add a validation object to the inputs
 		 * -find how many objects have the same section title > use that number to validate against the
 		 *  number required for that section (max_number)
 		 */
+		//Go through each modifier section
+		each(modifiers, (modifier) => {
+			console.log("Modifer: ", modifier);
+			console.log("Selection: ", this.state.selection);
+			validateModifiers();
+			//then return a list of all items checked (important) off with that category
+			//create a utility function to do this.
+		});
 	};
 
 	renderModalStructure = (name, modifiers) => {
@@ -61,17 +88,17 @@ class MenuItemDetail extends React.Component {
 					<Modal.Header closeButton>
 						<Modal.Title>{name}</Modal.Title>
 					</Modal.Header>
-					<Modal.Body>
-						<Form onSubmit={this.formSubmitted}>
+					<Form onSubmit={(e) => this.formSubmitted(e)}>
+						<Modal.Body>
 							{modifiers ? this.renderModifierSections(modifiers) : null}
-							<Button type="submit">Submit</Button>
-						</Form>
-					</Modal.Body>
-					<Modal.Footer>
-						<Container fluid>
-							<ItemQuantity />
-						</Container>
-					</Modal.Footer>
+						</Modal.Body>
+						<Modal.Footer>
+							<Container fluid>
+								<ItemQuantity />
+								<Button type="submit">Submit</Button>
+							</Container>
+						</Modal.Footer>
+					</Form>
 				</Modal>
 			</div>
 		);
