@@ -1,0 +1,13 @@
+.quantityText {
+	display: flex;
+	justify-content: flex-start;
+	padding-left: 100px;
+	align-items: center;
+	font-size: 1.5em;
+}
+.quantityToggles {
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 100px;
+	align-items: center;
+}

@@ -1,0 +1,61 @@
+import React from "react";
+import { IconContext } from "react-icons";
+import { MdAddCircleOutline, MdRemoveCircleOutline } from "react-icons/md";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+
+import "../../css/menuItemDetail.css";
+
+class ItemQuantity extends React.Component {
+	state = { itemCount: 0 };
+
+	increaseCount = () => {
+		this.setState({ itemCount: this.state.itemCount + 1 });
+	};
+	decreaseCount = () => {
+		if (this.state.itemCount !== 0) {
+			this.setState({ itemCount: this.state.itemCount - 1 });
+		}
+	};
+	render() {
+		return (
+			<div>
+				<Row md={2}>
+					<Col className="quantityText">
+						<p>Quantity</p>
+					</Col>
+					<Col className="quantityToggles">
+						<div onClick={() => this.decreaseCount()}>
+							<IconContext.Provider
+								value={{
+									style: {
+										fontSize: "4em",
+										color: "rgb(178, 19, 0)",
+										padding: "15px",
+									},
+								}}
+							>
+								<MdRemoveCircleOutline />
+							</IconContext.Provider>
+						</div>
+						<div>{this.state.itemCount}</div>
+						<div onClick={() => this.increaseCount()}>
+							<IconContext.Provider
+								value={{
+									style: {
+										fontSize: "4em",
+										color: "rgb(178, 19, 0)",
+										padding: "15px",
+									},
+								}}
+							>
+								<MdAddCircleOutline />
+							</IconContext.Provider>
+						</div>
+					</Col>
+				</Row>
+			</div>
+		);
+	}
+}
+export default ItemQuantity;

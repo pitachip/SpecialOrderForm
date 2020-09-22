@@ -1,12 +1,59 @@
 import React from "react";
+import { connect } from "react-redux";
+//UI components
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { connect } from "react-redux";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+//app componenets
+import ItemQuantity from "../utils/itemQuantity";
 
 class MenuItemDetail extends React.Component {
+	/**
+	 * need to make a reducer to hold the order details but only once the menu item is submitted
+	 * need to figure out validation
+	 *
+	 */
+
+	state = { formControls: {} };
+	modiferOptionSelected = async (option) => {
+		/*
+		console.log("Target: ", option.target);
+		console.log("Checked: ", option.target.checked);
+		console.log("Name: ", option.target.name);
+		console.log("Id: ", option.target.id);
+		console.log("Category: ", option.target.getAttribute("data-category"));
+		*/
+
+		const name = option.target.name;
+		const id = option.target.id;
+		const category = option.target.getAttribute("data-category");
+		const checked = option.target.checked;
+
+		await this.setState({
+			formControls: {
+				...this.state.formControls,
+				[id]: {
+					name,
+					category,
+					checked,
+				},
+			},
+		});
+		console.log("Form Controls: ", this.state.formControls);
+	};
+
+	formSubmitted = (e) => {
+		/**VALIDATION POC
+		 * iterate over entire formControls object (e.g. for each section header...)
+		 * maybe need to add a validation object to the inputs
+		 * -find how many objects have the same section title > use that number to validate against the
+		 *  number required for that section (max_number)
+		 */
+	};
+
 	renderModalStructure = (name, modifiers) => {
 		return (
 			<div>
@@ -15,12 +62,15 @@ class MenuItemDetail extends React.Component {
 						<Modal.Title>{name}</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						{modifiers ? this.renderModifierSections(modifiers) : null}
+						<Form onSubmit={this.formSubmitted}>
+							{modifiers ? this.renderModifierSections(modifiers) : null}
+							<Button type="submit">Submit</Button>
+						</Form>
 					</Modal.Body>
 					<Modal.Footer>
-						<Button variant="secondary" onClick={this.props.close}>
-							Close
-						</Button>
+						<Container fluid>
+							<ItemQuantity />
+						</Container>
 					</Modal.Footer>
 				</Modal>
 			</div>
@@ -28,24 +78,31 @@ class MenuItemDetail extends React.Component {
 	};
 	renderModifierSections = (modifiers) => {
 		return modifiers.map((item) => {
-			console.log(item);
 			return (
 				<div key={item.name}>
 					<h4 key={item.name}>{item.name}</h4>
 					<p>Choose up to {item.max_number_options}</p>
-					<Form>
-						<Row>{this.renderModifierOptions(item.options)}</Row>
-					</Form>
+					<Row>{this.renderModifierOptions(item.options, item.name)}</Row>
 				</div>
 			);
 		});
 	};
 
-	renderModifierOptions = (options) => {
+	renderModifierOptions = (options, categoryName) => {
 		return options.map((option) => {
 			return (
 				<Col xs={6}>
-					<Form.Check inline type="checkbox" label={option.name} />
+					<Form.Check
+						inline
+						type="checkbox"
+						data-category={categoryName}
+						label={option.name}
+						name={option.name}
+						id={option._id}
+						onChange={(e) => {
+							this.modiferOptionSelected(e);
+						}}
+					/>
 				</Col>
 			);
 		});
