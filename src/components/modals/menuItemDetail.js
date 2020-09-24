@@ -11,9 +11,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import Alert from "react-bootstrap/Alert";
 //app componenets
 import ItemQuantity from "../utils/itemQuantity";
-import { validateModifiers } from "../utils/menuItemValidation";
+import {
+	validateModifiers,
+	filterSelectedModifiers,
+	removeErrorMessage,
+	createErrorMessage,
+} from "../utils/menuItemValidation";
 
 class MenuItemDetail extends React.Component {
 	/**
@@ -22,7 +28,7 @@ class MenuItemDetail extends React.Component {
 	 *
 	 */
 
-	state = { selection: {} };
+	state = { selection: {}, validated: false, validationErrors: [] };
 	modiferOptionSelected = async (option) => {
 		/*
 		console.log("Target: ", option.target);
@@ -63,8 +69,8 @@ class MenuItemDetail extends React.Component {
 
 	formSubmitted = (e) => {
 		const { modifiers } = this.props.menuItem[0];
-		console.log("Submit Clicked");
 		e.preventDefault();
+		let groupedErrorMessages = [];
 		/**VALIDATION POC
 		 * iterate over entire formControls object (e.g. for each section header...)
 		 * maybe need to add a validation object to the inputs
@@ -73,12 +79,72 @@ class MenuItemDetail extends React.Component {
 		 */
 		//Go through each modifier section
 		each(modifiers, (modifier) => {
-			console.log("Modifer: ", modifier);
-			console.log("Selection: ", this.state.selection);
-			validateModifiers();
-			//then return a list of all items checked (important) off with that category
-			//create a utility function to do this.
+			//filter the items in that modifier group so that we can validate them
+			const filteredModifierItems = filterSelectedModifiers(
+				modifier.name,
+				this.state.selection
+			);
+			//validate the filtered modifier items based on the min and max provided in each section
+			validateModifiers(
+				filteredModifierItems,
+				modifier.min_number_options,
+				modifier.max_number_options
+			);
+
+			if (
+				!validateModifiers(
+					filteredModifierItems,
+					modifier.min_number_options,
+					modifier.max_number_options
+				)
+			) {
+				const errorMessage = createErrorMessage(
+					this.state.validationErrors,
+					modifier.name,
+					modifier.min_number_options,
+					modifier.max_number_options
+				);
+				groupedErrorMessages.push(errorMessage);
+				console.log("Grouped Errors: ", groupedErrorMessages);
+				if (errorMessage) {
+					this.setState(
+						{
+							validationErrors: [...this.state.validationErrors, errorMessage],
+						},
+						() => {
+							console.log("New State: ", this.state.validationErrors);
+						}
+					);
+				}
+			} else {
+				const removedErrorMessages = removeErrorMessage(
+					modifier.name,
+					this.state.validationErrors
+				);
+				if (removedErrorMessages) {
+					this.setState({ validationErrors: removedErrorMessages });
+				}
+			}
+			/**Having trouble with all the messages showing up on first click
+			 * maybe if I groupd everything then set state in one shot that would be better
+			 * use the grouped messages as a variable that is updated throughout the process of validation
+			 * and then updated to state once after the each loop
+			 */
 		});
+	};
+
+	renderErrorMessages = () => {
+		return (
+			<div>
+				<Alert variant="danger">
+					<ul>
+						{this.state.validationErrors.map((error) => {
+							return <li>{error}</li>;
+						})}
+					</ul>
+				</Alert>
+			</div>
+		);
 	};
 
 	renderModalStructure = (name, modifiers) => {
@@ -88,7 +154,11 @@ class MenuItemDetail extends React.Component {
 					<Modal.Header closeButton>
 						<Modal.Title>{name}</Modal.Title>
 					</Modal.Header>
-					<Form onSubmit={(e) => this.formSubmitted(e)}>
+					<Form
+						onSubmit={(e) => this.formSubmitted(e)}
+						noValidate
+						validated={this.state.validated}
+					>
 						<Modal.Body>
 							{modifiers ? this.renderModifierSections(modifiers) : null}
 						</Modal.Body>
@@ -97,6 +167,9 @@ class MenuItemDetail extends React.Component {
 								<ItemQuantity />
 								<Button type="submit">Submit</Button>
 							</Container>
+							{this.state.validationErrors.length > 0
+								? this.renderErrorMessages()
+								: null}
 						</Modal.Footer>
 					</Form>
 				</Modal>
@@ -135,6 +208,7 @@ class MenuItemDetail extends React.Component {
 		});
 	};
 	render() {
+		console.log("State Errors: ", this.state.validationErrors);
 		/**
 		 * TODO: have to figure out how to add individual validation to each form group
 		 */
