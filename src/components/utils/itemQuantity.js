@@ -9,12 +9,14 @@ import "../../css/menuItemDetail.css";
 class ItemQuantity extends React.Component {
 	state = { itemCount: 0 };
 
-	increaseCount = () => {
-		this.setState({ itemCount: this.state.itemCount + 1 });
+	increaseCount = async () => {
+		await this.setState({ itemCount: this.state.itemCount + 1 });
+		this.props.onQuantityChanged(this.state.itemCount);
 	};
-	decreaseCount = () => {
+	decreaseCount = async () => {
 		if (this.state.itemCount !== 0) {
-			this.setState({ itemCount: this.state.itemCount - 1 });
+			await this.setState({ itemCount: this.state.itemCount - 1 });
+			this.props.onQuantityChanged(this.state.itemCount);
 		}
 	};
 	render() {

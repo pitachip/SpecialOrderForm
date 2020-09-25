@@ -1,6 +1,7 @@
 import pickBy from "lodash//pickBy";
 
 //TODO: refactor this a bit to be more clean
+/** See if the right amount of checkboxes have been selected for that section */
 export const validateModifiers = (
 	selectedModifiers,
 	minSelection,
@@ -17,30 +18,22 @@ export const validateModifiers = (
 };
 
 export const filterSelectedModifiers = (modifier, modifierItems) => {
-	return pickBy(modifierItems, { category: modifier });
+	return pickBy(modifierItems, { modifier: modifier });
 };
 
 export const removeErrorMessage = (modifier, errorMessages) => {
-	console.log("error messages coming into delete", errorMessages);
 	if (errorMessages.length === 0) {
 		return null;
 	} else {
 		const errorMessageToDelete = errorMessages.filter((el) => {
 			return el.indexOf(modifier) > -1;
 		});
-		console.log("Error Message to Delete Index: ", errorMessageToDelete);
 
 		const newErrorMessageArray = errorMessages.indexOf(errorMessageToDelete[0]);
-		console.log("New Message Array Index: ", newErrorMessageArray);
+
 		if (newErrorMessageArray > -1) {
 			errorMessages.splice(newErrorMessageArray, 1);
 		}
-
-		//console.log("error message to delete: ", errorMessageToDelete);
-
-		//errorMessages = errorMessages.filter((e) => e !== errorMessageToDelete);
-
-		console.log("Value of new error messages after delete ", errorMessages);
 		return errorMessages;
 	}
 };

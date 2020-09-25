@@ -11,3 +11,18 @@
 	padding-right: 100px;
 	align-items: center;
 }
+
+.btn-primary {
+	color: #fff;
+	background-color: #b21300;
+	border-color: #b21300; /*set the color you want here*/
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+	color: #fff;
+	background-color: #ee3a25;
+	border-color: #ee3a25; /*set the color you want here*/
+}
