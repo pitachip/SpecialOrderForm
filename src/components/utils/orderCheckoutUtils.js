@@ -1,7 +1,10 @@
+import pickBy from "lodash/pickBy";
+import each from "lodash/each";
+import isEmpty from "lodash/isEmpty";
+import map from "lodash/map";
+
 export const formatSelectionForCheckout = (menuItem, selections, quantity) => {
 	let formattedSelection = {};
-	console.log("Menu Item: ", menuItem);
-	console.log("Selections: ", selections);
 
 	formattedSelection = {
 		menuItem: menuItem[0].name,
@@ -10,14 +13,26 @@ export const formatSelectionForCheckout = (menuItem, selections, quantity) => {
 		modifiers: [],
 	};
 
-	/**
-	 * !!!Try first to see if you can use the id of the modifier instead of the item id in the set state
-	 * for each modifier id
-	 * try to find that modifier id in the selections
-	 * if yes, see if that modifier exists in the array already
-	 * if it does, then add each modifier choice to that part of the array
-	 * if not add it to the array and add its choices after that
-	 */
+	each(menuItem[0].modifiers, (modifier) => {
+		const modifierChoices = pickBy(selections, { modifierId: modifier._id });
+
+		if (!isEmpty(modifierChoices)) {
+			let modifierChoiceArray = [];
+
+			map(modifierChoices, (modifierChoice) => {
+				modifierChoiceArray.push({
+					name: modifierChoice.name,
+					modifierChoiceId: modifierChoice.id,
+				});
+			});
+
+			formattedSelection.modifiers.push({
+				modifierId: modifier._id,
+				modifierName: modifier.name,
+				modifierChoices: [modifierChoiceArray],
+			});
+		}
+	});
 
 	return formattedSelection;
 };

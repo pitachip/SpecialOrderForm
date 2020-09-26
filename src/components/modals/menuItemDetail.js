@@ -12,7 +12,6 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
-import { IconContext } from "react-icons";
 import { MdAdd } from "react-icons/md";
 //app componenets
 import ItemQuantity from "../utils/itemQuantity";
@@ -34,6 +33,7 @@ class MenuItemDetail extends React.Component {
 		const name = option.target.name;
 		const id = option.target.id;
 		const modifier = option.target.getAttribute("data-modifier");
+		const modifierId = option.target.getAttribute("data-modifier-id");
 		const checked = option.target.checked;
 
 		/**Check to see if object needs to be removed
@@ -52,7 +52,9 @@ class MenuItemDetail extends React.Component {
 					...this.state.selection,
 					[id]: {
 						name,
+						id,
 						modifier,
+						modifierId,
 						checked,
 					},
 				},
@@ -61,7 +63,6 @@ class MenuItemDetail extends React.Component {
 	};
 
 	quantityUpdated = (quantity) => {
-		console.log("Quantity: ", quantity);
 		this.setState({ quantity });
 	};
 
@@ -118,13 +119,11 @@ class MenuItemDetail extends React.Component {
 		await this.setState({ validationErrors: groupedErrorMessages });
 
 		if (this.state.validationErrors.length === 0) {
-			console.log(
-				"Formatted Selection for cart",
-				formatSelectionForCheckout(
-					this.props.menuItem,
-					this.state.selection,
-					this.state.quantity
-				)
+			//create an action to store in a reducer
+			formatSelectionForCheckout(
+				this.props.menuItem,
+				this.state.selection,
+				this.state.quantity
 			);
 		}
 	};
@@ -178,14 +177,18 @@ class MenuItemDetail extends React.Component {
 					<h4 key={modifier.name}>{modifier.name}</h4>
 					<p>Choose up to {modifier.max_number_options}</p>
 					<Row>
-						{this.renderModifierOptions(modifier.options, modifier.name)}
+						{this.renderModifierOptions(
+							modifier.options,
+							modifier.name,
+							modifier._id
+						)}
 					</Row>
 				</div>
 			);
 		});
 	};
 
-	renderModifierOptions = (modifierOptions, modifierName) => {
+	renderModifierOptions = (modifierOptions, modifierName, modifierId) => {
 		return modifierOptions.map((option) => {
 			return (
 				<Col xs={6}>
@@ -193,6 +196,7 @@ class MenuItemDetail extends React.Component {
 						inline
 						type="checkbox"
 						data-modifier={modifierName}
+						data-modifier-id={modifierId}
 						label={option.name}
 						name={option.name}
 						id={option._id}

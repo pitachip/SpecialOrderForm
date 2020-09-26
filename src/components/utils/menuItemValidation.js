@@ -1,4 +1,4 @@
-import pickBy from "lodash//pickBy";
+import pickBy from "lodash/pickBy";
 
 //TODO: refactor this a bit to be more clean
 /** See if the right amount of checkboxes have been selected for that section */
