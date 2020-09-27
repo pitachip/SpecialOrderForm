@@ -29,7 +29,7 @@ export const formatSelectionForCheckout = (menuItem, selections, quantity) => {
 			formattedSelection.modifiers.push({
 				modifierId: modifier._id,
 				modifierName: modifier.name,
-				modifierChoices: [modifierChoiceArray],
+				modifierChoices: modifierChoiceArray,
 			});
 		}
 	});

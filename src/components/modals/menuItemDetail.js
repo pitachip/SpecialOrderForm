@@ -23,6 +23,9 @@ import {
 } from "../utils/menuItemValidation";
 import { formatSelectionForCheckout } from "../utils/orderCheckoutUtils";
 
+//actions
+import { addItemToOrder } from "../../actions";
+
 class MenuItemDetail extends React.Component {
 	/**
 	 * need to make a reducer to hold the order details but only once the menu item is submitted
@@ -120,11 +123,15 @@ class MenuItemDetail extends React.Component {
 
 		if (this.state.validationErrors.length === 0) {
 			//create an action to store in a reducer
-			formatSelectionForCheckout(
-				this.props.menuItem,
-				this.state.selection,
-				this.state.quantity
+			this.props.addItemToOrder(
+				formatSelectionForCheckout(
+					this.props.menuItem,
+					this.state.selection,
+					this.state.quantity
+				)
 			);
+			this.setState({ selection: {} });
+			this.props.close();
 		}
 	};
 
@@ -223,4 +230,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, {})(MenuItemDetail);
+export default connect(mapStateToProps, { addItemToOrder })(MenuItemDetail);
