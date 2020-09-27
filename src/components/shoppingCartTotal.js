@@ -1,4 +1,3 @@
-import { defaultsDeep } from "lodash";
 import React from "react";
 
 class ShoppingCartTotal extends React.Component {
