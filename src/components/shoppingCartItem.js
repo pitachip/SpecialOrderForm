@@ -34,7 +34,6 @@ class ShoppingCartItem extends React.Component {
 		});
 	};
 	render() {
-		console.log(this.props.item);
 		return (
 			<>
 				<Row>

@@ -8,6 +8,7 @@ import Card from "react-bootstrap/Card";
 import ShoppingCartItem from "./shoppingCartItem";
 
 class ShoppingCart extends React.Component {
+	//TODO: put this in utils
 	getNumberOfItemsOrdered = () => {
 		let numberOfItemsOrdered = 0;
 

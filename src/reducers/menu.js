@@ -4,12 +4,15 @@ const INITIAL_STATE = {
 	menuCategoryId: null,
 	menuItemId: null,
 	selectedMenuItem: null,
+	menuConfig: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case "SET_MENU":
 			return { ...state, menu: action.payload };
+		case "SET_MENU_CONFIG":
+			return { ...state, menuConfig: action.payload };
 		case "SET_MENU_CATEGORY":
 			return { ...state, menuCategoryId: action.payload };
 		case "SET_MENU_ITEM":

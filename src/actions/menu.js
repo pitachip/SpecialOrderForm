@@ -6,6 +6,12 @@ export const getMenu = () => async (dispatch) => {
 	dispatch({ type: "SET_MENU", payload: response.data });
 };
 
+export const getMenuConfig = () => async (dispatch) => {
+	let response = await pitachip.get("/config");
+	response = filter(response.data, { type: "menuConfig" });
+	dispatch({ type: "SET_MENU_CONFIG", payload: response[0] });
+};
+
 export const setMenuCategory = (categoryId) => (dispatch) => {
 	dispatch({ type: "SET_MENU_CATEGORY", payload: categoryId });
 };
