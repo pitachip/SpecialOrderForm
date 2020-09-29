@@ -69,6 +69,11 @@ class MenuItemDetail extends React.Component {
 		this.setState({ quantity });
 	};
 
+	modalClosed = () => {
+		this.setState({ selection: {}, validationErrors: [] });
+		this.props.close();
+	};
+
 	formSubmitted = async (e) => {
 		e.preventDefault();
 		const { modifiers } = this.props.menuItem[0];
@@ -130,7 +135,7 @@ class MenuItemDetail extends React.Component {
 					this.state.quantity
 				)
 			);
-			this.setState({ selection: {} });
+			this.setState({ selection: {}, validationErrors: [] });
 			this.props.close();
 		}
 	};
@@ -152,7 +157,7 @@ class MenuItemDetail extends React.Component {
 	renderModalStructure = (menuItemName, modifiers) => {
 		return (
 			<div>
-				<Modal size="lg" show={this.props.show} onHide={this.props.close}>
+				<Modal size="lg" show={this.props.show} onHide={this.modalClosed}>
 					<Modal.Header closeButton>
 						<Modal.Title>{menuItemName}</Modal.Title>
 					</Modal.Header>
