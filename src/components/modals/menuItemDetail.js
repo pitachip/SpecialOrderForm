@@ -164,6 +164,16 @@ class MenuItemDetail extends React.Component {
 					<Form onSubmit={(e) => this.formSubmitted(e)}>
 						<Modal.Body>
 							{modifiers ? this.renderModifierSections(modifiers) : null}
+							<Form.Group>
+								<Form.Control
+									as="textarea"
+									rows="3"
+									placeholder="Let us know about any special requests you need for this order"
+									onBlur={() => this.toggleSpecialInstructionsTextArea()}
+									value={this.state.specialRequests}
+									onChange={(e) => this.textAreaChanged(e)}
+								/>
+							</Form.Group>
 						</Modal.Body>
 						<Modal.Footer>
 							<Container fluid>

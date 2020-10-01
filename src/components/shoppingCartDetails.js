@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { MdAdd } from "react-icons/md";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 class ShoppingCartDetails extends React.Component {
 	//TODO: When the user clicks "order", that's when we'll call the reducer
@@ -14,18 +17,7 @@ class ShoppingCartDetails extends React.Component {
 		showTextArea: false,
 		location: "",
 		shippingMethod: "",
-	};
-
-	shippingMethodSelectionChanged = (e) => {
-		this.setState({ shippingMethod: e.target.value });
-	};
-
-	locationDropdownChanged = (e) => {
-		this.setState({ location: e.target.value });
-	};
-
-	textAreaChanged = (e) => {
-		this.setState({ specialRequests: e.target.value });
+		orderDate: new Date(),
 	};
 
 	toggleSpecialInstructionsTextArea = () => {
@@ -34,6 +26,18 @@ class ShoppingCartDetails extends React.Component {
 		} else if (this.state.specialRequests === "" && !this.state.showTextArea) {
 			this.setState({ showTextArea: true });
 		}
+	};
+
+	renderDateTimeSelector = () => {
+		return (
+			<DatePicker
+				selected={this.state.orderDate}
+				onChange={(date) => this.setState({ orderDate: date })}
+				timeInputLabel="Time:"
+				dateFormat="MM/dd/yyyy h:mm aa"
+				showTimeInput
+			/>
+		);
 	};
 
 	renderShippingOptions = () => {
@@ -45,14 +49,14 @@ class ShoppingCartDetails extends React.Component {
 						value="pickup"
 						checked={this.state.shippingMethod === "pickup"}
 						label="Pick-Up"
-						onChange={(e) => this.shippingMethodSelectionChanged(e)}
+						onChange={(e) => this.setState({ shippingMethod: e.target.value })}
 					/>
 					<Form.Check
 						type="radio"
 						value="delivery"
 						checked={this.state.shippingMethod === "delivery"}
 						label="Delivery"
-						onChange={(e) => this.shippingMethodSelectionChanged(e)}
+						onChange={(e) => this.setState({ shippingMethod: e.target.value })}
 					/>
 				</Form.Group>
 			</>
@@ -79,7 +83,7 @@ class ShoppingCartDetails extends React.Component {
 						size="sm"
 						custom
 						value={this.state.location}
-						onChange={(e) => this.locationDropdownChanged(e)}
+						onChange={(e) => this.setState({ location: e.target.value })}
 					>
 						<option value=""></option>
 						{this.renderLocationDropdownOptions()}
@@ -111,7 +115,7 @@ class ShoppingCartDetails extends React.Component {
 						placeholder="Let us know about any special requests you need for this order"
 						onBlur={() => this.toggleSpecialInstructionsTextArea()}
 						value={this.state.specialRequests}
-						onChange={(e) => this.textAreaChanged(e)}
+						onChange={(e) => this.setState({ specialRequests: e.target.value })}
 					/>
 				</Form.Group>
 			</>
@@ -129,6 +133,7 @@ class ShoppingCartDetails extends React.Component {
 								: this.renderTextAreaPlaceholder()}
 							{this.renderLocationDropdown()}
 							{this.renderShippingOptions()}
+							{this.renderDateTimeSelector()}
 						</Form>
 					</Card.Body>
 				</Card>
