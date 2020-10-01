@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 //app componenets
 import ShoppingCart from "./shoppingCart";
 import ShoppingCartTotal from "./shoppingCartTotal";
+import ShoppingCartDetails from "./shoppingCartDetails";
 
 class OrderDetails extends React.Component {
 	render() {
@@ -12,6 +13,7 @@ class OrderDetails extends React.Component {
 			<div>
 				<ShoppingCart />
 				<ShoppingCartTotal />
+				<ShoppingCartDetails />
 			</div>
 		);
 	}

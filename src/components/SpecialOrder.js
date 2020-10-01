@@ -1,15 +1,22 @@
+//libs
 import React from "react";
 import { connect } from "react-redux";
-import { getSpecialOrders } from "../actions";
+//ui components
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+//app componenets
 import NavBar from "./navBar";
 import Disclaimer from "./disclaimer";
 import MenuCategories from "./menuCategories";
 import MenuItems from "./menuItems";
 import OrderDetails from "./orderDetails";
+import { getSpecialOrders, getStoreInformation } from "../actions";
 
+//TODO: Get rid of getSpecialOrders and its resources
 class SpecialOrder extends React.Component {
+	async componentDidMount() {
+		await this.props.getStoreInformation();
+	}
 	render() {
 		return (
 			<div>
@@ -37,4 +44,7 @@ const mapStateToProps = (state) => {
 	return { specialOrder: state.specialOrder };
 };
 
-export default connect(mapStateToProps, { getSpecialOrders })(SpecialOrder);
+export default connect(mapStateToProps, {
+	getSpecialOrders,
+	getStoreInformation,
+})(SpecialOrder);
