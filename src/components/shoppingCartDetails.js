@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 //ui components
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
-import { MdAdd } from "react-icons/md";
+import Button from "react-bootstrap/Button";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import { MdAdd, MdChevronRight } from "react-icons/md";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,8 +19,9 @@ class ShoppingCartDetails extends React.Component {
 		specialRequests: "",
 		showTextArea: false,
 		location: "",
-		shippingMethod: "",
+		shippingMethod: "delivery",
 		orderDate: new Date(),
+		validated: false,
 	};
 
 	toggleSpecialInstructionsTextArea = () => {
@@ -25,6 +29,48 @@ class ShoppingCartDetails extends React.Component {
 			this.setState({ showTextArea: false });
 		} else if (this.state.specialRequests === "" && !this.state.showTextArea) {
 			this.setState({ showTextArea: true });
+		}
+	};
+
+	orderSubmitted = (event) => {
+		const form = event.currentTarget;
+		event.preventDefault();
+		event.stopPropagation();
+		if (form.checkValidity() === false) {
+			this.setState({ validated: true });
+		}
+		//put into the reducer
+		//open a modal with the user login <-- big step here
+	};
+
+	renderOrderButton = () => {
+		const { subTotal } = this.props.totals;
+		if (subTotal < 130) {
+			return (
+				<OverlayTrigger
+					placement="left"
+					overlay={
+						<Tooltip>
+							Minimum order amount not reached. Go ahead and add a few more
+							items
+						</Tooltip>
+					}
+				>
+					<span className="block">
+						<Button block disabled style={{ pointerEvents: "none" }}>
+							Order Now
+							<MdChevronRight />
+						</Button>
+					</span>
+				</OverlayTrigger>
+			);
+		} else {
+			return (
+				<Button block type="submit">
+					Order Now
+					<MdChevronRight />
+				</Button>
+			);
 		}
 	};
 
@@ -42,24 +88,22 @@ class ShoppingCartDetails extends React.Component {
 
 	renderShippingOptions = () => {
 		return (
-			<>
-				<Form.Group>
-					<Form.Check
-						type="radio"
-						value="pickup"
-						checked={this.state.shippingMethod === "pickup"}
-						label="Pick-Up"
-						onChange={(e) => this.setState({ shippingMethod: e.target.value })}
-					/>
-					<Form.Check
-						type="radio"
-						value="delivery"
-						checked={this.state.shippingMethod === "delivery"}
-						label="Delivery"
-						onChange={(e) => this.setState({ shippingMethod: e.target.value })}
-					/>
-				</Form.Group>
-			</>
+			<Form.Group>
+				<Form.Check
+					type="radio"
+					value="delivery"
+					checked={this.state.shippingMethod === "delivery"}
+					label="Delivery"
+					onChange={(e) => this.setState({ shippingMethod: e.target.value })}
+				/>
+				<Form.Check
+					type="radio"
+					value="pickup"
+					checked={this.state.shippingMethod === "pickup"}
+					label="Pick-Up"
+					onChange={(e) => this.setState({ shippingMethod: e.target.value })}
+				/>
+			</Form.Group>
 		);
 	};
 
@@ -75,21 +119,23 @@ class ShoppingCartDetails extends React.Component {
 
 	renderLocationDropdown = () => {
 		return (
-			<>
-				<Form.Group>
-					<Form.Label>Choose Location</Form.Label>
-					<Form.Control
-						as="select"
-						size="sm"
-						custom
-						value={this.state.location}
-						onChange={(e) => this.setState({ location: e.target.value })}
-					>
-						<option value=""></option>
-						{this.renderLocationDropdownOptions()}
-					</Form.Control>
-				</Form.Group>
-			</>
+			<Form.Group controlId="validationCustom03">
+				<Form.Label>Choose Location</Form.Label>
+				<Form.Control
+					required
+					custom
+					as="select"
+					size="sm"
+					value={this.state.location}
+					onChange={(e) => this.setState({ location: e.target.value })}
+				>
+					<option value=""></option>
+					{this.renderLocationDropdownOptions()}
+				</Form.Control>
+				<Form.Control.Feedback type="invalid">
+					Please choose a location.
+				</Form.Control.Feedback>
+			</Form.Group>
 		);
 	};
 
@@ -127,13 +173,18 @@ class ShoppingCartDetails extends React.Component {
 			<div>
 				<Card>
 					<Card.Body>
-						<Form>
+						<Form
+							noValidate
+							validated={this.state.validated}
+							onSubmit={this.orderSubmitted}
+						>
 							{this.state.showTextArea
 								? this.renderTextArea()
 								: this.renderTextAreaPlaceholder()}
 							{this.renderLocationDropdown()}
 							{this.renderShippingOptions()}
 							{this.renderDateTimeSelector()}
+							{this.renderOrderButton()}
 						</Form>
 					</Card.Body>
 				</Card>
@@ -145,6 +196,7 @@ class ShoppingCartDetails extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		storeInformation: state.storeInformation.storeInformation,
+		totals: state.order.totals,
 	};
 };
 

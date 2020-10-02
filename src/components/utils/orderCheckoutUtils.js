@@ -3,13 +3,19 @@ import each from "lodash/each";
 import isEmpty from "lodash/isEmpty";
 import map from "lodash/map";
 
-export const formatSelectionForCheckout = (menuItem, selections, quantity) => {
+export const formatSelectionForCheckout = (
+	menuItem,
+	selections,
+	quantity,
+	specialInstructions
+) => {
 	let formattedSelection = {};
 
 	formattedSelection = {
 		menuItem: menuItem[0].name,
 		basePrice: menuItem[0].basePrice,
 		quantity,
+		specialInstructions,
 		modifiers: [],
 	};
 

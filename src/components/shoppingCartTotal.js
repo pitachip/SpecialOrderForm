@@ -44,14 +44,33 @@ class ShoppingCartTotal extends React.Component {
 
 		return totals;
 	};
+
+	renderOrderMinmumText = () => {
+		return (
+			<>
+				<NumberFormat
+					value={this.props.menuConfig.settings.minimumOrderAmount}
+					displayType={"text"}
+					thousandSeparator={true}
+					prefix={"$"}
+				/>
+			</>
+		);
+	};
+
 	render() {
+		const { menuConfig } = this.props;
 		return (
 			<div>
 				<Card>
 					<Card.Body>
 						<Row>
 							<Col md={8}>
-								<p>Subtotal</p>
+								<p>
+									Subtotal{" (min: "}
+									{menuConfig ? this.renderOrderMinmumText() : null}
+									{")"}
+								</p>
 							</Col>
 							<Col md={4} className="shoppingCartTotalPrice">
 								<p>

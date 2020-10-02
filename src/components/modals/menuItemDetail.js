@@ -30,7 +30,12 @@ class MenuItemDetail extends React.Component {
 	/**
 	 * need to make a reducer to hold the order details but only once the menu item is submitted
 	 */
-	state = { selection: {}, validationErrors: [], quantity: 0 };
+	state = {
+		selection: {},
+		validationErrors: [],
+		quantity: 0,
+		specialInStructions: "",
+	};
 
 	modiferOptionSelected = async (option) => {
 		const name = option.target.name;
@@ -127,12 +132,12 @@ class MenuItemDetail extends React.Component {
 		await this.setState({ validationErrors: groupedErrorMessages });
 
 		if (this.state.validationErrors.length === 0) {
-			//create an action to store in a reducer
 			this.props.addItemToOrder(
 				formatSelectionForCheckout(
 					this.props.menuItem,
 					this.state.selection,
-					this.state.quantity
+					this.state.quantity,
+					this.state.specialInstructions
 				)
 			);
 			this.setState({ selection: {}, validationErrors: [] });
@@ -167,11 +172,12 @@ class MenuItemDetail extends React.Component {
 							<Form.Group>
 								<Form.Control
 									as="textarea"
-									rows="3"
+									rows="2"
 									placeholder="Let us know about any special requests you need for this order"
-									onBlur={() => this.toggleSpecialInstructionsTextArea()}
 									value={this.state.specialRequests}
-									onChange={(e) => this.textAreaChanged(e)}
+									onChange={(e) =>
+										this.setState({ specialInstructions: e.target.value })
+									}
 								/>
 							</Form.Group>
 						</Modal.Body>

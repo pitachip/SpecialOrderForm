@@ -19,7 +19,12 @@ class ShoppingCartItem extends React.Component {
 		this.setState({ price: calculatedPrice });
 	}
 
+	renderOrderItemSpecialInstructions = () => {
+		return <p>Special Instructions: {this.props.item.specialInstructions}</p>;
+	};
+
 	renderOrderItemDetails = () => {
+		console.log(this.props.item);
 		return this.props.item.modifiers.map((modifier) => {
 			return (
 				<div key={modifier.modifierId}>
@@ -29,6 +34,7 @@ class ShoppingCartItem extends React.Component {
 							return "" + choice.name + ", ";
 						})}
 					</p>
+					<p>{this.props.item.specialInstructions}</p>
 				</div>
 			);
 		});
@@ -52,7 +58,10 @@ class ShoppingCartItem extends React.Component {
 							Details
 						</Accordion.Toggle>
 						<Accordion.Collapse eventKey="0">
-							<Card.Body>{this.renderOrderItemDetails()}</Card.Body>
+							<Card.Body>
+								{this.renderOrderItemDetails()}
+								{this.renderOrderItemSpecialInstructions()}
+							</Card.Body>
 						</Accordion.Collapse>
 					</Accordion>
 				</Row>
