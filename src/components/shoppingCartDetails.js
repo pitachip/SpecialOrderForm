@@ -9,12 +9,12 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { MdAdd, MdChevronRight } from "react-icons/md";
 import DatePicker from "react-datepicker";
+//app components
+import { updateShippingMethod, updateOrderDetails } from "../actions";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 class ShoppingCartDetails extends React.Component {
-	//TODO: When the user clicks "order", that's when we'll call the reducer
-
 	state = {
 		specialRequests: "",
 		showTextArea: false,
@@ -32,12 +32,25 @@ class ShoppingCartDetails extends React.Component {
 		}
 	};
 
+	shippingMethodChanged = (e) => {
+		this.setState({ shippingMethod: e.target.value });
+		this.props.updateShippingMethod(e.target.value);
+	};
+
 	orderSubmitted = (event) => {
 		const form = event.currentTarget;
 		event.preventDefault();
 		event.stopPropagation();
 		if (form.checkValidity() === false) {
 			this.setState({ validated: true });
+		} else {
+			let orderDetails = {
+				shippingMethod: this.state.shippingMethod,
+				orderDate: this.state.orderDate,
+				location: this.state.location,
+				specialRequests: this.state.specialRequests,
+			};
+			this.props.updateOrderDetails(orderDetails);
 		}
 		//put into the reducer
 		//open a modal with the user login <-- big step here
@@ -94,14 +107,14 @@ class ShoppingCartDetails extends React.Component {
 					value="delivery"
 					checked={this.state.shippingMethod === "delivery"}
 					label="Delivery"
-					onChange={(e) => this.setState({ shippingMethod: e.target.value })}
+					onChange={(e) => this.shippingMethodChanged(e)}
 				/>
 				<Form.Check
 					type="radio"
 					value="pickup"
 					checked={this.state.shippingMethod === "pickup"}
 					label="Pick-Up"
-					onChange={(e) => this.setState({ shippingMethod: e.target.value })}
+					onChange={(e) => this.shippingMethodChanged(e)}
 				/>
 			</Form.Group>
 		);
@@ -194,10 +207,15 @@ class ShoppingCartDetails extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	console.log("Order Details: ", state.order);
 	return {
 		storeInformation: state.storeInformation.storeInformation,
 		totals: state.order.totals,
+		orderDetails: state.order.orderDetails,
 	};
 };
 
-export default connect(mapStateToProps, {})(ShoppingCartDetails);
+export default connect(mapStateToProps, {
+	updateShippingMethod,
+	updateOrderDetails,
+})(ShoppingCartDetails);

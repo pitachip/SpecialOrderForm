@@ -21,21 +21,27 @@ class ShoppingCartTotal extends React.Component {
 		/**
 		 * Only update the price when a new order item has been added
 		 */
-		if (prevProps.orderDetails.length !== this.props.orderDetails.length) {
+		if (prevProps.orderItems.length !== this.props.orderItems.length) {
 			const calculatedAmounts = this.calculateTotals();
 			this.props.updateOrderTotals(calculatedAmounts);
 		}
 	}
 
+	/**
+	 * Might have to put this in a util because it needs to be used here and the details for
+	 * when it changes from pickup to delivery and vice versa
+	 */
 	calculateTotals = () => {
+		const deliveryFee = this.props.menuConfig.settings.cateringDeliveryFee;
+		const shippingMethod = this.props.orderDetails.shippingMethod;
 		let totals = {
 			subTotal: 0,
 			tax: 0,
 			total: 0,
-			delivery: this.props.menuConfig.settings.cateringDeliveryFee,
+			delivery: shippingMethod === "delivery" ? deliveryFee : 0,
 		};
 
-		each(this.props.orderDetails, (item) => {
+		each(this.props.orderItems, (item) => {
 			totals.subTotal =
 				totals.subTotal + item.quantity * (item.basePrice / 100);
 			totals.tax = totals.subTotal * this.props.menuConfig.settings.taxRate;
@@ -43,6 +49,21 @@ class ShoppingCartTotal extends React.Component {
 		});
 
 		return totals;
+	};
+
+	renderDeliverFee = () => {
+		if (this.props.menuConfig) {
+			const deliveryFee = this.props.menuConfig.settings.cateringDeliveryFee;
+			const shippingMethod = this.props.orderDetails.shippingMethod;
+			return (
+				<NumberFormat
+					value={shippingMethod === "delivery" ? deliveryFee : 0}
+					displayType={"text"}
+					thousandSeparator={true}
+					prefix={"$"}
+				/>
+			);
+		}
 	};
 
 	renderOrderMinmumText = () => {
@@ -107,14 +128,7 @@ class ShoppingCartTotal extends React.Component {
 								<p>Delivery</p>
 							</Col>
 							<Col md={4} className="shoppingCartTotalPrice">
-								<p>
-									<NumberFormat
-										value={this.props.totals.delivery}
-										displayType={"text"}
-										thousandSeparator={true}
-										prefix={"$"}
-									/>
-								</p>
+								<p>{this.renderDeliverFee()}</p>
 							</Col>
 						</Row>
 						<Row>
@@ -143,9 +157,10 @@ class ShoppingCartTotal extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		orderDetails: state.order.orderDetails,
+		orderItems: state.order.orderItems,
 		totals: state.order.totals,
 		menuConfig: state.menu.menuConfig,
+		orderDetails: state.order.orderDetails,
 	};
 };
 

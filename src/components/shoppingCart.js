@@ -12,7 +12,7 @@ class ShoppingCart extends React.Component {
 	getNumberOfItemsOrdered = () => {
 		let numberOfItemsOrdered = 0;
 
-		each(this.props.orderDetails, (orderItem) => {
+		each(this.props.orderItems, (orderItem) => {
 			numberOfItemsOrdered = numberOfItemsOrdered + orderItem.quantity;
 		});
 
@@ -20,7 +20,7 @@ class ShoppingCart extends React.Component {
 	};
 
 	renderShoppingCartItems = () => {
-		return this.props.orderDetails.map((orderItem) => {
+		return this.props.orderItems.map((orderItem) => {
 			return <ShoppingCartItem item={orderItem} />;
 		});
 	};
@@ -40,7 +40,7 @@ class ShoppingCart extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		orderDetails: state.order.orderDetails,
+		orderItems: state.order.orderItems,
 	};
 };
 

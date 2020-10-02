@@ -24,7 +24,6 @@ class ShoppingCartItem extends React.Component {
 	};
 
 	renderOrderItemDetails = () => {
-		console.log(this.props.item);
 		return this.props.item.modifiers.map((modifier) => {
 			return (
 				<div key={modifier.modifierId}>
