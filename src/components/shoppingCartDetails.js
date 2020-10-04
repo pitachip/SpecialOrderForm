@@ -10,7 +10,12 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { MdAdd, MdChevronRight } from "react-icons/md";
 import DatePicker from "react-datepicker";
 //app components
-import { updateShippingMethod, updateOrderDetails } from "../actions";
+import {
+	updateShippingMethod,
+	updateOrderDetails,
+	updateOrderTotals,
+} from "../actions";
+import { calculateTotals } from "../utils/orderCheckoutUtils";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -35,6 +40,12 @@ class ShoppingCartDetails extends React.Component {
 	shippingMethodChanged = (e) => {
 		this.setState({ shippingMethod: e.target.value });
 		this.props.updateShippingMethod(e.target.value);
+		const calculatedAmounts = calculateTotals(
+			this.props.orderItems,
+			this.props.menuConfig.settings,
+			e.target.value
+		);
+		this.props.updateOrderTotals(calculatedAmounts);
 	};
 
 	orderSubmitted = (event) => {
@@ -52,7 +63,6 @@ class ShoppingCartDetails extends React.Component {
 			};
 			this.props.updateOrderDetails(orderDetails);
 		}
-		//put into the reducer
 		//open a modal with the user login <-- big step here
 	};
 
@@ -207,15 +217,17 @@ class ShoppingCartDetails extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	console.log("Order Details: ", state.order);
 	return {
 		storeInformation: state.storeInformation.storeInformation,
 		totals: state.order.totals,
 		orderDetails: state.order.orderDetails,
+		menuConfig: state.menu.menuConfig,
+		orderItems: state.order.orderItems,
 	};
 };
 
 export default connect(mapStateToProps, {
 	updateShippingMethod,
 	updateOrderDetails,
+	updateOrderTotals,
 })(ShoppingCartDetails);

@@ -2,13 +2,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import NumberFormat from "react-number-format";
-import each from "lodash/each";
 //ui componenets
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 //app components
 import { updateOrderTotals, getMenuConfig } from "../actions";
+import { calculateTotals } from "../utils/orderCheckoutUtils";
 
 import "../css/shoppingCartTotal.css";
 
@@ -22,7 +22,12 @@ class ShoppingCartTotal extends React.Component {
 		 * Only update the price when a new order item has been added
 		 */
 		if (prevProps.orderItems.length !== this.props.orderItems.length) {
-			const calculatedAmounts = this.calculateTotals();
+			const calculatedAmounts = calculateTotals(
+				this.props.orderItems,
+				this.props.menuConfig.settings,
+				this.props.orderDetails.shippingMethod
+			);
+			console.log("Calculated amounts: ", calculatedAmounts);
 			this.props.updateOrderTotals(calculatedAmounts);
 		}
 	}
@@ -31,6 +36,7 @@ class ShoppingCartTotal extends React.Component {
 	 * Might have to put this in a util because it needs to be used here and the details for
 	 * when it changes from pickup to delivery and vice versa
 	 */
+	/*
 	calculateTotals = () => {
 		const deliveryFee = this.props.menuConfig.settings.cateringDeliveryFee;
 		const shippingMethod = this.props.orderDetails.shippingMethod;
@@ -50,6 +56,7 @@ class ShoppingCartTotal extends React.Component {
 
 		return totals;
 	};
+	*/
 
 	renderDeliverFee = () => {
 		if (this.props.menuConfig) {

@@ -42,3 +42,25 @@ export const formatSelectionForCheckout = (
 
 	return formattedSelection;
 };
+
+export const calculateTotals = (
+	orderItems,
+	menuConfigSettings,
+	shippingMethod
+) => {
+	const deliveryFee = menuConfigSettings.cateringDeliveryFee;
+	let totals = {
+		subTotal: 0,
+		tax: 0,
+		total: 0,
+		delivery: shippingMethod === "delivery" ? deliveryFee : 0,
+	};
+
+	each(orderItems, (item) => {
+		totals.subTotal = totals.subTotal + item.quantity * (item.basePrice / 100);
+		totals.tax = totals.subTotal * menuConfigSettings.taxRate;
+		totals.total = totals.subTotal + totals.tax + totals.delivery;
+	});
+
+	return totals;
+};

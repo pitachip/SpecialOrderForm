@@ -14,9 +14,6 @@ import { getSpecialOrders, getStoreInformation } from "../actions";
 
 //TODO: Get rid of getSpecialOrders and its resources
 class SpecialOrder extends React.Component {
-	async componentDidMount() {
-		await this.props.getStoreInformation();
-	}
 	render() {
 		return (
 			<div>

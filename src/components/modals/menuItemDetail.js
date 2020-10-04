@@ -14,14 +14,14 @@ import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { MdAdd } from "react-icons/md";
 //app componenets
-import ItemQuantity from "../utils/itemQuantity";
+import ItemQuantity from "../../utils/itemQuantity";
 import {
 	validateModifiers,
 	filterSelectedModifiers,
 	removeErrorMessage,
 	createErrorMessage,
-} from "../utils/menuItemValidation";
-import { formatSelectionForCheckout } from "../utils/orderCheckoutUtils";
+} from "../../utils/menuItemValidation";
+import { formatSelectionForCheckout } from "../../utils/orderCheckoutUtils";
 
 //actions
 import { addItemToOrder } from "../../actions";
