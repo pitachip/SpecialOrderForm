@@ -1,16 +1,19 @@
 //libs
 import React from "react";
 import { auth } from "../apis/firebase";
+import { connect } from "react-redux";
 //ui components
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
+//app components
+import AuthModal from "./modals/authModal";
 
 class NavBar extends React.Component {
-	state = { user: null, authLoading: true };
+	state = { user: null, authLoading: true, showModal: false };
+
 	componentDidMount() {
-		auth.signInWithEmailAndPassword("customer1@gmail.com", "customer1");
 		auth.onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({ user });
@@ -19,6 +22,14 @@ class NavBar extends React.Component {
 			}
 		});
 	}
+
+	handleAuthModalClose = () => {
+		this.setState({ showModal: false });
+	};
+
+	handleAuthModalOpen = () => {
+		this.setState({ showModal: true });
+	};
 
 	signoutClicked = async () => {
 		console.log("sign out clicked");
@@ -56,7 +67,7 @@ class NavBar extends React.Component {
 			);
 		} else {
 			return (
-				<Button size="sm" className="ml-auto">
+				<Button className="ml-auto" onClick={this.handleAuthModalOpen}>
 					Log In
 				</Button>
 			);
@@ -79,9 +90,19 @@ class NavBar extends React.Component {
 				{!this.state.user && this.state.authLoading
 					? this.renderLoadingSpinner()
 					: this.renderAuthState()}
+				<AuthModal
+					show={this.state.showModal}
+					close={this.handleAuthModalClose}
+				/>
 			</Navbar>
 		);
 	}
 }
 
-export default NavBar;
+const mapStateToProps = (state) => {
+	return {
+		auth: state.auth,
+	};
+};
+
+export default connect(mapStateToProps, {})(NavBar);
