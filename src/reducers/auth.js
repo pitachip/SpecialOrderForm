@@ -3,6 +3,7 @@ const INITIAL_STATE = {
 	authLoading: true,
 	errorMessage: "",
 	showAuthErrorMessage: false,
+	authForm: "",
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -21,6 +22,8 @@ export default (state = INITIAL_STATE, action) => {
 				errorMessage: action.payload.errorMessage,
 				showAuthErrorMessage: action.payload.showAuthErrorMessage,
 			};
+		case "SET_AUTH_FORM":
+			return { ...state, authForm: action.payload };
 		default:
 			return state;
 	}

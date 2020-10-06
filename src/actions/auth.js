@@ -41,6 +41,11 @@ export const setAuthErrorMessage = (errorMessage, showAuthErrorMessage) => (
 	});
 };
 
+/**TODO: might want to make some enums here or something */
+export const setAuthFormToOpen = (form) => (dispatch) => {
+	dispatch({ type: "SET_AUTH_FORM", payload: form });
+};
+
 /**TODO: Look into create a file for all the default error messages */
 //cycle through the error messages
 const createErrorMessage = (errorCode) => {

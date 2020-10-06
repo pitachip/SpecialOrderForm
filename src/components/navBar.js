@@ -8,12 +8,14 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 //app components
-import AuthModal from "./modals/authModal";
+import { setAuthFormToOpen } from "../actions";
+import AuthModal from "./auth-components/auth-modals/authModal";
 
 class NavBar extends React.Component {
 	state = { user: null, authLoading: true, showModal: false };
 
 	componentDidMount() {
+		//TODO: fix this to connect to redux
 		auth.onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({ user });
@@ -28,6 +30,7 @@ class NavBar extends React.Component {
 	};
 
 	handleAuthModalOpen = () => {
+		this.props.setAuthFormToOpen("signinForm");
 		this.setState({ showModal: true });
 	};
 
@@ -105,4 +108,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, {})(NavBar);
+export default connect(mapStateToProps, { setAuthFormToOpen })(NavBar);

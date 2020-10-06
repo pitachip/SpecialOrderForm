@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 //ui components
 import Alert from "react-bootstrap/Alert";
 //app components
-import { setAuthErrorMessage } from "../actions";
+import { setAuthErrorMessage } from "../../actions";
 
 class AuthAlertMessage extends React.Component {
 	render() {
