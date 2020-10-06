@@ -1,6 +1,8 @@
 const INITIAL_STATE = {
 	user: null,
 	authLoading: true,
+	errorMessage: "",
+	showAuthErrorMessage: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -10,6 +12,14 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				user: action.payload.user,
 				authLoading: action.payload.authLoading,
+				errorMessage: action.payload.errorMessage,
+				showAuthErrorMessage: action.payload.errorMessage,
+			};
+		case "SET_AUTH_ERROR_MESSAGE":
+			return {
+				...state,
+				errorMessage: action.payload.errorMessage,
+				showAuthErrorMessage: action.payload.showAuthErrorMessage,
 			};
 		default:
 			return state;

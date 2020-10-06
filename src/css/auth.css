@@ -1,0 +1,11 @@
+.signUpCardItems {
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.signUpButton {
+	margin: 0 !important;
+	padding: 4px !important;
+}

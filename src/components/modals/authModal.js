@@ -7,12 +7,23 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Container from "react-bootstrap/Container";
+import Card from "react-bootstrap/Card";
 import { MdPerson, MdLock } from "react-icons/md";
 //app components
-import { signInWithEmailAndPassword } from "../../actions";
+import { signInWithEmailAndPassword, setAuthErrorMessage } from "../../actions";
+import AuthErrorMessage from "../authErrorMessage";
+
+import "../../css/auth.css";
 
 class AuthModal extends React.Component {
 	state = { email: "", password: "" };
+
+	closeButtonClicked = () => {
+		//Clear out state and error messages
+		this.setState({ email: "", password: "" });
+		this.props.setAuthErrorMessage("", false);
+		this.props.close();
+	};
 	signInButtonClicked = async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -20,12 +31,15 @@ class AuthModal extends React.Component {
 			this.state.email,
 			this.state.password
 		);
-		this.props.close();
+		if (!this.props.auth.showAuthErrorMessage) {
+			this.setState({ email: "", password: "" });
+			this.props.close();
+		}
 	};
 	render() {
 		return (
 			<>
-				<Modal show={this.props.show} onHide={this.props.close}>
+				<Modal show={this.props.show} onHide={this.closeButtonClicked}>
 					<Modal.Header closeButton>
 						<Modal.Title>Sign In to Your Account</Modal.Title>
 					</Modal.Header>
@@ -70,6 +84,15 @@ class AuthModal extends React.Component {
 									Log In
 								</Button>
 							</Form>
+							<AuthErrorMessage />
+							<Card>
+								<Card.Body className="signUpCardItems">
+									New here?{" "}
+									<Button className="signUpButton" variant="link">
+										Sign Up!
+									</Button>
+								</Card.Body>
+							</Card>
 						</Container>
 					</Modal.Body>
 				</Modal>
@@ -84,6 +107,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { signInWithEmailAndPassword })(
-	AuthModal
-);
+export default connect(mapStateToProps, {
+	signInWithEmailAndPassword,
+	setAuthErrorMessage,
+})(AuthModal);
