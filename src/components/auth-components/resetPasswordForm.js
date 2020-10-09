@@ -5,38 +5,44 @@ import { connect } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { MdPerson, MdLock } from "react-icons/md";
+import { MdPerson } from "react-icons/md";
 //app components
 import "./auth-css/auth.css";
-import { signInWithEmailAndPassword, setAuthFormToOpen } from "../../actions";
+import {
+	setAuthErrorMessage,
+	setAuthFormToOpen,
+	sendPasswordResetEmail,
+} from "../../actions";
 
-class SignInForm extends React.Component {
-	state = { email: "", password: "", isLoading: false };
+class ResetPasswordForm extends React.Component {
+	/**
+	 * TODO:
+	 * 1. Display the success message via dispatch and a component
+	 * 2. Show erorr messages
+	 * 3. Format error message better in the server
+	 * 4. Clear auth errors from signin -> password reset form
+	 */
+	state = { email: "" };
 
-	forgotPasswordButtonClicked = () => {
-		this.props.setAuthFormToOpen("resetPasswordForm");
-	};
-
-	signInButtonClicked = async (e) => {
+	passwordResetButtonClicked = async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 		this.setState({ isLoading: true });
-		await this.props.signInWithEmailAndPassword(
-			this.state.email,
-			this.state.password
-		);
+		await this.props.sendPasswordResetEmail(this.state.email);
+		/*
 		if (!this.props.auth.showAuthErrorMessage) {
 			this.setState({ email: "", password: "" });
 			//closes the modal
 			this.props.onSuccess();
 		} else {
 			this.setState({ isLoading: false });
-		}
+        }
+        */
 	};
 
 	render() {
 		return (
-			<Form onSubmit={(e) => this.signInButtonClicked(e)}>
+			<Form onSubmit={(e) => this.passwordResetButtonClicked(e)}>
 				<Form.Group>
 					<Form.Label>Email address</Form.Label>
 					<InputGroup>
@@ -47,25 +53,9 @@ class SignInForm extends React.Component {
 						</InputGroup.Prepend>
 						<Form.Control
 							type="email"
-							placeholder="falafel@email.com"
+							placeholder="Enter your email address"
 							value={this.state.email}
 							onChange={(e) => this.setState({ email: e.target.value })}
-						/>
-					</InputGroup>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Password</Form.Label>
-					<InputGroup>
-						<InputGroup.Prepend>
-							<InputGroup.Text>
-								<MdLock />
-							</InputGroup.Text>
-						</InputGroup.Prepend>
-						<Form.Control
-							type="password"
-							placeholder="Your First Pet's Name"
-							value={this.state.password}
-							onChange={(e) => this.setState({ password: e.target.value })}
 						/>
 					</InputGroup>
 				</Form.Group>
@@ -76,12 +66,9 @@ class SignInForm extends React.Component {
 						type="submit"
 						disabled={this.state.isLoading}
 					>
-						{this.state.isLoading ? "Logging in…" : "Log In"}
-					</Button>
-				</Form.Row>
-				<Form.Row className="forgotPasswordButtonContainer">
-					<Button variant="link" onClick={this.forgotPasswordButtonClicked}>
-						Forgot password?
+						{this.state.isLoading
+							? "Sending email…"
+							: "Send password reset email"}
 					</Button>
 				</Form.Row>
 			</Form>
@@ -96,6 +83,7 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-	signInWithEmailAndPassword,
+	setAuthErrorMessage,
 	setAuthFormToOpen,
-})(SignInForm);
+	sendPasswordResetEmail,
+})(ResetPasswordForm);

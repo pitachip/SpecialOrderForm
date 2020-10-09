@@ -11,6 +11,7 @@ import { setAuthErrorMessage, setAuthFormToOpen } from "../../../actions";
 import AuthErrorMessage from "../authErrorMessage";
 import SignInForm from "../signInForm";
 import CreateAccountForm from "../createAccountForm";
+import ResetPasswordForm from "../resetPasswordForm";
 
 import "../auth-css/auth.css";
 
@@ -35,6 +36,8 @@ class AuthModal extends React.Component {
 				return "Sign In to Your Account";
 			case "createAccountForm":
 				return "Create an Account";
+			case "resetPasswordForm":
+				return "Reset Your Password";
 			default:
 				return "Sign In to Your Account";
 		}
@@ -47,6 +50,8 @@ class AuthModal extends React.Component {
 				return <SignInForm onSuccess={this.props.close} />;
 			case "createAccountForm":
 				return <CreateAccountForm onSuccess={this.props.close} />;
+			case "resetPasswordForm":
+				return <ResetPasswordForm onSuccess={this.props.close} />;
 			default:
 				return <SignInForm onSuccess={this.props.close} />;
 		}

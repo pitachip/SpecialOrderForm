@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import { MdMail, MdCheck, MdLock } from "react-icons/md";
 //app components
 import { matchStrings } from "../../utils/authUtils";
+import { createUserAccount } from "../../actions";
 
 class CreateAccountForm extends React.Component {
 	state = {
@@ -21,15 +22,19 @@ class CreateAccountForm extends React.Component {
 		validated: false,
 		passwordsMatch: false,
 		emailsMatch: false,
+		isLoading: false,
 	};
 
 	createAccountButtonClicked = async (e) => {
 		const {
+			firstName,
+			lastName,
 			password,
 			passwordConfirmation,
 			email,
 			emailConfirmation,
 		} = this.state;
+
 		const form = e.currentTarget;
 		e.preventDefault();
 		e.stopPropagation();
@@ -46,7 +51,15 @@ class CreateAccountForm extends React.Component {
 			matchStrings(email, emailConfirmation) &&
 			form.checkValidity()
 		) {
-			console.log("User can be created");
+			this.setState({ isLoading: true });
+			await this.props.createUserAccount(firstName, lastName, email, password);
+
+			if (!this.props.auth.showAuthErrorMessage) {
+				//closes the modal
+				this.props.onSuccess();
+			} else {
+				this.setState({ isLoading: false });
+			}
 		}
 	};
 
@@ -209,9 +222,8 @@ class CreateAccountForm extends React.Component {
 						</Form.Control.Feedback>
 					</InputGroup>
 				</Form.Group>
-
-				<Button variant="primary" type="submit">
-					Create Account
+				<Button variant="primary" type="submit" disabled={this.state.isLoading}>
+					{this.state.isLoading ? "Creating Account…" : "Create Account"}
 				</Button>
 			</Form>
 		);
@@ -224,4 +236,6 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, {})(CreateAccountForm);
+export default connect(mapStateToProps, { createUserAccount })(
+	CreateAccountForm
+);

@@ -9,3 +9,11 @@
 	margin: 0 !important;
 	padding: 4px !important;
 }
+
+.forgotPasswordButtonContainer {
+	justify-content: center;
+}
+
+.loginButtonContainer {
+	margin: auto;
+}

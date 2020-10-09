@@ -8,19 +8,18 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 //app components
-import { setAuthFormToOpen } from "../actions";
+import { setAuthFormToOpen, authStateChanged } from "../actions";
 import AuthModal from "./auth-components/auth-modals/authModal";
 
 class NavBar extends React.Component {
-	state = { user: null, authLoading: true, showModal: false };
+	state = { showModal: false };
 
 	componentDidMount() {
-		//TODO: fix this to connect to redux
 		auth.onAuthStateChanged((user) => {
 			if (user) {
-				this.setState({ user });
+				this.props.authStateChanged(user, false);
 			} else {
-				this.setState({ authLoading: false });
+				this.props.authStateChanged(null, false);
 			}
 		});
 	}
@@ -35,7 +34,7 @@ class NavBar extends React.Component {
 	};
 
 	signoutClicked = async () => {
-		console.log("sign out clicked");
+		//TODO: put this in an action and reducer
 		await auth.signOut();
 		this.setState({ user: null });
 	};
@@ -49,7 +48,8 @@ class NavBar extends React.Component {
 	};
 
 	renderAuthState = () => {
-		if (this.state.user) {
+		const { user } = this.props.auth;
+		if (user) {
 			return (
 				<NavDropdown
 					title="Hi {User}!"
@@ -78,6 +78,7 @@ class NavBar extends React.Component {
 	};
 
 	render() {
+		const { user, authLoading } = this.props.auth;
 		return (
 			<Navbar bg="light" fixed="top" sticky="top" className="fluid">
 				<Navbar.Brand>
@@ -90,7 +91,7 @@ class NavBar extends React.Component {
 					/>
 					Pita Chip Special Orders
 				</Navbar.Brand>
-				{!this.state.user && this.state.authLoading
+				{!user && authLoading
 					? this.renderLoadingSpinner()
 					: this.renderAuthState()}
 				<AuthModal
@@ -108,4 +109,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { setAuthFormToOpen })(NavBar);
+export default connect(mapStateToProps, {
+	setAuthFormToOpen,
+	authStateChanged,
+})(NavBar);

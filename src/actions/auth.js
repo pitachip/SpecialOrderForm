@@ -1,22 +1,24 @@
 import { auth } from "../apis/firebase";
+import pitachip from "../apis/pitachip";
 
 export const signInWithEmailAndPassword = (email, password) => async (
 	dispatch
 ) => {
 	try {
-		const user = await auth.signInWithEmailAndPassword(email, password);
-		console.log("User: ", user);
+		const signInAttempt = await auth.signInWithEmailAndPassword(
+			email,
+			password
+		);
 		dispatch({
-			type: "USER_SIGNED_IN",
+			type: "SET_USER",
 			payload: {
-				user: user,
+				user: signInAttempt.user,
 				authLoading: false,
 				errorMessage: "",
 				showAuthErrorMessage: false,
 			},
 		});
 	} catch (error) {
-		console.log("Error: ", error);
 		const errorMessage = createErrorMessage(error.code);
 		dispatch({
 			type: "SET_AUTH_ERROR_MESSAGE",
@@ -25,10 +27,70 @@ export const signInWithEmailAndPassword = (email, password) => async (
 	}
 };
 
+export const createUserAccount = (
+	firstName,
+	lastName,
+	email,
+	password
+) => async (dispatch) => {
+	try {
+		const createUser = await pitachip.post("/auth/register", {
+			firstName,
+			lastName,
+			email,
+			password,
+			role: {
+				customer: true,
+				employee: false,
+				manager: false,
+				admin: false,
+			},
+		});
+
+		/**
+		 * Sign in with custom token to create a handle to the
+		 * onAuthStateChanged listener.
+		 */
+		await auth.signInWithCustomToken(createUser.token);
+
+		dispatch({
+			type: "SET_USER",
+			payload: {
+				user: createUser.user,
+				authLoading: false,
+				errorMessage: "",
+				showAuthErrorMessage: false,
+			},
+		});
+	} catch (error) {
+		dispatch({
+			type: "SET_AUTH_ERROR_MESSAGE",
+			payload: { errorMessage: error, showAuthErrorMessage: true },
+		});
+	}
+};
+
+export const sendPasswordResetEmail = (email) => async (dispatch) => {
+	try {
+		const response = await pitachip.post("/auth/resetpassword", {
+			email,
+		});
+
+		console.log("Response from sending email: ", response);
+	} catch (error) {
+		console.log("Error from sending email: ", error);
+	}
+};
+
 export const authStateChanged = (user, authLoadingFlag) => (dispatch) => {
 	dispatch({
-		type: "AUTH_STATE_CHANGED",
-		payload: { user: user, authLoading: authLoadingFlag },
+		type: "SET_USER",
+		payload: {
+			user: user,
+			authLoading: authLoadingFlag,
+			errorMessage: "",
+			showAuthErrorMessage: false,
+		},
 	});
 };
 
@@ -47,9 +109,10 @@ export const setAuthFormToOpen = (form) => (dispatch) => {
 };
 
 /**TODO: Look into create a file for all the default error messages */
-//cycle through the error messages
 const createErrorMessage = (errorCode) => {
 	switch (errorCode) {
+		case "auth/email-already-exists":
+			return "An account already exists with this email";
 		case "auth/wrong-password":
 			return "Invalid credentials entered, try again.";
 		case "auth/user-not-found":
@@ -59,6 +122,6 @@ const createErrorMessage = (errorCode) => {
 		case "auth/too-many-requests":
 			return "Too many sign-in attempts. Your account has been temporarily disabled. You can reset it by using the 'Forgot Password' tool or contacting the site administrator (info@pitachipphilly.com)";
 		default:
-			return "Error signing into your account, try again.";
+			return "Authentication error, try again.";
 	}
 };

@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case "USER_SIGNED_IN":
+		case "SET_USER":
 			return {
 				...state,
 				user: action.payload.user,
