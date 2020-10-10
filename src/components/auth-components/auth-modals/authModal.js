@@ -3,12 +3,10 @@ import React from "react";
 import { connect } from "react-redux";
 //ui components
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Card from "react-bootstrap/Card";
 //app components
-import { setAuthErrorMessage, setAuthFormToOpen } from "../../../actions";
-import AuthErrorMessage from "../authErrorMessage";
+import { setAuthMessage, setAuthFormToOpen } from "../../../actions";
+import AuthMessage from "../authMessage";
 import SignInForm from "../signInForm";
 import CreateAccountForm from "../createAccountForm";
 import ResetPasswordForm from "../resetPasswordForm";
@@ -21,7 +19,7 @@ class AuthModal extends React.Component {
 	closeButtonClicked = () => {
 		//Clear out state and error messages
 		this.setState({ email: "", password: "" });
-		this.props.setAuthErrorMessage("", false);
+		this.props.setAuthMessage("", false, null);
 		this.props.close();
 	};
 
@@ -43,6 +41,8 @@ class AuthModal extends React.Component {
 		}
 	};
 
+	renderAuthMessage = () => {};
+
 	renderAuthForm = () => {
 		const { authForm } = this.props.auth;
 		switch (authForm) {
@@ -56,7 +56,6 @@ class AuthModal extends React.Component {
 				return <SignInForm onSuccess={this.props.close} />;
 		}
 	};
-	//TODO: create modal that takes in a form depending on what you want to do (e.g. forget password, create, etc.)
 	render() {
 		return (
 			<>
@@ -67,19 +66,7 @@ class AuthModal extends React.Component {
 					<Modal.Body>
 						<Container>
 							{this.renderAuthForm()}
-							<AuthErrorMessage />
-							<Card>
-								<Card.Body className="signUpCardItems">
-									New here?{" "}
-									<Button
-										className="signUpButton"
-										variant="link"
-										onClick={this.createNewAccountButtonClicked}
-									>
-										Sign Up!
-									</Button>
-								</Card.Body>
-							</Card>
+							{this.props.auth.showAuthMessage ? <AuthMessage /> : null}
 						</Container>
 					</Modal.Body>
 				</Modal>
@@ -95,6 +82,6 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-	setAuthErrorMessage,
+	setAuthMessage,
 	setAuthFormToOpen,
 })(AuthModal);

@@ -14,15 +14,20 @@ export const signInWithEmailAndPassword = (email, password) => async (
 			payload: {
 				user: signInAttempt.user,
 				authLoading: false,
-				errorMessage: "",
-				showAuthErrorMessage: false,
+				message: "",
+				showAuthMessage: false,
+				authMessageVariant: null,
 			},
 		});
 	} catch (error) {
 		const errorMessage = createErrorMessage(error.code);
 		dispatch({
-			type: "SET_AUTH_ERROR_MESSAGE",
-			payload: { errorMessage: errorMessage, showAuthErrorMessage: true },
+			type: "SET_AUTH_MESSAGE",
+			payload: {
+				message: errorMessage,
+				showAuthMessage: true,
+				authMessageVariant: "danger",
+			},
 		});
 	}
 };
@@ -64,8 +69,12 @@ export const createUserAccount = (
 		});
 	} catch (error) {
 		dispatch({
-			type: "SET_AUTH_ERROR_MESSAGE",
-			payload: { errorMessage: error, showAuthErrorMessage: true },
+			type: "SET_AUTH_MESSAGE",
+			payload: {
+				message: error,
+				showAuthMessage: true,
+				authMessageVariant: "danger",
+			},
 		});
 	}
 };
@@ -76,9 +85,25 @@ export const sendPasswordResetEmail = (email) => async (dispatch) => {
 			email,
 		});
 
-		console.log("Response from sending email: ", response);
+		dispatch({
+			type: "SET_AUTH_MESSAGE",
+			payload: {
+				message: response.data,
+				showAuthMessage: true,
+				authMessageVariant: "success",
+			},
+		});
 	} catch (error) {
-		console.log("Error from sending email: ", error);
+		if (error.includes("EMAIL_NOT_FOUND")) {
+			dispatch({
+				type: "SET_AUTH_MESSAGE",
+				payload: {
+					message: "No account exists with this email",
+					showAuthMessage: true,
+					authMessageVariant: "danger",
+				},
+			});
+		}
 	}
 };
 
@@ -94,12 +119,14 @@ export const authStateChanged = (user, authLoadingFlag) => (dispatch) => {
 	});
 };
 
-export const setAuthErrorMessage = (errorMessage, showAuthErrorMessage) => (
-	dispatch
-) => {
+export const setAuthMessage = (
+	message,
+	showAuthMessage,
+	authMessageVariant
+) => (dispatch) => {
 	dispatch({
-		type: "SET_AUTH_ERROR_MESSAGE",
-		payload: { errorMessage: errorMessage, showAuthErrorMessage },
+		type: "SET_AUTH_MESSAGE",
+		payload: { message, showAuthMessage, authMessageVariant },
 	});
 };
 
