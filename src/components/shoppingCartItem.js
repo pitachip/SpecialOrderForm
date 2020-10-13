@@ -7,17 +7,39 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
+import { MdCreate } from "react-icons/md";
+import MenuItemDetail from "./modals/menuItemDetail";
 
 import "../css/shoppingCartItem.css";
 
 class ShoppingCartItem extends React.Component {
-	state = { price: 0 };
+	state = { price: 0, showModal: false, editOrderItem: false };
 
+	//TODO: I feel like calculating the price can go into the utils
 	componentDidMount() {
 		const calculatedPrice =
 			(this.props.item.basePrice / 100) * this.props.item.quantity;
 		this.setState({ price: calculatedPrice });
 	}
+
+	handleMenuItemDetailModalClose = () => {
+		this.setState({ showModal: false });
+	};
+
+	renderEditButton = (key) => {
+		return (
+			<Button
+				variant="link"
+				value={key}
+				onClick={() => {
+					this.setState({ showModal: true, editOrderItem: true });
+				}}
+			>
+				{key}
+				<MdCreate />
+			</Button>
+		);
+	};
 
 	renderOrderItemSpecialInstructions = () => {
 		return <p>Special Instructions: {this.props.item.specialInstructions}</p>;
@@ -50,6 +72,7 @@ class ShoppingCartItem extends React.Component {
 					<Col md={4} className="shoppingCartItemPrice">
 						<p>${this.state.price}</p>
 					</Col>
+					<Col>{this.renderEditButton(this.props.item.uniqueId)}</Col>
 				</Row>
 				<Row>
 					<Accordion>
@@ -64,6 +87,12 @@ class ShoppingCartItem extends React.Component {
 						</Accordion.Collapse>
 					</Accordion>
 				</Row>
+				<MenuItemDetail
+					show={this.state.showModal}
+					close={this.handleMenuItemDetailModalClose}
+					orderItemToEdit={this.props.item}
+					editOrderItem={this.state.editOrderItem}
+				/>
 			</>
 		);
 	}

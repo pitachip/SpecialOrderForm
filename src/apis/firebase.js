@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-const firebaseDevAuth = {
+const firebaseAuth = {
 	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
 	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
 	databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
@@ -12,6 +12,6 @@ const firebaseDevAuth = {
 	measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
-firebase.initializeApp(firebaseDevAuth);
+firebase.initializeApp(firebaseAuth);
 
 export const auth = firebase.auth();

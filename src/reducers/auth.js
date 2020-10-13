@@ -1,8 +1,6 @@
 const INITIAL_STATE = {
 	user: null,
 	authLoading: true,
-	errorMessage: "", // remove
-	showAuthErrorMessage: false, //remove
 	authForm: "",
 	showAuthMessage: false,
 	authMessage: "",
@@ -16,8 +14,8 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				user: action.payload.user,
 				authLoading: action.payload.authLoading,
-				errorMessage: action.payload.errorMessage,
-				showAuthErrorMessage: action.payload.errorMessage,
+				authMessage: action.payload.errorMessage,
+				showAuthMessage: action.payload.errorMessage,
 			};
 		case "SET_AUTH_ERROR_MESSAGE":
 			return {

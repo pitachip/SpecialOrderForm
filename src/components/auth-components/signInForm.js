@@ -35,7 +35,6 @@ class SignInForm extends React.Component {
 				this.state.password
 			);
 			if (!this.props.auth.showAuthMessage) {
-				this.setState({ email: "", password: "" });
 				//closes the modal
 				this.props.onSuccess();
 			} else {

@@ -2,6 +2,7 @@ import pickBy from "lodash/pickBy";
 import each from "lodash/each";
 import isEmpty from "lodash/isEmpty";
 import map from "lodash/map";
+import { v4 as uuidv4 } from "uuid";
 
 export const formatSelectionForCheckout = (
 	menuItem,
@@ -17,6 +18,9 @@ export const formatSelectionForCheckout = (
 		quantity,
 		specialInstructions,
 		modifiers: [],
+		uniqueId: uuidv4(),
+		originalSelectionFormat: selections,
+		originalMenuItem: menuItem[0],
 	};
 
 	each(menuItem[0].modifiers, (modifier) => {

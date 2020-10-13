@@ -26,16 +26,36 @@ import { formatSelectionForCheckout } from "../../utils/orderCheckoutUtils";
 //actions
 import { addItemToOrder } from "../../actions";
 
+/**
+ * TODO: try to load in checkbox as its own component so that you can manage the state
+ * more easily
+ */
+class MenuItemCheckBox extends React.Component {
+	render() {
+		return <div>Checkbox</div>;
+	}
+}
+
 class MenuItemDetail extends React.Component {
-	/**
-	 * need to make a reducer to hold the order details but only once the menu item is submitted
-	 */
 	state = {
 		selection: {},
 		validationErrors: [],
 		quantity: 0,
 		specialInStructions: "",
 	};
+
+	componentDidUpdate(prevProps, prevState) {
+		//console.log("prev props: ", prevProps);
+		//console.log("prev state: ", prevState);
+		if (
+			this.props.editOrderItem &&
+			this.props.editOrderItem !== prevProps.editOrderItem
+		) {
+			this.setState({
+				selection: this.props.orderItemToEdit.originalSelectionFormat,
+			});
+		}
+	}
 
 	modiferOptionSelected = async (option) => {
 		const name = option.target.name;
@@ -163,6 +183,7 @@ class MenuItemDetail extends React.Component {
 		return (
 			<div>
 				<Modal size="lg" show={this.props.show} onHide={this.modalClosed}>
+					<MenuItemCheckBox />
 					<Modal.Header closeButton>
 						<Modal.Title>{menuItemName}</Modal.Title>
 					</Modal.Header>
@@ -236,11 +257,23 @@ class MenuItemDetail extends React.Component {
 			);
 		});
 	};
-	render() {
-		const { name, modifiers } = this.props.menuItem[0];
 
+	renderNewItemToAddModal = () => {
+		const { name, modifiers } = this.props.menuItem[0];
+		return this.renderModalStructure(name, modifiers);
+	};
+	renderEditItemModal = () => {
+		const { name, modifiers } = this.props.orderItemToEdit.originalMenuItem;
+		//need to load in the values
+		return this.renderModalStructure(name, modifiers);
+	};
+	render() {
 		return (
-			<div>{name ? this.renderModalStructure(name, modifiers) : null}</div>
+			<div>
+				{!this.props.editOrderItem
+					? this.renderNewItemToAddModal()
+					: this.renderEditItemModal()}
+			</div>
 		);
 	}
 }

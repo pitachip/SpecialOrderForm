@@ -27,36 +27,9 @@ class ShoppingCartTotal extends React.Component {
 				this.props.menuConfig.settings,
 				this.props.orderDetails.shippingMethod
 			);
-			console.log("Calculated amounts: ", calculatedAmounts);
 			this.props.updateOrderTotals(calculatedAmounts);
 		}
 	}
-
-	/**
-	 * Might have to put this in a util because it needs to be used here and the details for
-	 * when it changes from pickup to delivery and vice versa
-	 */
-	/*
-	calculateTotals = () => {
-		const deliveryFee = this.props.menuConfig.settings.cateringDeliveryFee;
-		const shippingMethod = this.props.orderDetails.shippingMethod;
-		let totals = {
-			subTotal: 0,
-			tax: 0,
-			total: 0,
-			delivery: shippingMethod === "delivery" ? deliveryFee : 0,
-		};
-
-		each(this.props.orderItems, (item) => {
-			totals.subTotal =
-				totals.subTotal + item.quantity * (item.basePrice / 100);
-			totals.tax = totals.subTotal * this.props.menuConfig.settings.taxRate;
-			totals.total = totals.subTotal + totals.tax + totals.delivery;
-		});
-
-		return totals;
-	};
-	*/
 
 	renderDeliverFee = () => {
 		if (this.props.menuConfig) {
