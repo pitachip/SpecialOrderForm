@@ -1,10 +1,14 @@
+//libs
 import React from "react";
 import { connect } from "react-redux";
-import Card from "react-bootstrap/Card";
 import filter from "lodash/filter";
+//ui components
+import Card from "react-bootstrap/Card";
+//app components
 import { setMenuItem } from "../actions";
 import MenuItemsHeader from "./menuItemsHeader";
-import MenuItemDetailModal from "./modals/menuItemDetail";
+//import MenuItemDetailModal from "./modals/menuItemDetail";
+import AddShoppingCartItemModal from "./modals/addShoppingCartItemModal";
 
 import "../css/menuItems.scss";
 
@@ -39,7 +43,7 @@ class MenuItems extends React.Component {
 			<div>
 				<MenuItemsHeader />
 				{this.props.menuItemId ? (
-					<MenuItemDetailModal
+					<AddShoppingCartItemModal
 						show={this.state.showModal}
 						close={this.handleMenuItemDetailModalClose}
 					/>

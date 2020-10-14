@@ -5,7 +5,6 @@ import each from "lodash/each";
 import findKey from "lodash/findKey";
 import omit from "lodash/omit";
 //ui components
-import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -14,23 +13,18 @@ import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { MdAdd } from "react-icons/md";
 //app componenets
-import ItemQuantity from "../../utils/itemQuantity";
+import ItemQuantity from "../utils/itemQuantity";
 import {
 	validateModifiers,
 	filterSelectedModifiers,
 	removeErrorMessage,
 	createErrorMessage,
-} from "../../utils/menuItemValidation";
-import { formatSelectionForCheckout } from "../../utils/orderCheckoutUtils";
+} from "../utils/menuItemValidation";
+import { formatSelectionForCheckout } from "../utils/orderCheckoutUtils";
 
 //actions
-import { addItemToOrder } from "../../actions";
+import { addItemToOrder } from "../actions";
 
-/**
- * Biggest issue with this strategy has been that
- * it overwrites the selection each time it renders with the original selection
- * Probably need a whole new form for this to work.
- */
 class ModifierOptionCheckbox extends React.Component {
 	state = { checked: false };
 	componentDidUpdate(prevProps, prevState) {
@@ -102,7 +96,6 @@ class MenuItemDetail extends React.Component {
 	}
 
 	modiferOptionSelected = async (option) => {
-		console.log("Modifer Selected");
 		const name = option.target.name;
 		const id = option.target.id;
 		const modifier = option.target.getAttribute("data-modifier");
@@ -224,63 +217,6 @@ class MenuItemDetail extends React.Component {
 		);
 	};
 
-	renderModalStructure = (menuItemName, modifiers) => {
-		return (
-			<div>
-				<Modal size="lg" show={this.props.show} onHide={this.modalClosed}>
-					<Modal.Header closeButton>
-						<Modal.Title>{menuItemName}</Modal.Title>
-					</Modal.Header>
-					<Form onSubmit={(e) => this.formSubmitted(e)}>
-						<Modal.Body>
-							{modifiers ? this.renderModifierSections(modifiers) : null}
-							<Form.Group>
-								<Form.Control
-									as="textarea"
-									rows="2"
-									placeholder="Let us know about any special requests you need for this order"
-									value={this.state.specialRequests}
-									onChange={(e) =>
-										this.setState({ specialInstructions: e.target.value })
-									}
-								/>
-							</Form.Group>
-						</Modal.Body>
-						<Modal.Footer>
-							<Container fluid>
-								<ItemQuantity onQuantityChanged={this.quantityUpdated} />
-								<Button type="submit" block>
-									<MdAdd />
-									Add to Order
-								</Button>
-							</Container>
-							{this.state.validationErrors.length > 0
-								? this.renderErrorMessages()
-								: null}
-						</Modal.Footer>
-					</Form>
-				</Modal>
-			</div>
-		);
-	};
-	renderModifierSections = (modifiers) => {
-		return modifiers.map((modifier) => {
-			return (
-				<div key={modifier.name}>
-					<h4 key={modifier.name}>{modifier.name}</h4>
-					<p>Choose up to {modifier.max_number_options}</p>
-					<Row>
-						{this.renderModifierOptions(
-							modifier.options,
-							modifier.name,
-							modifier._id
-						)}
-					</Row>
-				</div>
-			);
-		});
-	};
-
 	renderModifierOptions = (modifierOptions, modifierName, modifierId) => {
 		return modifierOptions.map((option) => {
 			return (
@@ -301,21 +237,77 @@ class MenuItemDetail extends React.Component {
 		});
 	};
 
-	renderNewItemToAddModal = () => {
+	renderModifierSections = (modifiers) => {
+		return modifiers.map((modifier) => {
+			return (
+				<div key={modifier.name}>
+					<h4 key={modifier.name}>{modifier.name}</h4>
+					<p>Choose up to {modifier.max_number_options}</p>
+					<Row>
+						{this.renderModifierOptions(
+							modifier.options,
+							modifier.name,
+							modifier._id
+						)}
+					</Row>
+				</div>
+			);
+		});
+	};
+
+	renderForm = (menuItemName, modifiers) => {
+		return (
+			<div>
+				<Form onSubmit={(e) => this.formSubmitted(e)}>
+					{modifiers ? this.renderModifierSections(modifiers) : null}
+					<Form.Group>
+						<Form.Control
+							as="textarea"
+							rows="2"
+							placeholder="Let us know about any special requests you need for this order"
+							value={this.state.specialRequests}
+							onChange={(e) =>
+								this.setState({ specialInstructions: e.target.value })
+							}
+						/>
+					</Form.Group>
+					<Container fluid>
+						<ItemQuantity onQuantityChanged={this.quantityUpdated} />
+						{/*TODO: this is where we'd render two different button*/}
+						<Button type="submit" block>
+							<MdAdd />
+							Add to Order
+						</Button>
+					</Container>
+					{this.state.validationErrors.length > 0
+						? this.renderErrorMessages()
+						: null}
+				</Form>
+			</div>
+		);
+	};
+
+	renderAddItem = () => {
 		const { name, modifiers } = this.props.menuItem[0];
-		return this.renderModalStructure(name, modifiers);
+		return this.renderForm(name, modifiers);
 	};
-	renderEditItemModal = () => {
+	renderEditItem = () => {
+		/**
+		 * Load in values from redux based on the menu item that was selected
+		 * for that shopping cart item
+		 */
 		const { name, modifiers } = this.props.orderItemToEdit.originalMenuItem;
-		//need to load in the values
-		return this.renderModalStructure(name, modifiers);
+		return this.renderForm(name, modifiers);
 	};
+	/**
+	 * Determine if we are adding a new item or editing one
+	 */
 	render() {
 		return (
 			<div>
 				{!this.props.editOrderItem
-					? this.renderNewItemToAddModal()
-					: this.renderEditItemModal()}
+					? this.renderAddItem()
+					: this.renderEditItem()}
 			</div>
 		);
 	}
