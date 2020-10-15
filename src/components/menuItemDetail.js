@@ -23,18 +23,19 @@ import {
 import { formatSelectionForCheckout } from "../utils/orderCheckoutUtils";
 
 //actions
-import { addItemToOrder } from "../actions";
+import { addItemToOrder, updateOrderItem } from "../actions";
 
 class ModifierOptionCheckbox extends React.Component {
 	state = { checked: false };
-	componentDidUpdate(prevProps, prevState) {
-		if (this.props.selection !== prevProps.selection) {
-			let wasSelected = prevState.checked;
+
+	componentDidMount() {
+		if (this.props.selection) {
+			let wasSelected = false;
 			wasSelected = this.wasOptionSelected(
 				this.props.option._id,
 				this.props.selection
 			);
-			if (wasSelected !== prevState.checked) {
+			if (wasSelected) {
 				this.setState({ checked: wasSelected });
 			}
 		}
@@ -46,15 +47,7 @@ class ModifierOptionCheckbox extends React.Component {
 		return wasSelected ? true : false;
 	};
 	render() {
-		const { modifierName, modifierId, option, selection } = this.props;
-		console.log("Selection: ", selection);
-		//console.log("Selection: ", selection);
-		//we want to see if this option._id exists in the selection object.
-		/*
-		if (selection) {
-			this.wasOptionSelected(option._id, selection);
-		}
-		*/
+		const { modifierName, modifierId, option } = this.props;
 		return (
 			<div>
 				<Form.Check
@@ -84,11 +77,8 @@ class MenuItemDetail extends React.Component {
 		specialInStructions: "",
 	};
 
-	componentDidUpdate(prevProps, prevState) {
-		if (
-			this.props.editOrderItem &&
-			this.props.editOrderItem !== prevProps.editOrderItem
-		) {
+	componentDidMount() {
+		if (this.props.editOrderItem) {
 			this.setState({
 				selection: this.props.orderItemToEdit.originalSelectionFormat,
 			});
@@ -189,7 +179,8 @@ class MenuItemDetail extends React.Component {
 		 */
 		await this.setState({ validationErrors: groupedErrorMessages });
 
-		if (this.state.validationErrors.length === 0) {
+		//Need logic here to replace the item that was being edited
+		if (this.state.validationErrors.length === 0 && !this.props.editOrderItem) {
 			this.props.addItemToOrder(
 				formatSelectionForCheckout(
 					this.props.menuItem,
@@ -198,9 +189,23 @@ class MenuItemDetail extends React.Component {
 					this.state.specialInstructions
 				)
 			);
-			this.setState({ selection: {}, validationErrors: [] });
-			this.props.close();
+		} else if (
+			this.state.validationErrors.length === 0 &&
+			this.props.editOrderItem
+		) {
+			this.props.updateOrderItem(
+				formatSelectionForCheckout(
+					this.props.menuItem,
+					this.state.selection,
+					this.state.quantity,
+					this.state.specialInstructions,
+					this.props.editOrderItem,
+					this.props.orderItemToEdit.uniqueId
+				)
+			);
 		}
+		this.setState({ selection: {}, validationErrors: [] });
+		this.props.close();
 	};
 
 	renderErrorMessages = () => {
@@ -319,4 +324,6 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { addItemToOrder })(MenuItemDetail);
+export default connect(mapStateToProps, { addItemToOrder, updateOrderItem })(
+	MenuItemDetail
+);

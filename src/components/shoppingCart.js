@@ -26,7 +26,6 @@ class ShoppingCart extends React.Component {
 		 *
 		 */
 		return this.props.orderItems.map((orderItem) => {
-			console.log(orderItem);
 			return <ShoppingCartItem item={orderItem} key={orderItem.uniqueId} />;
 		});
 	};

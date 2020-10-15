@@ -8,7 +8,8 @@ import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
 import { MdCreate } from "react-icons/md";
-import MenuItemDetail from "./modals/menuItemDetail";
+//app components
+import UpdateShoppingCartItemModal from "./modals/updateShoppingCartItemModal";
 
 import "../css/shoppingCartItem.css";
 
@@ -24,6 +25,17 @@ class ShoppingCartItem extends React.Component {
 
 	handleMenuItemDetailModalClose = () => {
 		this.setState({ showModal: false });
+	};
+
+	renderUpdateShoppingCartItemModal = () => {
+		return this.state.showModal ? (
+			<UpdateShoppingCartItemModal
+				show={this.state.showModal}
+				close={this.handleMenuItemDetailModalClose}
+				editOrderItem={true}
+				orderItemToEdit={this.props.item}
+			/>
+		) : null;
 	};
 
 	renderEditButton = (key) => {
@@ -87,12 +99,7 @@ class ShoppingCartItem extends React.Component {
 						</Accordion.Collapse>
 					</Accordion>
 				</Row>
-				<MenuItemDetail
-					show={this.state.showModal}
-					close={this.handleMenuItemDetailModalClose}
-					orderItemToEdit={this.props.item}
-					editOrderItem={this.state.editOrderItem}
-				/>
+				{this.renderUpdateShoppingCartItemModal()}
 			</>
 		);
 	}

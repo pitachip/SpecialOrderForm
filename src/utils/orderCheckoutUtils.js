@@ -8,9 +8,14 @@ export const formatSelectionForCheckout = (
 	menuItem,
 	selections,
 	quantity,
-	specialInstructions
+	specialInstructions,
+	editOrderItem,
+	uniqueId
 ) => {
 	let formattedSelection = {};
+
+	console.log("edit order item: ", editOrderItem);
+	console.log("unique id: ", uniqueId);
 
 	formattedSelection = {
 		menuItem: menuItem[0].name,
