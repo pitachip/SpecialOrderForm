@@ -14,14 +14,7 @@ import UpdateShoppingCartItemModal from "./modals/updateShoppingCartItemModal";
 import "../css/shoppingCartItem.css";
 
 class ShoppingCartItem extends React.Component {
-	state = { price: 0, showModal: false, editOrderItem: false };
-
-	//TODO: I feel like calculating the price can go into the utils
-	componentDidMount() {
-		const calculatedPrice =
-			(this.props.item.basePrice / 100) * this.props.item.quantity;
-		this.setState({ price: calculatedPrice });
-	}
+	state = { showModal: false, editOrderItem: false };
 
 	handleMenuItemDetailModalClose = () => {
 		this.setState({ showModal: false });
@@ -36,6 +29,10 @@ class ShoppingCartItem extends React.Component {
 				orderItemToEdit={this.props.item}
 			/>
 		) : null;
+	};
+
+	renderCalculatedPrice = () => {
+		return (this.props.item.basePrice / 100) * this.props.item.quantity;
 	};
 
 	renderEditButton = (key) => {
@@ -82,7 +79,7 @@ class ShoppingCartItem extends React.Component {
 						</p>
 					</Col>
 					<Col md={4} className="shoppingCartItemPrice">
-						<p>${this.state.price}</p>
+						<p>${this.renderCalculatedPrice()}</p>
 					</Col>
 					<Col>{this.renderEditButton(this.props.item.uniqueId)}</Col>
 				</Row>

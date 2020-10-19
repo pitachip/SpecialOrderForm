@@ -14,16 +14,13 @@ export const formatSelectionForCheckout = (
 ) => {
 	let formattedSelection = {};
 
-	console.log("edit order item: ", editOrderItem);
-	console.log("unique id: ", uniqueId);
-
 	formattedSelection = {
 		menuItem: menuItem[0].name,
 		basePrice: menuItem[0].basePrice,
 		quantity,
 		specialInstructions,
 		modifiers: [],
-		uniqueId: uuidv4(),
+		uniqueId: editOrderItem ? uniqueId : uuidv4(),
 		originalSelectionFormat: selections,
 		originalMenuItem: menuItem[0],
 	};

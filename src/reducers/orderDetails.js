@@ -16,6 +16,8 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				orderItems: [...state.orderItems, action.payload],
 			};
+		case "UPDATE_ORDER_ITEMS":
+			return { ...state, orderItems: action.payload };
 		case "UPDATE_ORDER_TOTALS":
 			return { ...state, totals: action.payload };
 		case "UPDATE_SHIPPING_METHOD":

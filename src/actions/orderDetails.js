@@ -1,9 +1,18 @@
+import update from "immutability-helper";
+import findIndex from "lodash/findIndex";
+
 export const addItemToOrder = (orderItem) => (dispatch) => {
 	dispatch({ type: "ADD_ORDER_ITEM", payload: orderItem });
 };
 
-export const updateOrderItem = (orderItem) => (dispatch) => {
-	console.log(orderItem);
+export const updateOrderItem = (orderItem, orderItems) => (dispatch) => {
+	const indexOfUpdatedItem = findIndex(orderItems, {
+		uniqueId: orderItem.uniqueId,
+	});
+	const newOrderItemsArray = update(orderItems, {
+		[indexOfUpdatedItem]: { $set: orderItem },
+	});
+	dispatch({ type: "UPDATE_ORDER_ITEMS", payload: newOrderItemsArray });
 };
 
 export const updateOrderTotals = (totals) => (dispatch) => {

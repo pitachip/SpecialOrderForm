@@ -20,10 +20,12 @@ import {
 	removeErrorMessage,
 	createErrorMessage,
 } from "../utils/menuItemValidation";
-import { formatSelectionForCheckout } from "../utils/orderCheckoutUtils";
-
+import {
+	formatSelectionForCheckout,
+	calculateTotals,
+} from "../utils/orderCheckoutUtils";
 //actions
-import { addItemToOrder, updateOrderItem } from "../actions";
+import { addItemToOrder, updateOrderItem, updateOrderTotals } from "../actions";
 
 class ModifierOptionCheckbox extends React.Component {
 	state = { checked: false };
@@ -81,7 +83,9 @@ class MenuItemDetail extends React.Component {
 		if (this.props.editOrderItem) {
 			this.setState({
 				selection: this.props.orderItemToEdit.originalSelectionFormat,
+				specialInstructions: this.props.orderItemToEdit.specialInstructions,
 			});
+			this.quantityUpdated(this.props.orderItemToEdit.quantity);
 		}
 	}
 
@@ -201,8 +205,15 @@ class MenuItemDetail extends React.Component {
 					this.state.specialInstructions,
 					this.props.editOrderItem,
 					this.props.orderItemToEdit.uniqueId
-				)
+				),
+				this.props.orderItems
 			);
+			const calculatedAmounts = calculateTotals(
+				this.props.orderItems,
+				this.props.menuConfig.settings,
+				this.props.orderDetails.shippingMethod
+			);
+			this.props.updateOrderTotals(calculatedAmounts);
 		}
 		this.setState({ selection: {}, validationErrors: [] });
 		this.props.close();
@@ -270,14 +281,17 @@ class MenuItemDetail extends React.Component {
 							as="textarea"
 							rows="2"
 							placeholder="Let us know about any special requests you need for this order"
-							value={this.state.specialRequests}
+							value={this.state.specialInstructions}
 							onChange={(e) =>
 								this.setState({ specialInstructions: e.target.value })
 							}
 						/>
 					</Form.Group>
 					<Container fluid>
-						<ItemQuantity onQuantityChanged={this.quantityUpdated} />
+						<ItemQuantity
+							onQuantityChanged={this.quantityUpdated}
+							quantity={this.state.quantity}
+						/>
 						{/*TODO: this is where we'd render two different button*/}
 						<Button type="submit" block>
 							<MdAdd />
@@ -321,9 +335,14 @@ class MenuItemDetail extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		menuItem: state.menu.selectedMenuItem,
+		orderItems: state.order.orderItems,
+		menuConfig: state.menu.menuConfig,
+		orderDetails: state.order.orderDetails,
 	};
 };
 
-export default connect(mapStateToProps, { addItemToOrder, updateOrderItem })(
-	MenuItemDetail
-);
+export default connect(mapStateToProps, {
+	addItemToOrder,
+	updateOrderItem,
+	updateOrderTotals,
+})(MenuItemDetail);

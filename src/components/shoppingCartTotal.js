@@ -20,6 +20,7 @@ class ShoppingCartTotal extends React.Component {
 	componentDidUpdate(prevProps, prevState) {
 		/**
 		 * Only update the price when a new order item has been added
+		 * Also need to update when an item is updated in the list
 		 */
 		if (prevProps.orderItems.length !== this.props.orderItems.length) {
 			const calculatedAmounts = calculateTotals(

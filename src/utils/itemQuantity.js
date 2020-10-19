@@ -1,4 +1,6 @@
+//libs
 import React from "react";
+//ui components
 import { IconContext } from "react-icons";
 import { MdAddCircleOutline, MdRemoveCircleOutline } from "react-icons/md";
 import Col from "react-bootstrap/Col";
@@ -7,16 +9,12 @@ import Row from "react-bootstrap/Row";
 import "../css/menuItemDetail.css";
 
 class ItemQuantity extends React.Component {
-	state = { itemCount: 0 };
-
-	increaseCount = async () => {
-		await this.setState({ itemCount: this.state.itemCount + 1 });
-		this.props.onQuantityChanged(this.state.itemCount);
+	increaseCount = () => {
+		this.props.onQuantityChanged(this.props.quantity + 1);
 	};
-	decreaseCount = async () => {
-		if (this.state.itemCount !== 0) {
-			await this.setState({ itemCount: this.state.itemCount - 1 });
-			this.props.onQuantityChanged(this.state.itemCount);
+	decreaseCount = () => {
+		if (this.props.quantity !== 0) {
+			this.props.onQuantityChanged(this.props.quantity - 1);
 		}
 	};
 	render() {
@@ -40,7 +38,7 @@ class ItemQuantity extends React.Component {
 								<MdRemoveCircleOutline />
 							</IconContext.Provider>
 						</div>
-						<div>{this.state.itemCount}</div>
+						<div>{this.props.quantity}</div>
 						<div onClick={() => this.increaseCount()}>
 							<IconContext.Provider
 								value={{
