@@ -7,23 +7,43 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
-import { MdCreate } from "react-icons/md";
+import { MdCreate, MdDelete } from "react-icons/md";
 //app components
 import UpdateShoppingCartItemModal from "./modals/updateShoppingCartItemModal";
+import DeleteShoppingCartItemModal from "./modals/deleteShoppingCartItemModal";
 
 import "../css/shoppingCartItem.css";
 
 class ShoppingCartItem extends React.Component {
-	state = { showModal: false, editOrderItem: false };
+	state = {
+		showUpdateModal: false,
+		showDeleteModal: false,
+		editOrderItem: false,
+	};
 
+	//TODO: Can probably combine the two below by passing in the state you want to update
 	handleMenuItemDetailModalClose = () => {
-		this.setState({ showModal: false });
+		this.setState({ showUpdateModal: false });
+	};
+
+	handleDeleteShoppingCartItemModalClose = () => {
+		this.setState({ showDeleteModal: false });
+	};
+
+	renderDeleteShoppingCartItemModal = () => {
+		return this.state.showDeleteModal ? (
+			<DeleteShoppingCartItemModal
+				show={this.state.showDeleteModal}
+				close={this.handleDeleteShoppingCartItemModalClose}
+				orderItemToDelete={this.props.item}
+			/>
+		) : null;
 	};
 
 	renderUpdateShoppingCartItemModal = () => {
-		return this.state.showModal ? (
+		return this.state.showUpdateModal ? (
 			<UpdateShoppingCartItemModal
-				show={this.state.showModal}
+				show={this.state.showUpdateModal}
 				close={this.handleMenuItemDetailModalClose}
 				editOrderItem={true}
 				orderItemToEdit={this.props.item}
@@ -35,16 +55,29 @@ class ShoppingCartItem extends React.Component {
 		return (this.props.item.basePrice / 100) * this.props.item.quantity;
 	};
 
+	renderDeleteButton = (key) => {
+		return (
+			<Button
+				variant="link"
+				value={key}
+				onClick={() => {
+					this.setState({ showDeleteModal: true });
+				}}
+			>
+				<MdDelete />
+			</Button>
+		);
+	};
+
 	renderEditButton = (key) => {
 		return (
 			<Button
 				variant="link"
 				value={key}
 				onClick={() => {
-					this.setState({ showModal: true, editOrderItem: true });
+					this.setState({ showUpdateModal: true, editOrderItem: true });
 				}}
 			>
-				{key}
 				<MdCreate />
 			</Button>
 		);
@@ -81,7 +114,10 @@ class ShoppingCartItem extends React.Component {
 					<Col md={4} className="shoppingCartItemPrice">
 						<p>${this.renderCalculatedPrice()}</p>
 					</Col>
-					<Col>{this.renderEditButton(this.props.item.uniqueId)}</Col>
+					<Col>
+						{this.renderEditButton(this.props.item.uniqueId)}
+						{this.renderDeleteButton(this.props.item.uniqueId)}
+					</Col>
 				</Row>
 				<Row>
 					<Accordion>
@@ -97,6 +133,7 @@ class ShoppingCartItem extends React.Component {
 					</Accordion>
 				</Row>
 				{this.renderUpdateShoppingCartItemModal()}
+				{this.renderDeleteShoppingCartItemModal()}
 			</>
 		);
 	}

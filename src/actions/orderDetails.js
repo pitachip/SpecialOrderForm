@@ -15,6 +15,18 @@ export const updateOrderItem = (orderItem, orderItems) => (dispatch) => {
 	dispatch({ type: "UPDATE_ORDER_ITEMS", payload: newOrderItemsArray });
 };
 
+export const deleteOrderItem = (orderItem, orderItems) => (dispatch) => {
+	const indexofItemToDelete = findIndex(orderItems, {
+		uniqueId: orderItem.uniqueId,
+	});
+
+	const newOrderItemsArray = update(orderItems, {
+		$splice: [[indexofItemToDelete, 1]],
+	});
+
+	dispatch({ type: "DELETE_ORDER_ITEM", payload: newOrderItemsArray });
+};
+
 export const updateOrderTotals = (totals) => (dispatch) => {
 	dispatch({ type: "UPDATE_ORDER_TOTALS", payload: totals });
 };
