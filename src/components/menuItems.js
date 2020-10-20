@@ -46,6 +46,7 @@ class MenuItems extends React.Component {
 					<AddShoppingCartItemModal
 						show={this.state.showModal}
 						close={this.handleMenuItemDetailModalClose}
+						editOrderItem={false}
 					/>
 				) : null}
 				{this.props.menuCategoryId

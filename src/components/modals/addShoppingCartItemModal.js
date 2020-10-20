@@ -18,7 +18,10 @@ class AddShoppingCartItemModal extends React.Component {
 					<Modal.Title>{name}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<MenuItemDetail close={this.modalClosed} />
+					<MenuItemDetail
+						close={this.modalClosed}
+						editOrderItem={this.props.editOrderItem}
+					/>
 				</Modal.Body>
 			</Modal>
 		);

@@ -97,7 +97,6 @@ class ShoppingCartItem extends React.Component {
 							return "" + choice.name + ", ";
 						})}
 					</p>
-					<p>{this.props.item.specialInstructions}</p>
 				</div>
 			);
 		});

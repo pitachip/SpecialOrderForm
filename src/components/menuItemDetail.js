@@ -193,6 +193,8 @@ class MenuItemDetail extends React.Component {
 					this.state.specialInstructions
 				)
 			);
+			this.setState({ selection: {}, validationErrors: [] });
+			this.props.close();
 		} else if (
 			this.state.validationErrors.length === 0 &&
 			this.props.editOrderItem
@@ -214,9 +216,9 @@ class MenuItemDetail extends React.Component {
 				this.props.orderDetails.shippingMethod
 			);
 			this.props.updateOrderTotals(calculatedAmounts);
+			this.setState({ selection: {}, validationErrors: [] });
+			this.props.close();
 		}
-		this.setState({ selection: {}, validationErrors: [] });
-		this.props.close();
 	};
 
 	renderErrorMessages = () => {
@@ -225,7 +227,7 @@ class MenuItemDetail extends React.Component {
 				<Alert variant="danger">
 					<ul>
 						{this.state.validationErrors.map((error) => {
-							return <li>{error}</li>;
+							return <li key={error}>{error}</li>;
 						})}
 					</ul>
 				</Alert>
