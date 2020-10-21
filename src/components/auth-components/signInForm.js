@@ -14,6 +14,7 @@ import {
 	setAuthMessage,
 } from "../../actions";
 import RegistrationMessage from "./registrationMessage";
+import GuestMessage from "./guestMessage";
 
 class SignInForm extends React.Component {
 	state = { email: "", password: "", isLoading: false, validated: false };
@@ -35,8 +36,7 @@ class SignInForm extends React.Component {
 				this.state.password
 			);
 			if (!this.props.auth.showAuthMessage) {
-				//closes the modal
-				this.props.onSuccess();
+				this.props.onAuthSuccess();
 			} else {
 				this.setState({ isLoading: false });
 			}
@@ -110,6 +110,7 @@ class SignInForm extends React.Component {
 					</Form.Row>
 				</Form>
 				<RegistrationMessage cardType="newUser" />
+				<GuestMessage onAuthSuccess={this.props.onAuthSuccess} />
 			</div>
 		);
 	}

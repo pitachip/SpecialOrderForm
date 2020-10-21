@@ -32,6 +32,15 @@ export const signInWithEmailAndPassword = (email, password) => async (
 	}
 };
 
+export const signInGuestUser = () => async (dispatch) => {
+	try {
+		const guestSignInAttempt = await auth.signInAnonymously();
+		console.log("Guest Sign in: ", guestSignInAttempt);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 export const createUserAccount = (
 	firstName,
 	lastName,
@@ -108,6 +117,7 @@ export const sendPasswordResetEmail = (email) => async (dispatch) => {
 };
 
 export const authStateChanged = (user, authLoadingFlag) => (dispatch) => {
+	console.log("Auth state changed: ", user);
 	dispatch({
 		type: "SET_USER",
 		payload: {

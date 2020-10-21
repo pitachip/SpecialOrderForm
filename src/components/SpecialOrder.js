@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 //app componenets
-import NavBar from "./navBar";
 import Disclaimer from "./disclaimer";
 import MenuCategories from "./menuCategories";
 import MenuItems from "./menuItems";
@@ -20,7 +19,6 @@ class SpecialOrder extends React.Component {
 	render() {
 		return (
 			<div>
-				<NavBar />
 				<Disclaimer />
 				<div className="container-fluid">
 					<Row>

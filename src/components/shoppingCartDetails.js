@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import DatePicker from "react-datepicker";
 //ui components
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
@@ -8,15 +9,19 @@ import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { MdAdd, MdChevronRight } from "react-icons/md";
-import DatePicker from "react-datepicker";
 //app components
+import AuthModal from "./auth-components/auth-modals/authModal";
+//actions
 import {
 	updateShippingMethod,
 	updateOrderDetails,
 	updateOrderTotals,
+	setAuthFormToOpen,
 } from "../actions";
+//utils
 import { calculateTotals } from "../utils/orderCheckoutUtils";
-
+import { history } from "../utils/history";
+//css
 import "react-datepicker/dist/react-datepicker.css";
 
 class ShoppingCartDetails extends React.Component {
@@ -27,6 +32,23 @@ class ShoppingCartDetails extends React.Component {
 		shippingMethod: "delivery",
 		orderDate: new Date(),
 		validated: false,
+		showAuthModal: false,
+	};
+
+	handleAuthModalClose = () => {
+		this.setState({ showAuthModal: false });
+	};
+
+	handleAuthModalOpen = () => {
+		this.props.setAuthFormToOpen("signinForm");
+		this.setState({ showAuthModal: true });
+	};
+
+	handleAuthModalSuccess = () => {
+		//will route from here
+		console.log("successful login");
+		this.setState({ showAuthModal: false });
+		history.push("/checkout/details");
 	};
 
 	toggleSpecialInstructionsTextArea = () => {
@@ -62,8 +84,8 @@ class ShoppingCartDetails extends React.Component {
 				specialRequests: this.state.specialRequests,
 			};
 			this.props.updateOrderDetails(orderDetails);
+			this.handleAuthModalOpen();
 		}
-		//open a modal with the user login <-- big step here
 	};
 
 	renderOrderButton = () => {
@@ -210,6 +232,11 @@ class ShoppingCartDetails extends React.Component {
 							{this.renderOrderButton()}
 						</Form>
 					</Card.Body>
+					<AuthModal
+						show={this.state.showAuthModal}
+						close={this.handleAuthModalClose}
+						onSuccess={this.handleAuthModalSuccess}
+					/>
 				</Card>
 			</div>
 		);
@@ -230,4 +257,5 @@ export default connect(mapStateToProps, {
 	updateShippingMethod,
 	updateOrderDetails,
 	updateOrderTotals,
+	setAuthFormToOpen,
 })(ShoppingCartDetails);

@@ -56,8 +56,7 @@ class CreateAccountForm extends React.Component {
 			await this.props.createUserAccount(firstName, lastName, email, password);
 
 			if (!this.props.auth.showAuthMessage) {
-				//closes the modal
-				this.props.onSuccess();
+				this.props.onAuthSuccess();
 			} else {
 				this.setState({ isLoading: false });
 			}

@@ -41,19 +41,17 @@ class AuthModal extends React.Component {
 		}
 	};
 
-	renderAuthMessage = () => {};
-
 	renderAuthForm = () => {
 		const { authForm } = this.props.auth;
 		switch (authForm) {
 			case "signinForm":
-				return <SignInForm onSuccess={this.props.close} />;
+				return <SignInForm onAuthSuccess={this.props.onSuccess} />;
 			case "createAccountForm":
-				return <CreateAccountForm onSuccess={this.props.close} />;
+				return <CreateAccountForm onAuthSuccess={this.props.onSuccess} />;
 			case "resetPasswordForm":
-				return <ResetPasswordForm onSuccess={this.props.close} />;
+				return <ResetPasswordForm onAuthSuccess={this.props.onSuccess} />;
 			default:
-				return <SignInForm onSuccess={this.props.close} />;
+				return <SignInForm onAuthSuccess={this.props.onSuccess} />;
 		}
 	};
 	render() {

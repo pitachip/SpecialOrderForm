@@ -97,6 +97,7 @@ class NavBar extends React.Component {
 				<AuthModal
 					show={this.state.showModal}
 					close={this.handleAuthModalClose}
+					onSuccess={this.handleAuthModalClose}
 				/>
 			</Navbar>
 		);
