@@ -40,8 +40,12 @@ class ShoppingCartDetails extends React.Component {
 	};
 
 	handleAuthModalOpen = () => {
-		this.props.setAuthFormToOpen("signinForm");
-		this.setState({ showAuthModal: true });
+		if (!this.props.auth.user) {
+			this.props.setAuthFormToOpen("signinForm");
+			this.setState({ showAuthModal: true });
+		} else {
+			history.push("/checkout/details");
+		}
 	};
 
 	handleAuthModalSuccess = () => {
@@ -250,6 +254,7 @@ const mapStateToProps = (state) => {
 		orderDetails: state.order.orderDetails,
 		menuConfig: state.menu.menuConfig,
 		orderItems: state.order.orderItems,
+		auth: state.auth,
 	};
 };
 
