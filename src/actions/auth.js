@@ -117,7 +117,6 @@ export const sendPasswordResetEmail = (email) => async (dispatch) => {
 };
 
 export const authStateChanged = (user, authLoadingFlag) => (dispatch) => {
-	console.log("Auth state changed: ", user);
 	dispatch({
 		type: "SET_USER",
 		payload: {

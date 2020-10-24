@@ -38,3 +38,7 @@ export const updateShippingMethod = (method) => (dispatch) => {
 export const updateOrderDetails = (orderDetails) => (dispatch) => {
 	dispatch({ type: "UPDATE_ORDER_DETAILS", payload: orderDetails });
 };
+
+export const updateDeliveryDetails = (deliveryDetails) => (dispatch) => {
+	dispatch({ type: "UPDATE_DELIVERY_DETAILS", payload: deliveryDetails });
+};

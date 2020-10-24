@@ -6,6 +6,13 @@ const INITIAL_STATE = {
 		orderDate: "",
 		location: "",
 		specialRequests: "",
+		deliveryInformation: {
+			address1: "",
+			address2: "",
+			city: "",
+			state: "",
+			zip: "",
+		},
 	},
 };
 
@@ -26,6 +33,8 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, orderDetails: { shippingMethod: action.payload } };
 		case "UPDATE_ORDER_DETAILS":
 			return { ...state, orderDetails: action.payload };
+		case "UPDATE_DELIVERY_DETAILS":
+			return { ...state, orderDetails: { deliveryDetails: action.payload } };
 		default:
 			return state;
 	}
