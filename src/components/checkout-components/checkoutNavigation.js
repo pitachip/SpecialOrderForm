@@ -12,10 +12,6 @@ class CheckoutNavigation extends React.Component {
 		history.push(this.props.backNav);
 	};
 
-	forwardButtonClicked = () => {
-		history.push(this.props.forwardNav);
-	};
-
 	render() {
 		const { forwardText, backText } = this.props;
 		return (
@@ -25,7 +21,7 @@ class CheckoutNavigation extends React.Component {
 						<Button onClick={this.backButtonClicked}>{backText}</Button>
 					</Col>
 					<Col>
-						<Button className="float-right" onClick={this.forwardButtonClicked}>
+						<Button className="float-right" type="submit">
 							{forwardText}
 						</Button>
 					</Col>

@@ -1,94 +1,130 @@
 //libs
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Field } from "redux-form";
 //ui components
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 //utils
 import { getStates } from "../../../utils/checkoutUtils";
-//actions
-import { updateDeliveryDetails } from "../../../actions";
 
-class DeliveryInformationForm extends React.Component {
-	state = {
-		stateDropdown: [],
-		deliveryInformation: {
-			address1: "",
-			address2: "",
-			city: "",
-			state: "",
-			zip: "",
-		},
-	};
-
-	componentDidMount() {
-		this.setState({ stateDropdown: getStates() });
-		//load in redux values
-		console.log(this.props.deliveryInformation);
+const required = (value) => {
+	if (!value || value === "") {
+		return "This field is required";
 	}
-
-	render() {
-		const { address1, address2 } = this.state.deliveryInformation;
-		return (
-			<>
-				{/**TODO: Need to add a search components to autofill the address */}
-				<h2>Delivery Information</h2>
-				<Form>
-					<Form.Group>
-						<Form.Label>Address</Form.Label>
-						<Form.Control
-							placeholder="1234 Main St"
-							value={address1}
-							onChange={(e) =>
-								this.setState({
-									deliveryInformation: { address1: e.target.value },
-								})
-							}
-						/>
-					</Form.Group>
-
-					<Form.Group>
-						<Form.Label>Address 2</Form.Label>
-						<Form.Control placeholder="Apartment, studio, or floor" />
-					</Form.Group>
-
-					<Form.Row>
-						<Form.Group as={Col}>
-							<Form.Label>City</Form.Label>
-							<Form.Control />
-						</Form.Group>
-
-						<Form.Group as={Col}>
-							<Form.Label>State</Form.Label>
-							<Form.Control as="select" defaultValue="Choose State...">
-								<option>Choose State...</option>
-								{this.state.stateDropdown.map((state) => {
-									return (
-										<option key={state.abbreviation}>
-											{state.abbreviation}
-										</option>
-									);
-								})}
-							</Form.Control>
-						</Form.Group>
-
-						<Form.Group as={Col} controlId="formGridZip">
-							<Form.Label>Zip</Form.Label>
-							<Form.Control type="number" />
-						</Form.Group>
-					</Form.Row>
-				</Form>
-			</>
-		);
-	}
-}
-
-const mapStateToProps = (state) => {
-	return {
-		deliveryInformation: state.order.orderDetails.deliveryInformation,
-	};
 };
 
-export default connect(mapStateToProps, { updateDeliveryDetails })(
-	DeliveryInformationForm
-);
+const deliverySelectField = ({
+	input,
+	meta,
+	type,
+	placeholder,
+	states,
+	errorMessage,
+}) => {
+	return (
+		<div>
+			<Form.Control
+				as="select"
+				onChange={input.onChange}
+				value={input.value}
+				placeholder={placeholder}
+			>
+				<option></option>
+				{states.map((state) => {
+					return <option key={state.abbreviation}>{state.abbreviation}</option>;
+				})}
+			</Form.Control>
+			{meta.touched && !meta.valid ? errorMessage : null}
+		</div>
+	);
+};
+
+const deliveryInputField = ({
+	input,
+	meta,
+	type,
+	placeholder,
+	errorMessage,
+}) => {
+	return (
+		<div>
+			<Form.Control
+				type={type}
+				placeholder={placeholder}
+				value={input.value}
+				onChange={input.onChange}
+			/>
+			{meta.touched && !meta.valid ? errorMessage : null}
+		</div>
+	);
+};
+
+const DeliveryInformationForm = () => {
+	const [states, setStates] = useState([]);
+
+	useEffect(() => {
+		setStates(getStates());
+	}, []);
+
+	return (
+		<div>
+			<Form.Group>
+				<Form.Label>Address</Form.Label>
+				<Field
+					name="address1"
+					component={deliveryInputField}
+					type="text"
+					placeholder="1234 Pita Chip Way"
+					errorMessage="Address is required"
+					validate={required}
+				/>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Address 2</Form.Label>
+				<Field
+					name="address2"
+					component={deliveryInputField}
+					type="text"
+					placeholder="Unit 7"
+				/>
+			</Form.Group>
+			<Form.Row>
+				<Form.Group as={Col}>
+					<Form.Label>City</Form.Label>
+					<Field
+						name="city"
+						component={deliveryInputField}
+						type="text"
+						placeholder="City"
+						errorMessage="City is required"
+						validate={required}
+					/>
+				</Form.Group>
+				<Form.Group as={Col}>
+					<Form.Label>State</Form.Label>
+					<Field
+						name="state"
+						component={deliverySelectField}
+						states={states}
+						placeholder="Choose State"
+						validate={required}
+						errorMessage="State is required"
+					/>
+				</Form.Group>
+				<Form.Group as={Col}>
+					<Form.Label>Zip</Form.Label>
+					<Field
+						name="zip"
+						type="number"
+						placeholder="18929"
+						component={deliveryInputField}
+						errorMessage="Zip is required"
+						validate={required}
+					/>
+				</Form.Group>
+			</Form.Row>
+		</div>
+	);
+};
+
+export default DeliveryInformationForm;

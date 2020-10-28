@@ -1,12 +1,13 @@
 //libs
 import React from "react";
+import { connect } from "react-redux";
 //ui components
 import Container from "react-bootstrap/Container";
 //app components
-import CustomerInformationForm from "./checkout-forms/customerInformationForm";
-import DeliveryInformationForm from "./checkout-forms/deliveryInformationForm";
 import CheckoutProgressBar from "./checkoutProgressBar";
-import CheckoutNavigation from "./checkoutNavigation";
+import CheckoutContactForm from "./checkout-forms/checkoutContactForm";
+//actions
+import { updateDeliveryDetails } from "../../actions";
 //css
 import "./checkout-css/checkoutDetails.css";
 
@@ -49,17 +50,10 @@ class CheckoutDetails extends React.Component {
 		return (
 			<Container className="checkoutDetailsContainer">
 				<CheckoutProgressBar progressBarData={progressBar} />
-				<DeliveryInformationForm />
-				<CustomerInformationForm />
-				<CheckoutNavigation
-					backNav="/order"
-					backText="Order"
-					forwardNav="/checkout/payment"
-					forwardText="Payment"
-				/>
+				<CheckoutContactForm />
 			</Container>
 		);
 	}
 }
 
-export default CheckoutDetails;
+export default connect(null, { updateDeliveryDetails })(CheckoutDetails);

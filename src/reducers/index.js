@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { reducer as reduxFormReducer } from "redux-form";
 import specialOrderReducer from "./specialOrderReducer";
 import menuReducer from "./menu";
 import orderDetailsReducer from "./orderDetails";
@@ -11,4 +12,5 @@ export default combineReducers({
 	order: orderDetailsReducer,
 	storeInformation: storeInformation,
 	auth: authReducer,
+	form: reduxFormReducer,
 });
