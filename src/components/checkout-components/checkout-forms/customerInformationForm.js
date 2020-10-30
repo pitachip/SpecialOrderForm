@@ -5,9 +5,32 @@ import { Field } from "redux-form";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 
+const validateEmail = (value) =>
+	value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+		? " address format is invalid"
+		: undefined;
+
+const normalizePhone = (value) => {
+	if (!value) {
+		return value;
+	}
+
+	const onlyNums = value.replace(/[^\d]/g, "");
+	if (onlyNums.length <= 3) {
+		return onlyNums;
+	}
+	if (onlyNums.length <= 7) {
+		return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+	}
+	return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(
+		6,
+		10
+	)}`;
+};
+
 const required = (value) => {
 	if (!value || value === "") {
-		return "This field is required";
+		return " is required";
 	}
 };
 
@@ -17,7 +40,7 @@ const customerInformationInput = ({
 	meta,
 	type,
 	placeholder,
-	errorMessage,
+	errorMessagePrefix,
 }) => {
 	return (
 		<div>
@@ -27,12 +50,12 @@ const customerInformationInput = ({
 				value={input.value}
 				onChange={input.onChange}
 			/>
-			{meta.touched && !meta.valid ? errorMessage : null}
+			{meta.touched && !meta.valid ? errorMessagePrefix + meta.error : null}
 		</div>
 	);
 };
 
-const CustomerInformationForm = (props) => {
+const CustomerInformationForm = () => {
 	return (
 		<div>
 			<Form.Row>
@@ -43,7 +66,7 @@ const CustomerInformationForm = (props) => {
 						component={customerInformationInput}
 						type="text"
 						placeholder="First"
-						errorMessage="First name is required"
+						errorMessagePrefix="First name"
 						validate={required}
 					/>
 				</Form.Group>
@@ -54,7 +77,7 @@ const CustomerInformationForm = (props) => {
 						component={customerInformationInput}
 						type="text"
 						placeholder="Last"
-						errorMessage="Last name is required"
+						errorMessagePrefix="Last name"
 						validate={required}
 					/>
 				</Form.Group>
@@ -67,8 +90,8 @@ const CustomerInformationForm = (props) => {
 						component={customerInformationInput}
 						type="text"
 						placeholder="example@email.com"
-						errorMessage="Email is required"
-						validate={required}
+						errorMessagePrefix="Email"
+						validate={[required, validateEmail]}
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
@@ -78,8 +101,9 @@ const CustomerInformationForm = (props) => {
 						component={customerInformationInput}
 						type="text"
 						placeholder="215-412-6789"
-						errorMessage="Phone number is required"
+						errorMessagePrefix="Phone number"
 						validate={required}
+						normalize={normalizePhone}
 					/>
 				</Form.Group>
 			</Form.Row>

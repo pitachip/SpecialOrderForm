@@ -1,14 +1,38 @@
 //libs
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Field, getFormValues, change } from "redux-form";
 //ui components
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 
+const validateEmail = (value) =>
+	value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+		? " address format is invalid"
+		: undefined;
+
+const normalizePhone = (value) => {
+	if (!value) {
+		return value;
+	}
+
+	const onlyNums = value.replace(/[^\d]/g, "");
+	if (onlyNums.length <= 3) {
+		return onlyNums;
+	}
+	if (onlyNums.length <= 7) {
+		return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+	}
+	return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(
+		6,
+		10
+	)}`;
+};
+
+//TODO: This stuff (and normalize phone) can eventually go into a utils folder
 const required = (value) => {
 	if (!value || value === "") {
-		return "This field is required";
+		return " is required";
 	}
 };
 
@@ -18,7 +42,8 @@ const deliveryContactInformationInput = ({
 	meta,
 	type,
 	placeholder,
-	errorMessage,
+	errorMessagePrefix,
+	sameAsAbove,
 }) => {
 	return (
 		<div>
@@ -27,8 +52,9 @@ const deliveryContactInformationInput = ({
 				placeholder={placeholder}
 				value={input.value}
 				onChange={input.onChange}
+				disabled={sameAsAbove}
 			/>
-			{meta.touched && !meta.valid ? errorMessage : null}
+			{meta.touched && !meta.valid ? errorMessagePrefix + meta.error : null}
 		</div>
 	);
 };
@@ -55,11 +81,36 @@ const deliveryContactInformationCheckbox = ({
 	);
 };
 
-const DeliveryContactInformationForm = (props) => {
-	const handlechange = () => {
-		props.change("checkoutContactForm", "firstNameDelivery", "Test");
+const DeliveryContactInformationForm = ({ contactInformation, change }) => {
+	const [sameAsAbove, setSameAsAbove] = useState(false);
+
+	const sameAsAboveClicked = (checked) => {
+		if (checked) {
+			change(
+				"checkoutContactForm",
+				"firstNameDelivery",
+				contactInformation.firstName
+			);
+			change(
+				"checkoutContactForm",
+				"lastNameDelivery",
+				contactInformation.lastName
+			);
+			change("checkoutContactForm", "emailDelivery", contactInformation.email);
+			change(
+				"checkoutContactForm",
+				"phoneNumberDelivery",
+				contactInformation.phoneNumber
+			);
+			setSameAsAbove(true);
+		} else {
+			change("checkoutContactForm", "firstNameDelivery", "");
+			change("checkoutContactForm", "lastNameDelivery", "");
+			change("checkoutContactForm", "emailDelivery", "");
+			change("checkoutContactForm", "phoneNumberDelivery", "");
+			setSameAsAbove(false);
+		}
 	};
-	console.log("Customer Form Data: ", props);
 	return (
 		<div>
 			<Form.Group>
@@ -68,7 +119,7 @@ const DeliveryContactInformationForm = (props) => {
 					component={deliveryContactInformationCheckbox}
 					type="checkbox"
 					label="Same as Above"
-					onChange={(e, checked) => handlechange(props.change)}
+					onChange={(e, checked) => sameAsAboveClicked(checked)}
 				/>
 			</Form.Group>
 			<Form.Row>
@@ -79,19 +130,21 @@ const DeliveryContactInformationForm = (props) => {
 						component={deliveryContactInformationInput}
 						type="text"
 						placeholder="First"
-						errorMessage="First name is required"
+						errorMessagePrefix="First"
 						validate={required}
+						sameAsAbove={sameAsAbove}
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
 					<Form.Label>Last Name</Form.Label>
 					<Field
-						name="lastName"
+						name="lastNameDelivery"
 						component={deliveryContactInformationInput}
 						type="text"
 						placeholder="Last"
-						errorMessage="Last name is required"
+						errorMessagePrefix="Last"
 						validate={required}
+						sameAsAbove={sameAsAbove}
 					/>
 				</Form.Group>
 			</Form.Row>
@@ -99,23 +152,26 @@ const DeliveryContactInformationForm = (props) => {
 				<Form.Group as={Col}>
 					<Form.Label>Email</Form.Label>
 					<Field
-						name="email"
+						name="emailDelivery"
 						component={deliveryContactInformationInput}
 						type="text"
 						placeholder="example@email.com"
-						errorMessage="Email is required"
-						validate={required}
+						errorMessagePrefix="Email"
+						validate={[required, validateEmail]}
+						sameAsAbove={sameAsAbove}
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
 					<Form.Label>Phone Number</Form.Label>
 					<Field
-						name="phoneNumber"
+						name="phoneNumberDelivery"
 						component={deliveryContactInformationInput}
 						type="text"
 						placeholder="215-412-6789"
-						errorMessage="Phone number is required"
+						errorMessagePrefix="Phone number"
 						validate={required}
+						sameAsAbove={sameAsAbove}
+						normalize={normalizePhone}
 					/>
 				</Form.Group>
 			</Form.Row>

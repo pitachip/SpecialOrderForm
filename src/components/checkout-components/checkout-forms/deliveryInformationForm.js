@@ -59,6 +59,20 @@ const deliveryInputField = ({
 	);
 };
 
+const deliveryTextArea = ({ input, placeholder }) => {
+	return (
+		<div>
+			<Form.Control
+				as="textarea"
+				rows={3}
+				placeholder={placeholder}
+				value={input.value}
+				onChange={input.onChange}
+			/>
+		</div>
+	);
+};
+
 const DeliveryInformationForm = () => {
 	const [states, setStates] = useState([]);
 
@@ -123,6 +137,14 @@ const DeliveryInformationForm = () => {
 					/>
 				</Form.Group>
 			</Form.Row>
+			<Form.Group controlId="exampleForm.ControlTextarea1">
+				<Form.Label>Delivery Notes/Instructions</Form.Label>
+				<Field
+					name="deliveryInstructions"
+					component={deliveryTextArea}
+					placeholder="e.g. Enter through loading dock on 26th street"
+				/>
+			</Form.Group>
 		</div>
 	);
 };
