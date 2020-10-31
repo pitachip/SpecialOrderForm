@@ -4,6 +4,8 @@ import { Field } from "redux-form";
 //ui components
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
+//css
+import "../checkout-css/checkoutForm.css";
 
 const validateEmail = (value) =>
 	value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
@@ -35,6 +37,7 @@ const required = (value) => {
 };
 
 //TODO: Can move this type of input definition into a common file
+//can also move the label into here and psossibly add stlying on it.
 const customerInformationInput = ({
 	input,
 	meta,
@@ -49,8 +52,15 @@ const customerInformationInput = ({
 				placeholder={placeholder}
 				value={input.value}
 				onChange={input.onChange}
+				className={`${
+					meta.touched && !meta.valid ? "inputValidationError" : ""
+				}`}
 			/>
-			{meta.touched && !meta.valid ? errorMessagePrefix + meta.error : null}
+			{meta.touched && !meta.valid ? (
+				<span className="validationErrorMessage">
+					{errorMessagePrefix} {meta.error}
+				</span>
+			) : null}
 		</div>
 	);
 };

@@ -5,6 +5,8 @@ import { Field, getFormValues, change } from "redux-form";
 //ui components
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
+//css
+import "../checkout-css/checkoutForm.css";
 
 const validateEmail = (value) =>
 	value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
@@ -53,8 +55,15 @@ const deliveryContactInformationInput = ({
 				value={input.value}
 				onChange={input.onChange}
 				disabled={sameAsAbove}
+				className={`${
+					meta.touched && !meta.valid ? "inputValidationError" : ""
+				}`}
 			/>
-			{meta.touched && !meta.valid ? errorMessagePrefix + meta.error : null}
+			{meta.touched && !meta.valid ? (
+				<span className="validationErrorMessage">
+					{errorMessagePrefix} {meta.error}
+				</span>
+			) : null}
 		</div>
 	);
 };
@@ -76,7 +85,6 @@ const deliveryContactInformationCheckbox = ({
 				label={label}
 				checked={input.value}
 			/>
-			{meta.touched && !meta.valid ? errorMessage : null}
 		</div>
 	);
 };

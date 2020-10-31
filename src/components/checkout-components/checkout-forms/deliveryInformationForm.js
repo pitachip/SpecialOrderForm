@@ -6,10 +6,12 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 //utils
 import { getStates } from "../../../utils/checkoutUtils";
+//css
+import "../checkout-css/checkoutForm.css";
 
 const required = (value) => {
 	if (!value || value === "") {
-		return "This field is required";
+		return " is required";
 	}
 };
 
@@ -19,7 +21,7 @@ const deliverySelectField = ({
 	type,
 	placeholder,
 	states,
-	errorMessage,
+	errorMessagePrefix,
 }) => {
 	return (
 		<div>
@@ -28,13 +30,20 @@ const deliverySelectField = ({
 				onChange={input.onChange}
 				value={input.value}
 				placeholder={placeholder}
+				className={`${
+					meta.touched && !meta.valid ? "inputValidationError" : ""
+				}`}
 			>
 				<option></option>
 				{states.map((state) => {
 					return <option key={state.abbreviation}>{state.abbreviation}</option>;
 				})}
 			</Form.Control>
-			{meta.touched && !meta.valid ? errorMessage : null}
+			{meta.touched && !meta.valid ? (
+				<span className="validationErrorMessage">
+					{errorMessagePrefix} {meta.error}
+				</span>
+			) : null}
 		</div>
 	);
 };
@@ -44,7 +53,7 @@ const deliveryInputField = ({
 	meta,
 	type,
 	placeholder,
-	errorMessage,
+	errorMessagePrefix,
 }) => {
 	return (
 		<div>
@@ -53,8 +62,15 @@ const deliveryInputField = ({
 				placeholder={placeholder}
 				value={input.value}
 				onChange={input.onChange}
+				className={`${
+					meta.touched && !meta.valid ? "inputValidationError" : ""
+				}`}
 			/>
-			{meta.touched && !meta.valid ? errorMessage : null}
+			{meta.touched && !meta.valid ? (
+				<span className="validationErrorMessage">
+					{errorMessagePrefix} {meta.error}
+				</span>
+			) : null}
 		</div>
 	);
 };
@@ -89,7 +105,7 @@ const DeliveryInformationForm = () => {
 					component={deliveryInputField}
 					type="text"
 					placeholder="1234 Pita Chip Way"
-					errorMessage="Address is required"
+					errorMessagePrefix="Address"
 					validate={required}
 				/>
 			</Form.Group>
@@ -110,7 +126,7 @@ const DeliveryInformationForm = () => {
 						component={deliveryInputField}
 						type="text"
 						placeholder="City"
-						errorMessage="City is required"
+						errorMessagePrefix="City"
 						validate={required}
 					/>
 				</Form.Group>
@@ -122,7 +138,7 @@ const DeliveryInformationForm = () => {
 						states={states}
 						placeholder="Choose State"
 						validate={required}
-						errorMessage="State is required"
+						errorMessagePrefix="State"
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
@@ -132,7 +148,7 @@ const DeliveryInformationForm = () => {
 						type="number"
 						placeholder="18929"
 						component={deliveryInputField}
-						errorMessage="Zip is required"
+						errorMessagePrefix="Zip"
 						validate={required}
 					/>
 				</Form.Group>

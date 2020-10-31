@@ -20,11 +20,6 @@ class ShoppingCart extends React.Component {
 	};
 
 	renderShoppingCartItems = () => {
-		/**
-		 * I think we need to put the uuid at the order Item level
-		 * then when we search the array we search by that item to open in a modal
-		 *
-		 */
 		return this.props.orderItems.map((orderItem) => {
 			return <ShoppingCartItem item={orderItem} key={orderItem.uniqueId} />;
 		});

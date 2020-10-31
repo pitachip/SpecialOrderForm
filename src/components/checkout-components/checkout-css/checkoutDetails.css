@@ -1,3 +1,17 @@
 .checkoutDetailsContainer {
 	margin-top: 40px;
 }
+
+.shoppingCartItemPrice {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.orderSummaryOffset {
+	top: 6em;
+}
+
+.shoppingCartTotalPrice {
+	display: flex;
+	justify-content: flex-end;
+}
