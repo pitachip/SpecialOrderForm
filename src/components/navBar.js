@@ -83,7 +83,7 @@ class NavBar extends React.Component {
 			<Navbar bg="light" fixed="top" sticky="top" className="fluid">
 				<Navbar.Brand>
 					<img
-						src="./assets/logo.png"
+						src="/assets/logo.png"
 						width="50"
 						height="50"
 						className="d-inline-block align-top"

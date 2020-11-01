@@ -30,7 +30,36 @@ class OrderSummary extends React.Component {
 		return (orderItem.basePrice / 100) * orderItem.quantity;
 	};
 
-	renderShoppingCartTotals = () => {
+	renderOrderDate = () => {
+		let formattedDate = "";
+		let formatOptions = {
+			weekday: "short",
+			year: "numeric",
+			month: "short",
+			day: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+		};
+		if (this.props.orderDetails.orderDate !== "") {
+			formattedDate = new Date(
+				this.props.orderDetails.orderDate
+			).toLocaleDateString("en-US", formatOptions);
+		}
+		return (
+			<>
+				<Row>
+					<Col md={4}>
+						<p>Order Date</p>
+					</Col>
+					<Col md={8} className="shoppingCartItemPrice">
+						<p>{formattedDate}</p>
+					</Col>
+				</Row>
+			</>
+		);
+	};
+
+	renderShoppingCartTotals = (totals) => {
 		return (
 			<>
 				<Row>
@@ -68,12 +97,25 @@ class OrderSummary extends React.Component {
 					</Col>
 				</Row>
 				<Row>
-					<Col md={8}>
-						<p>Delivery</p>
-					</Col>
-					<Col md={4} className="shoppingCartTotalPrice">
-						<p>Need to fix!</p>
-					</Col>
+					{totals.delivery > 0 ? (
+						<>
+							<Col md={8}>
+								<p>Delivery</p>
+							</Col>
+							<Col md={4} className="shoppingCartTotalPrice">
+								<p>
+									<NumberFormat
+										value={this.props.totals.delivery}
+										displayType={"text"}
+										thousandSeparator={true}
+										prefix={"$"}
+										decimalScale={2}
+										fixedDecimalScale="true"
+									/>
+								</p>
+							</Col>
+						</>
+					) : null}
 				</Row>
 				<Row>
 					<Col md={8}>
@@ -116,7 +158,6 @@ class OrderSummary extends React.Component {
 	};
 
 	render() {
-		console.log("Totals: ", this.props.totals);
 		return (
 			<div className="sticky-top orderSummaryOffset">
 				<Card>
@@ -126,7 +167,9 @@ class OrderSummary extends React.Component {
 					<Card.Body>
 						{this.renderShoppingCartItems()}
 						<hr />
-						{this.renderShoppingCartTotals()}
+						{this.renderShoppingCartTotals(this.props.totals)}
+						<hr />
+						{this.renderOrderDate()}
 					</Card.Body>
 				</Card>
 			</div>
@@ -137,6 +180,7 @@ class OrderSummary extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		orderItems: state.order.orderItems,
+		orderDetails: state.order.orderDetails,
 		totals: state.order.totals,
 	};
 };
