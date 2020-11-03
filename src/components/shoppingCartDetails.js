@@ -49,8 +49,6 @@ class ShoppingCartDetails extends React.Component {
 	};
 
 	handleAuthModalSuccess = () => {
-		//will route from here
-		console.log("successful login");
 		this.setState({ showAuthModal: false });
 		history.push("/checkout/details");
 	};

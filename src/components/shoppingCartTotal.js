@@ -6,6 +6,9 @@ import NumberFormat from "react-number-format";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import { MdHelp } from "react-icons/md";
 //app components
 import { updateOrderTotals, getMenuConfig } from "../actions";
 import { calculateTotals } from "../utils/orderCheckoutUtils";
@@ -89,7 +92,22 @@ class ShoppingCartTotal extends React.Component {
 						</Row>
 						<Row>
 							<Col md={8}>
-								<p>Tax</p>
+								<p>
+									Tax
+									<span>
+										<OverlayTrigger
+											placement="left"
+											overlay={
+												<Tooltip>
+													If you're a tax exempt organization don't worry, we'll
+													ask for this information during checkout
+												</Tooltip>
+											}
+										>
+											<MdHelp />
+										</OverlayTrigger>
+									</span>
+								</p>
 							</Col>
 							<Col md={4} className="shoppingCartTotalPrice">
 								<p>

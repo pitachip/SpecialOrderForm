@@ -1,5 +1,5 @@
 //libs
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Field, getFormValues, change } from "redux-form";
 //ui components
@@ -91,6 +91,13 @@ const deliveryContactInformationCheckbox = ({
 
 const DeliveryContactInformationForm = ({ contactInformation, change }) => {
 	const [sameAsAbove, setSameAsAbove] = useState(false);
+
+	useEffect(() => {
+		if (contactInformation && contactInformation.sameAsAbove) {
+			console.log("Use effect called");
+			setSameAsAbove(true);
+		}
+	}, []);
 
 	const sameAsAboveClicked = (checked) => {
 		if (checked) {
