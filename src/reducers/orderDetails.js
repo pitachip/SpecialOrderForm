@@ -3,9 +3,9 @@ const INITIAL_STATE = {
 	totals: { subTotal: 0, tax: 0, delivery: 0, total: 0 },
 	orderDetails: {
 		shippingMethod: "delivery",
-		orderDate: "",
+		orderDate: new Date(),
 		location: "",
-		specialRequests: "",
+		specialInstructions: "",
 		deliveryInformation: {
 			address1: "",
 			address2: "",
@@ -30,11 +30,44 @@ export default (state = INITIAL_STATE, action) => {
 		case "UPDATE_ORDER_TOTALS":
 			return { ...state, totals: action.payload };
 		case "UPDATE_SHIPPING_METHOD":
-			return { ...state, orderDetails: { shippingMethod: action.payload } };
+			return {
+				...state,
+				orderDetails: {
+					...state.orderDetails,
+					shippingMethod: action.payload,
+				},
+			};
+		case "UPDATE_PICKUP_LOCATION":
+			return {
+				...state,
+				orderDetails: { ...state.orderDetails, location: action.payload },
+			};
+		case "UPDATE_SPECIAL_INSTRUCTIONS":
+			return {
+				...state,
+				orderDetails: {
+					...state.orderDetails,
+					specialInstructions: action.payload,
+				},
+			};
+		case "UPDATE_ORDER_DATE":
+			return {
+				...state,
+				orderDetails: {
+					...state.orderDetails,
+					orderDate: action.payload,
+				},
+			};
 		case "UPDATE_ORDER_DETAILS":
 			return { ...state, orderDetails: action.payload };
 		case "UPDATE_DELIVERY_DETAILS":
-			return { ...state, orderDetails: { deliveryDetails: action.payload } };
+			return {
+				...state,
+				orderDetails: {
+					...state.orderDetails,
+					deliveryDetails: action.payload,
+				},
+			};
 		default:
 			return state;
 	}

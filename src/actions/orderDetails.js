@@ -35,6 +35,23 @@ export const updateShippingMethod = (method) => (dispatch) => {
 	dispatch({ type: "UPDATE_SHIPPING_METHOD", payload: method });
 };
 
+export const updatePickupLocation = (location) => (dispatch) => {
+	dispatch({ type: "UPDATE_PICKUP_LOCATION", payload: location });
+};
+
+export const updateSpecialInstructions = (specialInstructions) => (
+	dispatch
+) => {
+	dispatch({
+		type: "UPDATE_SPECIAL_INSTRUCTIONS",
+		payload: specialInstructions,
+	});
+};
+
+export const updateOrderDate = (orderDate) => (dispatch) => {
+	dispatch({ type: "UPDATE_ORDER_DATE", payload: orderDate });
+};
+
 export const updateOrderDetails = (orderDetails) => (dispatch) => {
 	dispatch({ type: "UPDATE_ORDER_DETAILS", payload: orderDetails });
 };

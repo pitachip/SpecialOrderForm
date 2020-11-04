@@ -17,6 +17,9 @@ import {
 	updateOrderDetails,
 	updateOrderTotals,
 	setAuthFormToOpen,
+	updatePickupLocation,
+	updateSpecialInstructions,
+	updateOrderDate,
 } from "../actions";
 //utils
 import { calculateTotals } from "../utils/orderCheckoutUtils";
@@ -25,12 +28,15 @@ import { history } from "../utils/history";
 import "react-datepicker/dist/react-datepicker.css";
 
 class ShoppingCartDetails extends React.Component {
+	/**
+	 * TODO: Potential refactor
+	 * Looks like I'm basically recreating a mini redux form. Might want to just
+	 * redux form it.
+	 * Also need to componetize this file a little better. Too much logic in one place
+	 */
 	state = {
-		specialRequests: "",
-		showTextArea: false,
-		location: "",
-		shippingMethod: "delivery",
-		orderDate: new Date(),
+		showTextArea:
+			this.props.orderDetails.specialInstructions === "" ? false : true,
 		validated: false,
 		showAuthModal: false,
 	};
@@ -54,15 +60,20 @@ class ShoppingCartDetails extends React.Component {
 	};
 
 	toggleSpecialInstructionsTextArea = () => {
-		if (this.state.specialRequests === "" && this.state.showTextArea) {
+		if (
+			this.props.orderDetails.specialInstructions === "" &&
+			this.state.showTextArea
+		) {
 			this.setState({ showTextArea: false });
-		} else if (this.state.specialRequests === "" && !this.state.showTextArea) {
+		} else if (
+			this.props.orderDetails.specialInstructions === "" &&
+			!this.state.showTextArea
+		) {
 			this.setState({ showTextArea: true });
 		}
 	};
 
 	shippingMethodChanged = (e) => {
-		this.setState({ shippingMethod: e.target.value });
 		this.props.updateShippingMethod(e.target.value);
 		const calculatedAmounts = calculateTotals(
 			this.props.orderItems,
@@ -80,11 +91,12 @@ class ShoppingCartDetails extends React.Component {
 			this.setState({ validated: true });
 		} else {
 			let orderDetails = {
-				shippingMethod: this.state.shippingMethod,
-				orderDate: this.state.orderDate,
-				location: this.state.location,
-				specialRequests: this.state.specialRequests,
+				shippingMethod: this.props.orderDetails.shippingMethod,
+				orderDate: this.props.orderDetails.orderDate,
+				location: this.props.orderDetails.location,
+				specialInstructions: this.props.orderDetails.specialInstructions,
 			};
+			console.log("State Order Details: ", orderDetails);
 			this.props.updateOrderDetails(orderDetails);
 			this.handleAuthModalOpen();
 		}
@@ -124,8 +136,8 @@ class ShoppingCartDetails extends React.Component {
 	renderDateTimeSelector = () => {
 		return (
 			<DatePicker
-				selected={this.state.orderDate}
-				onChange={(date) => this.setState({ orderDate: date })}
+				selected={this.props.orderDetails.orderDate}
+				onChange={(date) => this.props.updateOrderDate(date)}
 				timeInputLabel="Time:"
 				dateFormat="MM/dd/yyyy h:mm aa"
 				showTimeInput
@@ -139,14 +151,14 @@ class ShoppingCartDetails extends React.Component {
 				<Form.Check
 					type="radio"
 					value="delivery"
-					checked={this.state.shippingMethod === "delivery"}
+					checked={this.props.orderDetails.shippingMethod === "delivery"}
 					label="Delivery"
 					onChange={(e) => this.shippingMethodChanged(e)}
 				/>
 				<Form.Check
 					type="radio"
 					value="pickup"
-					checked={this.state.shippingMethod === "pickup"}
+					checked={this.props.orderDetails.shippingMethod === "pickup"}
 					label="Pick-Up"
 					onChange={(e) => this.shippingMethodChanged(e)}
 				/>
@@ -164,17 +176,20 @@ class ShoppingCartDetails extends React.Component {
 		});
 	};
 
+	/**
+	 * TODO: Fix redux in order to only update the correct part of the object
+	 */
 	renderLocationDropdown = () => {
 		return (
-			<Form.Group controlId="validationCustom03">
+			<Form.Group>
 				<Form.Label>Choose Location</Form.Label>
 				<Form.Control
 					required
 					custom
 					as="select"
 					size="sm"
-					value={this.state.location}
-					onChange={(e) => this.setState({ location: e.target.value })}
+					value={this.props.orderDetails.location}
+					onChange={(e) => this.props.updatePickupLocation(e.target.value)}
 				>
 					<option value=""></option>
 					{this.renderLocationDropdownOptions()}
@@ -207,8 +222,10 @@ class ShoppingCartDetails extends React.Component {
 						rows="3"
 						placeholder="Let us know about any special requests you need for this order"
 						onBlur={() => this.toggleSpecialInstructionsTextArea()}
-						value={this.state.specialRequests}
-						onChange={(e) => this.setState({ specialRequests: e.target.value })}
+						value={this.props.orderDetails.specialInstructions}
+						onChange={(e) =>
+							this.props.updateSpecialInstructions(e.target.value)
+						}
 					/>
 				</Form.Group>
 			</>
@@ -216,6 +233,8 @@ class ShoppingCartDetails extends React.Component {
 	};
 
 	render() {
+		const { orderDetails } = this.props;
+		//console.log("Order Details: ", this.props.orderDetails);
 		return (
 			<div>
 				<Card>
@@ -228,8 +247,10 @@ class ShoppingCartDetails extends React.Component {
 							{this.state.showTextArea
 								? this.renderTextArea()
 								: this.renderTextAreaPlaceholder()}
-							{this.renderLocationDropdown()}
 							{this.renderShippingOptions()}
+							{orderDetails.shippingMethod === "pickup"
+								? this.renderLocationDropdown()
+								: null}
 							{this.renderDateTimeSelector()}
 							{this.renderOrderButton()}
 						</Form>
@@ -261,4 +282,7 @@ export default connect(mapStateToProps, {
 	updateOrderDetails,
 	updateOrderTotals,
 	setAuthFormToOpen,
+	updatePickupLocation,
+	updateSpecialInstructions,
+	updateOrderDate,
 })(ShoppingCartDetails);
