@@ -59,3 +59,7 @@ export const updateOrderDetails = (orderDetails) => (dispatch) => {
 export const updateDeliveryDetails = (deliveryDetails) => (dispatch) => {
 	dispatch({ type: "UPDATE_DELIVERY_DETAILS", payload: deliveryDetails });
 };
+
+export const updatePaymentType = (paymentType) => (dispatch) => {
+	dispatch({ type: "UPDATE_PAYMENT_TYPE", payload: paymentType });
+};

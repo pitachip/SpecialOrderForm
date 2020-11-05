@@ -14,6 +14,9 @@ const INITIAL_STATE = {
 			zip: "",
 		},
 	},
+	paymentDetails: {
+		paymentType: "",
+	},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -66,6 +69,14 @@ export default (state = INITIAL_STATE, action) => {
 				orderDetails: {
 					...state.orderDetails,
 					deliveryDetails: action.payload,
+				},
+			};
+		case "UPDATE_PAYMENT_TYPE":
+			return {
+				...state,
+				paymentDetails: {
+					...state.paymentDetails,
+					paymentType: action.payload,
 				},
 			};
 		default:

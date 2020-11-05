@@ -2,14 +2,17 @@
 import React from "react";
 //ui components
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 //app components
 import PaymentInformationForm from "./checkout-forms/paymentInformationForm";
 import CheckoutProgressBar from "./checkoutProgressBar";
-import CheckoutNavigation from "./checkoutNavigation";
+import OrderSummary from "./orderSummary";
 //css
 import "./checkout-css/checkoutDetails.css";
 
 class PaymentDetails extends React.Component {
+	//TODO: Move navigation to form
 	render() {
 		const progressBar = [
 			{
@@ -48,13 +51,14 @@ class PaymentDetails extends React.Component {
 		return (
 			<Container className="checkoutDetailsContainer">
 				<CheckoutProgressBar progressBarData={progressBar} />
-				<PaymentInformationForm />
-				<CheckoutNavigation
-					backNav="/checkout/details"
-					backText="Contact"
-					forwardNav="/checkout/confirmation"
-					forwardText="Confirmation"
-				/>
+				<Row>
+					<Col md={8}>
+						<PaymentInformationForm />
+					</Col>
+					<Col md={4}>
+						<OrderSummary />
+					</Col>
+				</Row>
 			</Container>
 		);
 	}
