@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 //app components
-import PaymentInformationForm from "./checkout-forms/paymentInformationForm";
+import PaymentInformationForm from "../payment/payment-forms/paymentInformationForm";
 import CheckoutProgressBar from "./checkoutProgressBar";
 import OrderSummary from "./orderSummary";
 //css

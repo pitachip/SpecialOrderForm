@@ -14,9 +14,6 @@ const INITIAL_STATE = {
 			zip: "",
 		},
 	},
-	paymentDetails: {
-		paymentType: "",
-	},
 };
 
 export default (state = INITIAL_STATE, action) => {
