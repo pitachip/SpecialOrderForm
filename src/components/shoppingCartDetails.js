@@ -96,7 +96,6 @@ class ShoppingCartDetails extends React.Component {
 				location: this.props.orderDetails.location,
 				specialInstructions: this.props.orderDetails.specialInstructions,
 			};
-			console.log("State Order Details: ", orderDetails);
 			this.props.updateOrderDetails(orderDetails);
 			this.handleAuthModalOpen();
 		}
@@ -234,7 +233,6 @@ class ShoppingCartDetails extends React.Component {
 
 	render() {
 		const { orderDetails } = this.props;
-		//console.log("Order Details: ", this.props.orderDetails);
 		return (
 			<div>
 				<Card>

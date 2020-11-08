@@ -49,6 +49,11 @@ export const formatSelectionForCheckout = (
 	return formattedSelection;
 };
 
+/**
+ * Refactor so that there's one calculate totals.
+ * Need to think through the dfiferent functions that use it and
+ * what params need to be included
+ */
 export const calculateTotals = (
 	orderItems,
 	menuConfigSettings,
@@ -70,3 +75,5 @@ export const calculateTotals = (
 
 	return totals;
 };
+
+export const calculateTotalsForTaxExempt = () => {};

@@ -94,7 +94,6 @@ const DeliveryContactInformationForm = ({ contactInformation, change }) => {
 
 	useEffect(() => {
 		if (contactInformation && contactInformation.sameAsAbove) {
-			console.log("Use effect called");
 			setSameAsAbove(true);
 		}
 	}, []);

@@ -9,12 +9,31 @@ import { MdCreditCard, MdAccountBalance, MdSchool } from "react-icons/md";
 //app components
 import paymentOptionButton from "./paymentOptionButton";
 //actions
-import { updatePaymentType } from "../../../actions";
+import { updatePaymentType, updateOrderTotals } from "../../../actions";
 //css
 import "../payment-css/paymentDetails.css";
 
 class PaymentOptions extends React.Component {
 	paymentButtonClicked = (paymentType) => {
+		/**
+		 * Add tax back in if they chose tax exempt option
+		 * They can choose it again on new chosen payment type
+		 */
+		if (this.props.paymentInformation.taxExempt) {
+			const totals = this.props.orderTotals;
+			let addTaxToTotal = totals;
+			addTaxToTotal = {
+				subTotal: totals.subTotal,
+				tax: totals.subTotal * this.props.menuConfig.settings.taxRate,
+				delivery: totals.delivery,
+				total:
+					totals.subTotal +
+					totals.subTotal * this.props.menuConfig.settings.taxRate +
+					totals.delivery,
+			};
+
+			this.props.updateOrderTotals(addTaxToTotal);
+		}
 		this.props.reset("paymentInformationForm");
 		this.props.change("paymentType", paymentType);
 	};
@@ -68,10 +87,15 @@ class PaymentOptions extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		paymentInformation: getFormValues("paymentInformationForm")(state),
+		orderTotals: state.order.totals,
+		menuConfig: state.menu.menuConfig,
 	};
 };
 
-export default connect(mapStateToProps, { updatePaymentType })(
+export default connect(mapStateToProps, {
+	updatePaymentType,
+	updateOrderTotals,
+})(
 	reduxForm({
 		form: "paymentInformationForm",
 	})(PaymentOptions)

@@ -84,16 +84,20 @@ class OrderSummary extends React.Component {
 						<p>Tax</p>
 					</Col>
 					<Col md={4} className="shoppingCartTotalPrice">
-						<p>
-							<NumberFormat
-								value={this.props.totals.tax}
-								displayType={"text"}
-								thousandSeparator={true}
-								prefix={"$"}
-								decimalScale={2}
-								fixedDecimalScale="true"
-							/>
-						</p>
+						{this.props.totals.tax > 0 ? (
+							<p>
+								<NumberFormat
+									value={this.props.totals.tax}
+									displayType={"text"}
+									thousandSeparator={true}
+									prefix={"$"}
+									decimalScale={2}
+									fixedDecimalScale="true"
+								/>
+							</p>
+						) : (
+							<p>(Tax Exempt)</p>
+						)}
 					</Col>
 				</Row>
 				<Row>
@@ -179,9 +183,9 @@ class OrderSummary extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		totals: state.order.totals,
 		orderItems: state.order.orderItems,
 		orderDetails: state.order.orderDetails,
-		totals: state.order.totals,
 	};
 };
 

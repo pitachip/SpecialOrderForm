@@ -53,14 +53,6 @@ class ModifierOptionCheckbox extends React.Component {
 	};
 	render() {
 		const { modifierName, modifierId, option, selection } = this.props;
-		console.log("Selection: ", selection);
-		//console.log("Selection: ", selection);
-		//we want to see if this option._id exists in the selection object.
-		/*
-		if (selection) {
-			this.wasOptionSelected(option._id, selection);
-		}
-		*/
 		return (
 			<div>
 				<Form.Check
@@ -102,7 +94,6 @@ class MenuItemDetail extends React.Component {
 	}
 
 	modiferOptionSelected = async (option) => {
-		console.log("Modifer Selected");
 		const name = option.target.name;
 		const id = option.target.id;
 		const modifier = option.target.getAttribute("data-modifier");

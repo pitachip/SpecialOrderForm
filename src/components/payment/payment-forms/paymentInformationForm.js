@@ -21,7 +21,6 @@ class PaymentInformationForm extends React.Component {
 		}
 	};
 	render() {
-		console.log(this.props.paymentInformation);
 		return (
 			<div>
 				<h2>How do you want to pay?</h2>
@@ -41,7 +40,7 @@ class PaymentInformationForm extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		initialValues: { paymentType: "" },
+		initialValues: { paymentType: "", taxExempt: false },
 		paymentInformation: getFormValues("paymentInformationForm")(state),
 	};
 };

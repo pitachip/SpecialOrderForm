@@ -1,5 +1,6 @@
 //libs
 import React from "react";
+import { connect } from "react-redux";
 //ui components
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -63,4 +64,10 @@ class CheckoutDetails extends React.Component {
 	}
 }
 
-export default CheckoutDetails;
+const mapStateToProps = (state) => {
+	return {
+		totals: state.order.totals,
+	};
+};
+
+export default connect(mapStateToProps, {})(CheckoutDetails);
