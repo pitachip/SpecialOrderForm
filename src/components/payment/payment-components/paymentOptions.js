@@ -98,5 +98,6 @@ export default connect(mapStateToProps, {
 })(
 	reduxForm({
 		form: "paymentInformationForm",
+		destroyOnUnmount: false,
 	})(PaymentOptions)
 );

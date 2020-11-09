@@ -9,6 +9,11 @@ import { getStates } from "../../../utils/checkoutUtils";
 //css
 import "../checkout-css/checkoutForm.css";
 
+const validateZipCode = (zipCode) =>
+	zipCode && !/^\d{5}(-\d{4})?$/.test(zipCode)
+		? " code format is invalid"
+		: undefined;
+
 const required = (value) => {
 	if (!value || value === "") {
 		return " is required";
@@ -149,7 +154,7 @@ const DeliveryInformationForm = () => {
 						placeholder="18929"
 						component={deliveryInputField}
 						errorMessagePrefix="Zip"
-						validate={required}
+						validate={[required, validateZipCode]}
 					/>
 				</Form.Group>
 			</Form.Row>

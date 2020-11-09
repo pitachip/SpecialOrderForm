@@ -6,6 +6,7 @@ import { reduxForm, getFormValues } from "redux-form";
 import PaymentOptions from "../payment-components/paymentOptions";
 import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
 import CheckForm from "./checkForm";
+import UnivForm from "./univForm";
 
 class PaymentInformationForm extends React.Component {
 	renderPaymentForm = (paymentType) => {
@@ -15,7 +16,7 @@ class PaymentInformationForm extends React.Component {
 			case "check":
 				return <CheckForm />;
 			case "univ":
-				return <p>Univ Form</p>;
+				return <UnivForm />;
 			default:
 				return <p>Please choose a payment option</p>;
 		}
