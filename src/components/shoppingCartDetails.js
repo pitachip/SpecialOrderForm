@@ -135,7 +135,7 @@ class ShoppingCartDetails extends React.Component {
 	renderDateTimeSelector = () => {
 		return (
 			<DatePicker
-				selected={this.props.orderDetails.orderDate}
+				selected={new Date(this.props.orderDetails.orderDate)}
 				onChange={(date) => this.props.updateOrderDate(date)}
 				timeInputLabel="Time:"
 				dateFormat="MM/dd/yyyy h:mm aa"

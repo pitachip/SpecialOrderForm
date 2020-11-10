@@ -1,7 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
-import { reduxForm, getFormValues, formValueSelector } from "redux-form";
+import { reduxForm, getFormValues } from "redux-form";
 //ui components
 import Form from "react-bootstrap/Form";
 //utils
