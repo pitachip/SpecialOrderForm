@@ -21,6 +21,7 @@ class CheckoutContactForm extends React.Component {
 		}
 	};
 	render() {
+		//TODO: might want to remove the weird form wrap here. Find another way to check if form is valid
 		const { handleSubmit } = this.props;
 		return (
 			<div>
@@ -35,6 +36,7 @@ class CheckoutContactForm extends React.Component {
 						backNav="/order"
 						backText="Order"
 						forwardText="Payment"
+						forwardButtonClicked={() => null}
 					/>
 				</Form>
 			</div>

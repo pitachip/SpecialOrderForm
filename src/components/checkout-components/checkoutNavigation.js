@@ -6,6 +6,8 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 //utils
 import { history } from "../../utils/history";
+//css
+import "./checkout-css/checkoutDetails.css";
 
 class CheckoutNavigation extends React.Component {
 	backButtonClicked = () => {
@@ -13,15 +15,25 @@ class CheckoutNavigation extends React.Component {
 	};
 
 	render() {
-		const { forwardText, backText } = this.props;
+		const {
+			forwardText,
+			backText,
+			disableForwardButton,
+			forwardButtonClicked,
+		} = this.props;
 		return (
-			<div>
+			<div className="checkoutNavigationBottomMargin">
 				<Row>
 					<Col>
 						<Button onClick={this.backButtonClicked}>{backText}</Button>
 					</Col>
 					<Col>
-						<Button className="float-right" type="submit">
+						<Button
+							className="float-right"
+							type="submit"
+							disabled={disableForwardButton}
+							onClick={(e) => forwardButtonClicked(e)}
+						>
 							{forwardText}
 						</Button>
 					</Col>

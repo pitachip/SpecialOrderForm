@@ -7,10 +7,16 @@ import { Form } from "semantic-ui-react";
 //app components
 import UnivDisclaimer from "../payment-components/univDisclaimer";
 import { paymentCheckboxField, paymentInputField } from "./paymentFormFields";
+import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
 //actions
 import { updateOrderTotals } from "../../../actions";
 
 class UnivForm extends React.Component {
+	submitOrderClicked = (e) => {
+		e.preventDefault();
+		console.log("Univ order submitted");
+	};
+
 	taxExemptToggled = (toggle, totals) => {
 		if (toggle) {
 			let removeTaxFromTotal = totals;
@@ -65,6 +71,15 @@ class UnivForm extends React.Component {
 							placeholder="Tax Exempt ID# 141232"
 						/>
 					) : null}
+					<CheckoutNavigation
+						backNav="/checkout/details"
+						backText="Contact"
+						forwardText="Submit Order"
+						forwardButtonClicked={(e) => this.submitOrderClicked(e)}
+						disableForwardButton={
+							this.props.paymentInformation.paymentType === "" ? true : false
+						}
+					/>
 				</Form>
 			</>
 		);

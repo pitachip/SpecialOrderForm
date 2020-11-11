@@ -76,4 +76,25 @@ export const calculateTotals = (
 	return totals;
 };
 
-export const calculateTotalsForTaxExempt = () => {};
+export const formatCheckoutForStripe = (orderItems) => {
+	let stripeItemsArray = [];
+	console.log(orderItems);
+	//set up order items
+	each(orderItems, (orderItem) => {
+		let formattedStripeLineItem = {
+			price_data: {
+				currency: "usd",
+				product_data: {
+					name: orderItem.menuItem,
+					description: "Need to update", //Update menu items to have descriptions
+				},
+				unit_amount: orderItem.basePrice,
+			},
+			quantity: orderItem.quantity,
+		};
+		stripeItemsArray.push(formattedStripeLineItem);
+	});
+	//add tax and delivery if applicable
+
+	return stripeItemsArray;
+};

@@ -7,10 +7,15 @@ import { Form } from "semantic-ui-react";
 //app components
 import CheckDisclaimer from "../payment-components/checkDisclaimer";
 import { paymentCheckboxField, paymentInputField } from "./paymentFormFields";
+import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
 //actions
 import { updateOrderTotals } from "../../../actions";
 
 class CheckForm extends React.Component {
+	submitOrderClicked = (e) => {
+		e.preventDefault();
+		console.log("Check order submitted");
+	};
 	taxExemptToggled = (toggle, totals) => {
 		if (toggle) {
 			let removeTaxFromTotal = totals;
@@ -74,6 +79,15 @@ class CheckForm extends React.Component {
 							placeholder="Tax Exempt ID# 141232"
 						/>
 					) : null}
+					<CheckoutNavigation
+						backNav="/checkout/details"
+						backText="Contact"
+						forwardText="Submit Order"
+						forwardButtonClicked={(e) => this.submitOrderClicked(e)}
+						disableForwardButton={
+							this.props.paymentInformation.paymentType === "" ? true : false
+						}
+					/>
 				</Form>
 			</>
 		);
