@@ -76,25 +76,67 @@ export const calculateTotals = (
 	return totals;
 };
 
-export const formatCheckoutForStripe = (orderItems) => {
-	let stripeItemsArray = [];
-	console.log(orderItems);
-	//set up order items
-	each(orderItems, (orderItem) => {
-		let formattedStripeLineItem = {
-			price_data: {
-				currency: "usd",
-				product_data: {
-					name: orderItem.menuItem,
-					description: "Need to update", //Update menu items to have descriptions
-				},
-				unit_amount: orderItem.basePrice,
-			},
+export const formatOrderForDb = (
+	order,
+	customerInformation,
+	paymentInformation,
+	stripePaymentIntentId
+) => {
+	console.log("Stripe Payment Intent: ", stripePaymentIntentId);
+	let orderItemsArray = [];
+	each(order.orderItems, (orderItem) => {
+		orderItemsArray.push({
+			menuItem: orderItem.menuItem,
+			basePrice: orderItem.basePrice,
+			modifiers: orderItem.modifiers,
 			quantity: orderItem.quantity,
-		};
-		stripeItemsArray.push(formattedStripeLineItem);
+		});
 	});
-	//add tax and delivery if applicable
+	let formattedOrder = {
+		customerInformation: {
+			firstName: customerInformation.firstName,
+			lastName: customerInformation.lastName,
+			email: customerInformation.email,
+			phoneNumber: customerInformation.phoneNumber,
+		},
+		deliveryInformation: {
+			firstName: customerInformation.firstNameDelivery,
+			lastName: customerInformation.lastNameDelivery,
+			email: customerInformation.emailDelivery,
+			phoneNumber: customerInformation.phoneNumberDelivery,
+			address1: customerInformation.address1,
+			address2: customerInformation.address2
+				? customerInformation.address2
+				: "",
+			city: customerInformation.city,
+			state: customerInformation.state,
+			zip: customerInformation.zip,
+			deliveryInstructions: customerInformation.deliveryInstructions
+				? customerInformation.deliveryInstructions
+				: "",
+		},
+		paymentInformation: {
+			paymentType: paymentInformation.paymentType,
+			taxExempt: paymentInformation.taxExempt,
+			taxExemptId: paymentInformation.taxExemptId
+				? paymentInformation.taxExemptId
+				: "",
+			purchaseOrder: paymentInformation.purchaseOrder
+				? paymentInformation.purchaseOrder
+				: false,
+			purchaseOrderNumber: paymentInformation.purchaseOrderNumber
+				? paymentInformation.purchaseOrderNumber
+				: "",
+			stripePaymentIntentId: stripePaymentIntentId ? stripePaymentIntentId : "",
+		},
+		orderItems: orderItemsArray,
+		orderDetails: {
+			location: order.orderDetails.location,
+			orderDate: order.orderDetails.orderDate,
+			shippingMethod: order.orderDetails.shippingMethod,
+			specialInstructions: order.orderDetails.specialInstructions,
+		},
+	};
 
-	return stripeItemsArray;
+	return formattedOrder;
 };
