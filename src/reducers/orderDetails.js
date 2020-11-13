@@ -76,6 +76,8 @@ export default (state = INITIAL_STATE, action) => {
 					paymentType: action.payload,
 				},
 			};
+		case "persist/PURGE":
+			return INITIAL_STATE;
 		default:
 			return state;
 	}

@@ -3,9 +3,8 @@ import React from "react";
 //ui components
 import Container from "react-bootstrap/Container";
 //app components
-import OrderConfirmationForm from "./checkout-forms/orderConfirmationForm";
+import OrderConfirmationForm from "../confirmation/confirmation-forms/orderConfirmationForm";
 import CheckoutProgressBar from "./checkoutProgressBar";
-import CheckoutNavigation from "./checkoutNavigation";
 //css
 import "./checkout-css/checkoutDetails.css";
 
@@ -49,12 +48,6 @@ class ConfirmationDetails extends React.Component {
 			<Container className="checkoutDetailsContainer">
 				<CheckoutProgressBar progressBarData={progressBar} />
 				<OrderConfirmationForm />
-				<CheckoutNavigation
-					backNav="/checkout/payment"
-					backText="Payment"
-					forwardNav="/checkout/submitOrder"
-					forwardText="Submit Order"
-				/>
 			</Container>
 		);
 	}

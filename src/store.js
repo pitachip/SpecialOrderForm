@@ -19,5 +19,6 @@ const store = createStore(
 );
 
 const persistor = persistStore(store); // used to create the persisted store, persistor will be used in the next step
+//const purgeStore = persistor.purge();
 
 export { store, persistor };

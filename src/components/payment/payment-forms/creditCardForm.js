@@ -112,7 +112,9 @@ class CreditCardForm extends React.Component {
 						headers: { Authorization: `Bearer ${userToken.token}` },
 					}
 				);
-				history.push("/checkout/confirmation");
+				history.push("/checkout/confirmation", {
+					orderConfirmation: createSpecialOrder,
+				});
 			} else {
 				this.setState({
 					submissionError: {
