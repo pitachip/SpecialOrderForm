@@ -9,6 +9,7 @@ const persistConfig = {
 	// configuration object for redux-persist
 	key: "root",
 	storage, // define which storage to use
+	blacklist: ["auth"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer); // create a persisted reducer
@@ -19,6 +20,5 @@ const store = createStore(
 );
 
 const persistor = persistStore(store); // used to create the persisted store, persistor will be used in the next step
-//const purgeStore = persistor.purge();
 
 export { store, persistor };

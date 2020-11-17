@@ -100,14 +100,12 @@ class CreditCardForm extends React.Component {
 				const userToken = await getUserToken();
 				const createSpecialOrder = await pitachip.post(
 					"/specialorder",
-					{
-						order: formatOrderForDb(
-							order,
-							contactInformation,
-							paymentInformation,
-							completePayment.paymentIntent.id
-						),
-					},
+					formatOrderForDb(
+						order,
+						contactInformation,
+						paymentInformation,
+						completePayment.paymentIntent.id
+					),
 					{
 						headers: { Authorization: `Bearer ${userToken.token}` },
 					}

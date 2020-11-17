@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { getFormValues } from "redux-form";
 import each from "lodash/each";
 import NumberFormat from "react-number-format";
@@ -28,105 +29,119 @@ class OrderSummary extends React.Component {
 	};
 
 	renderDeliveryDetails = () => {
-		const {
-			address1,
-			address2,
-			city,
-			state,
-			zip,
-			firstNameDelivery,
-			lastNameDelivery,
-			emailDelivery,
-			phoneNumberDelivery,
-		} = this.props.contactInformation;
-		return (
-			<>
-				<Row>
-					<Col md={4}>
-						<p>Address</p>
-					</Col>
-				</Row>
-				<Row>
-					<Col>
-						<p>{address1}</p>
-					</Col>
-				</Row>
-				<Row>
-					<Col md={8}>
-						<p>{address2}</p>
-					</Col>
-				</Row>
-				<Row>
-					<Col>
-						<p>
-							{city}, {state} {zip}
-						</p>
-					</Col>
-				</Row>
-				<hr />
-				<Row>
-					<Col>
-						<p>Delivery Contact</p>
-					</Col>
-				</Row>
-				<Row>
-					<Col>
-						<p>
-							{firstNameDelivery} {lastNameDelivery}
-						</p>
-					</Col>
-				</Row>
-				<Row>
-					<Col>
-						<p>{emailDelivery}</p>
-					</Col>
-				</Row>
-				<Row>
-					<Col>
-						<p>{phoneNumberDelivery}</p>
-					</Col>
-				</Row>
-			</>
-		);
+		if (
+			this.props.location.pathname === "/checkout/payment" &&
+			this.props.contactInformation
+		) {
+			const {
+				address1,
+				address2,
+				city,
+				state,
+				zip,
+				firstNameDelivery,
+				lastNameDelivery,
+				emailDelivery,
+				phoneNumberDelivery,
+			} = this.props.contactInformation;
+			return (
+				<>
+					<Row>
+						<Col md={4}>
+							<p>Address</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<p>{address1}</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col md={8}>
+							<p>{address2}</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<p>
+								{city}, {state} {zip}
+							</p>
+						</Col>
+					</Row>
+					<hr />
+					<Row>
+						<Col>
+							<p>Delivery Contact</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<p>
+								{firstNameDelivery} {lastNameDelivery}
+							</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<p>{emailDelivery}</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<p>{phoneNumberDelivery}</p>
+						</Col>
+					</Row>
+				</>
+			);
+		} else {
+			return null;
+		}
 	};
 
 	renderContactDetails = () => {
-		const {
-			firstName,
-			lastName,
-			email,
-			phoneNumber,
-		} = this.props.contactInformation;
-		return (
-			<>
-				<Row>
-					<Col md={4}>
-						<p>Name</p>
-					</Col>
-					<Col md={8} className="shoppingCartItemPrice">
-						<p>
-							{firstName} {lastName}
-						</p>
-					</Col>
-				</Row>
-				<Row>
-					<Col md={4}>
-						<p>Email</p>
-					</Col>
-					<Col md={8} className="shoppingCartItemPrice">
-						<p>{email}</p>
-					</Col>
-				</Row>
-				<Row>
-					<Col md={5}>
-						<p>Phone Number</p>
-					</Col>
-					<Col md={7} className="shoppingCartItemPrice">
-						<p>{phoneNumber}</p>
-					</Col>
-				</Row>
-			</>
-		);
+		if (
+			this.props.location.pathname === "/checkout/payment" &&
+			this.props.contactInformatio
+		) {
+			const {
+				firstName,
+				lastName,
+				email,
+				phoneNumber,
+			} = this.props.contactInformation;
+			return (
+				<>
+					<Row>
+						<Col md={4}>
+							<p>Name</p>
+						</Col>
+						<Col md={8} className="shoppingCartItemPrice">
+							<p>
+								{firstName} {lastName}
+							</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col md={4}>
+							<p>Email</p>
+						</Col>
+						<Col md={8} className="shoppingCartItemPrice">
+							<p>{email}</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col md={5}>
+							<p>Phone Number</p>
+						</Col>
+						<Col md={7} className="shoppingCartItemPrice">
+							<p>{phoneNumber}</p>
+						</Col>
+					</Row>
+				</>
+			);
+		} else {
+			return null;
+		}
 	};
 
 	renderCalculatedPrice = (orderItem) => {
@@ -266,6 +281,7 @@ class OrderSummary extends React.Component {
 	};
 
 	render() {
+		console.log("With Router ", this.props);
 		return (
 			<div className="sticky-top orderSummaryOffset">
 				<Card>
@@ -282,13 +298,13 @@ class OrderSummary extends React.Component {
 						<Card.Subtitle className="mb-2 text-muted">
 							Contact Details
 						</Card.Subtitle>
-						{/*this.renderContactDetails()*/}
+						{this.renderContactDetails()}
 						<hr />
 						<Card.Subtitle className="mb-2 text-muted">
 							Delivery Details
 						</Card.Subtitle>
 						{this.renderOrderDate()}
-						{/*this.renderDeliveryDetails()*/}
+						{this.renderDeliveryDetails()}
 					</Card.Body>
 				</Card>
 			</div>
@@ -305,4 +321,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, {})(OrderSummary);
+export default withRouter(connect(mapStateToProps, {})(OrderSummary));

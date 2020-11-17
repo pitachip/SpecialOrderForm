@@ -3,7 +3,7 @@ import React from "react";
 //ui components
 import Container from "react-bootstrap/Container";
 //app components
-import OrderConfirmationForm from "../confirmation/confirmation-forms/orderConfirmationForm";
+import OrderConfirmation from "../confirmation/confirmation-components/orderConfirmation";
 import CheckoutProgressBar from "./checkoutProgressBar";
 //css
 import "./checkout-css/checkoutDetails.css";
@@ -47,7 +47,7 @@ class ConfirmationDetails extends React.Component {
 		return (
 			<Container className="checkoutDetailsContainer">
 				<CheckoutProgressBar progressBarData={progressBar} />
-				<OrderConfirmationForm />
+				<OrderConfirmation />
 			</Container>
 		);
 	}
