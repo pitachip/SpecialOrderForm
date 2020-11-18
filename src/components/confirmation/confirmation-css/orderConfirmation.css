@@ -15,6 +15,31 @@
 	margin-bottom: 10px !important;
 }
 
+.confirmationOrderDetailsRow {
+	margin-left: 0px !important;
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+}
+
 .deliveryDetails p {
 	margin: 0.1rem !important;
+}
+
+.confirmationCard {
+	width: 75% !important;
+}
+
+.orderConfirmationDot {
+	background: url("/assets/dot.png") repeat-x bottom;
+}
+.orderConfirmationTotalField {
+	background-color: #ffffff;
+}
+.orderConfirmationDotRepeater {
+	display: inline-block;
+}
+
+.orderConfirmationTotalColumnPadding {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
 }

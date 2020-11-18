@@ -14,7 +14,7 @@ class ConfirmationDeliveryDetails extends React.Component {
 					<Header as="h3">Delivery Details</Header>
 				</Grid.Row>
 				<Grid.Row columns={2} className="confirmationDeliveryDetailsRow">
-					<Grid.Column>
+					<Grid.Column textAlign="center">
 						<Header as="h5">Delivery Contact</Header>
 						<div className="deliveryDetails">
 							<p>Rend Alsaadi</p>
@@ -22,7 +22,7 @@ class ConfirmationDeliveryDetails extends React.Component {
 							<p>alsaadirend@gmail.com</p>
 						</div>
 					</Grid.Column>
-					<Grid.Column>
+					<Grid.Column textAlign="center">
 						<Header as="h5">Delivery Address</Header>
 						<div className="deliveryDetails">
 							<p>1600 N Broad Street</p>
