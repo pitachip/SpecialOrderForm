@@ -281,7 +281,6 @@ class OrderSummary extends React.Component {
 	};
 
 	render() {
-		console.log("With Router ", this.props);
 		return (
 			<div className="sticky-top orderSummaryOffset">
 				<Card>

@@ -82,7 +82,6 @@ export const formatOrderForDb = (
 	paymentInformation,
 	stripePaymentIntentId
 ) => {
-	console.log("Stripe Payment Intent: ", stripePaymentIntentId);
 	let orderItemsArray = [];
 	each(order.orderItems, (orderItem) => {
 		orderItemsArray.push({
@@ -90,6 +89,7 @@ export const formatOrderForDb = (
 			basePrice: orderItem.basePrice,
 			modifiers: orderItem.modifiers,
 			quantity: orderItem.quantity,
+			specialInstructions: orderItem.specialInstructions,
 		});
 	});
 	let formattedOrder = {
@@ -135,6 +135,12 @@ export const formatOrderForDb = (
 			orderDate: order.orderDetails.orderDate,
 			shippingMethod: order.orderDetails.shippingMethod,
 			specialInstructions: order.orderDetails.specialInstructions,
+		},
+		orderTotals: {
+			subTotal: order.totals.subTotal,
+			tax: order.totals.tax,
+			delivery: order.totals.delivery,
+			total: order.totals.total,
 		},
 	};
 

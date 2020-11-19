@@ -7,14 +7,11 @@ import "../confirmation-css/orderConfirmation.css";
 
 class ConfirmationOrderTotals extends React.Component {
 	render() {
-		const { orderTotals } = this.props;
+		const { subTotal, tax, delivery, total } = this.props.orderTotals;
 		return (
 			<Grid container>
 				<Grid.Row className="confirmationDeliveryDetailsRow" columns={2}>
-					<Grid.Column
-						width={8}
-						className="orderConfirmationTotalColumnPadding"
-					>
+					<Grid.Column className="orderConfirmationTotalColumnPadding">
 						<div className="orderConfirmationDot">
 							<p>
 								<span className="orderConfirmationTotalField">Subtotal</span>
@@ -22,21 +19,18 @@ class ConfirmationOrderTotals extends React.Component {
 						</div>
 					</Grid.Column>
 					<Grid.Column
-						textAlign="orderConfirmationTotalColumnPadding right"
-						width={4}
+						className="orderConfirmationTotalColumnPadding"
+						textAlign="left"
 					>
-						<div className="orderConfirmationDot">
+						<div>
 							<p>
-								<span className="orderConfirmationTotalField">$7.99</span>
+								<span className="orderConfirmationTotalField">${subTotal}</span>
 							</p>
 						</div>
 					</Grid.Column>
 				</Grid.Row>
 				<Grid.Row className="confirmationDeliveryDetailsRow" columns={2}>
-					<Grid.Column
-						width={8}
-						className="orderConfirmationTotalColumnPadding"
-					>
+					<Grid.Column className="orderConfirmationTotalColumnPadding">
 						<div className="orderConfirmationDot">
 							<p>
 								<span className="orderConfirmationTotalField">Taxes</span>
@@ -44,21 +38,18 @@ class ConfirmationOrderTotals extends React.Component {
 						</div>
 					</Grid.Column>
 					<Grid.Column
-						textAlign="orderConfirmationTotalColumnPadding right"
-						width={4}
+						className="orderConfirmationTotalColumnPadding"
+						textAlign="left"
 					>
-						<div className="orderConfirmationDot">
+						<div>
 							<p>
-								<span className="orderConfirmationTotalField">$7.99</span>
+								<span className="orderConfirmationTotalField">${tax}</span>
 							</p>
 						</div>
 					</Grid.Column>
 				</Grid.Row>
 				<Grid.Row className="confirmationDeliveryDetailsRow" columns={2}>
-					<Grid.Column
-						width={8}
-						className="orderConfirmationTotalColumnPadding"
-					>
+					<Grid.Column className="orderConfirmationTotalColumnPadding">
 						<div className="orderConfirmationDot">
 							<p>
 								<span className="orderConfirmationTotalField">Delivery</span>
@@ -66,21 +57,18 @@ class ConfirmationOrderTotals extends React.Component {
 						</div>
 					</Grid.Column>
 					<Grid.Column
-						textAlign="orderConfirmationTotalColumnPadding right"
-						width={4}
+						className="orderConfirmationTotalColumnPadding"
+						textAlign="left"
 					>
-						<div className="orderConfirmationDot">
+						<div>
 							<p>
-								<span className="orderConfirmationTotalField">$25</span>
+								<span className="orderConfirmationTotalField">${delivery}</span>
 							</p>
 						</div>
 					</Grid.Column>
 				</Grid.Row>
 				<Grid.Row className="confirmationDeliveryDetailsRow" columns={2}>
-					<Grid.Column
-						width={8}
-						className="orderConfirmationTotalColumnPadding"
-					>
+					<Grid.Column className="orderConfirmationTotalColumnPadding">
 						<div className="orderConfirmationDot">
 							<p>
 								<span className="orderConfirmationTotalField">
@@ -90,13 +78,13 @@ class ConfirmationOrderTotals extends React.Component {
 						</div>
 					</Grid.Column>
 					<Grid.Column
-						textAlign="orderConfirmationTotalColumnPadding right"
-						width={4}
+						className="orderConfirmationTotalColumnPadding"
+						textAlign="left"
 					>
-						<div className="orderConfirmationDot">
+						<div>
 							<p>
 								<span className="orderConfirmationTotalField">
-									<b>$25.99</b>
+									<b>${total}</b>
 								</span>
 							</p>
 						</div>

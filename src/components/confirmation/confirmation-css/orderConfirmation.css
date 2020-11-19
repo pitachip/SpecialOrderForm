@@ -25,6 +25,10 @@
 	margin: 0.1rem !important;
 }
 
+.orderDetails p {
+	margin-left: 15px !important;
+}
+
 .confirmationCard {
 	width: 75% !important;
 }
