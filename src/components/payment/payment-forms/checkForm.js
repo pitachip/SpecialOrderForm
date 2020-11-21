@@ -2,19 +2,99 @@
 import React from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field, getFormValues } from "redux-form";
+import remove from "lodash/remove";
 //ui components
 import { Form } from "semantic-ui-react";
 //app components
 import CheckDisclaimer from "../payment-components/checkDisclaimer";
 import { paymentCheckboxField, paymentInputField } from "./paymentFormFields";
 import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
+import SubmissionError from "../payment-components/submissionError";
 //actions
-import { updateOrderTotals } from "../../../actions";
+import {
+	updateOrderTotals,
+	createNewInvoice,
+	createSpecialOrder,
+} from "../../../actions";
+//utils
+import { formatOrderForDb } from "../../../utils/orderCheckoutUtils";
+import { history } from "../../../utils/history";
 
 class CheckForm extends React.Component {
-	submitOrderClicked = (e) => {
+	state = {
+		disableSubmitButton: true,
+		submitting: false,
+		submissionError: { header: "", message: "", hidden: true },
+	};
+
+	submitOrderClicked = async (e) => {
 		e.preventDefault();
-		console.log("Check order submitted");
+		this.setState({ submitting: true });
+		const {
+			//data
+			contactInformation,
+			paymentInformation,
+			orderItems,
+			orderTotals,
+			order,
+			//methods
+			createSpecialOrder,
+			createNewInvoice,
+		} = this.props;
+
+		try {
+			//Adding tax and delivery as line items to the invoice
+			orderItems.push(
+				{
+					basePrice: orderTotals.delivery * 100,
+					quantity: 1,
+					menuItem: "Delivery",
+				},
+				{
+					basePrice: orderTotals.tax * 100,
+					quantity: 1,
+					menuItem: "Tax",
+				}
+			);
+			//create the invoice
+			const newInvoice = await createNewInvoice(contactInformation, orderItems);
+			//format order for db
+			const formattedOrder = formatOrderForDb(
+				order,
+				contactInformation,
+				paymentInformation,
+				"",
+				newInvoice.data
+			);
+			//save order to the db
+			const newSpecialOrder = await createSpecialOrder(formattedOrder);
+
+			//remove delivery and tax from the object so that it renders properly on the confirmation page
+			const removeDeliveryAndTax = remove(
+				newSpecialOrder.data.orderItems,
+				(orderItem) => {
+					console.log(orderItem);
+					return (
+						orderItem.menuItem !== "Delivery" && orderItem.menuItem !== "Tax"
+					);
+				}
+			);
+			newSpecialOrder.data.orderItems = removeDeliveryAndTax;
+
+			history.push("/checkout/confirmation", {
+				orderConfirmation: newSpecialOrder,
+			});
+		} catch (error) {
+			console.log("Error caught in Order Submission: ", error);
+			this.setState({
+				submissionError: {
+					header: "Error!",
+					message: error,
+					hidden: false,
+				},
+				submitting: false,
+			});
+		}
 	};
 	taxExemptToggled = (toggle, totals) => {
 		if (toggle) {
@@ -44,6 +124,7 @@ class CheckForm extends React.Component {
 		}
 	};
 	render() {
+		const { submissionError } = this.state;
 		const { purchaseOrder, taxExempt } = this.props.paymentInformation;
 		const totals = this.props.orderTotals;
 		return (
@@ -79,6 +160,11 @@ class CheckForm extends React.Component {
 							placeholder="Tax Exempt ID# 141232"
 						/>
 					) : null}
+					<SubmissionError
+						errorHeader={submissionError.header}
+						errorMessage={submissionError.message}
+						hidden={submissionError.hidden}
+					/>
 					<CheckoutNavigation
 						backNav="/checkout/details"
 						backText="Contact"
@@ -87,6 +173,8 @@ class CheckForm extends React.Component {
 						disableForwardButton={
 							this.props.paymentInformation.paymentType === "" ? true : false
 						}
+						submitting={this.state.submitting}
+						disableBackButton={this.state.submitting}
 					/>
 				</Form>
 			</>
@@ -96,13 +184,20 @@ class CheckForm extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		order: state.order,
 		orderTotals: state.order.totals,
+		orderItems: state.order.orderItems,
 		menuConfig: state.menu.menuConfig,
 		paymentInformation: getFormValues("paymentInformationForm")(state),
+		contactInformation: getFormValues("checkoutContactForm")(state),
 	};
 };
 
-export default connect(mapStateToProps, { updateOrderTotals })(
+export default connect(mapStateToProps, {
+	updateOrderTotals,
+	createNewInvoice,
+	createSpecialOrder,
+})(
 	reduxForm({
 		form: "paymentInformationForm",
 		destroyOnUnmount: false,

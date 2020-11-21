@@ -1,5 +1,6 @@
 //libs
 import React from "react";
+import NumberFormat from "react-number-format";
 //ui components
 import { Grid } from "semantic-ui-react";
 //css
@@ -24,7 +25,16 @@ class ConfirmationOrderTotals extends React.Component {
 					>
 						<div>
 							<p>
-								<span className="orderConfirmationTotalField">${subTotal}</span>
+								<span className="orderConfirmationTotalField">
+									<NumberFormat
+										value={subTotal}
+										displayType={"text"}
+										thousandSeparator={true}
+										prefix={"$"}
+										decimalScale={2}
+										fixedDecimalScale="true"
+									/>
+								</span>
 							</p>
 						</div>
 					</Grid.Column>
@@ -43,7 +53,16 @@ class ConfirmationOrderTotals extends React.Component {
 					>
 						<div>
 							<p>
-								<span className="orderConfirmationTotalField">${tax}</span>
+								<span className="orderConfirmationTotalField">
+									<NumberFormat
+										value={tax}
+										displayType={"text"}
+										thousandSeparator={true}
+										prefix={"$"}
+										decimalScale={2}
+										fixedDecimalScale="true"
+									/>
+								</span>
 							</p>
 						</div>
 					</Grid.Column>
@@ -62,7 +81,16 @@ class ConfirmationOrderTotals extends React.Component {
 					>
 						<div>
 							<p>
-								<span className="orderConfirmationTotalField">${delivery}</span>
+								<span className="orderConfirmationTotalField">
+									<NumberFormat
+										value={delivery}
+										displayType={"text"}
+										thousandSeparator={true}
+										prefix={"$"}
+										decimalScale={2}
+										fixedDecimalScale="true"
+									/>
+								</span>
 							</p>
 						</div>
 					</Grid.Column>
@@ -84,7 +112,16 @@ class ConfirmationOrderTotals extends React.Component {
 						<div>
 							<p>
 								<span className="orderConfirmationTotalField">
-									<b>${total}</b>
+									<b>
+										<NumberFormat
+											value={total}
+											displayType={"text"}
+											thousandSeparator={true}
+											prefix={"$"}
+											decimalScale={2}
+											fixedDecimalScale="true"
+										/>
+									</b>
 								</span>
 							</p>
 						</div>

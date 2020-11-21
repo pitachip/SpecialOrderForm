@@ -80,7 +80,8 @@ export const formatOrderForDb = (
 	order,
 	customerInformation,
 	paymentInformation,
-	stripePaymentIntentId
+	invoicePaymentDetails,
+	creditCardPaymentDetails
 ) => {
 	let orderItemsArray = [];
 	each(order.orderItems, (orderItem) => {
@@ -127,7 +128,8 @@ export const formatOrderForDb = (
 			purchaseOrderNumber: paymentInformation.purchaseOrderNumber
 				? paymentInformation.purchaseOrderNumber
 				: "",
-			stripePaymentIntentId: stripePaymentIntentId ? stripePaymentIntentId : "",
+			invoicePaymentDetails,
+			creditCardPaymentDetails,
 		},
 		orderItems: orderItemsArray,
 		orderDetails: {

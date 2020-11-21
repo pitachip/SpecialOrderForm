@@ -4,6 +4,7 @@ import React from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 //utils
 import { history } from "../../utils/history";
 //css
@@ -19,23 +20,43 @@ class CheckoutNavigation extends React.Component {
 			forwardText,
 			backText,
 			disableForwardButton,
+			disableBackButton,
 			forwardButtonClicked,
+			submitting,
 		} = this.props;
 		return (
 			<div className="checkoutNavigationBottomMargin">
 				<Row>
 					<Col>
-						<Button onClick={this.backButtonClicked}>{backText}</Button>
+						<Button
+							onClick={this.backButtonClicked}
+							disabled={disableBackButton}
+						>
+							{backText}
+						</Button>
 					</Col>
 					<Col>
-						<Button
-							className="float-right"
-							type="submit"
-							disabled={disableForwardButton}
-							onClick={(e) => forwardButtonClicked(e)}
-						>
-							{forwardText}
-						</Button>
+						{!submitting ? (
+							<Button
+								className="float-right"
+								type="submit"
+								disabled={disableForwardButton}
+								onClick={(e) => forwardButtonClicked(e)}
+							>
+								{forwardText}
+							</Button>
+						) : (
+							<Button disabled className="float-right">
+								<Spinner
+									as="span"
+									animation="border"
+									size="sm"
+									role="status"
+									aria-hidden="true"
+								/>
+								<span> Submitting Order...</span>
+							</Button>
+						)}
 					</Col>
 				</Row>
 			</div>
