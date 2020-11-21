@@ -35,7 +35,6 @@ class OrderConfirmation extends React.Component {
 			orderTotals,
 			paymentInformation,
 		} = this.props.location.state.orderConfirmation.data;
-		console.log(this.props.location.state.orderConfirmation.data);
 		return (
 			<Card fluid color="green" centered className="confirmationCard">
 				<Card.Content>

@@ -7,9 +7,53 @@ import { Grid, Header, Icon } from "semantic-ui-react";
 import "../confirmation-css/orderConfirmation.css";
 
 class ConfirmationPaymentDetails extends React.Component {
-	/**
-	 * Create a switch statement to render the type of payment that was processed
-	 */
+	renderInvoiceInformation = (invoiceInformation) => {
+		const {
+			amount_due,
+			due_date,
+			invoice_pdf,
+			hosted_invoice_url,
+		} = invoiceInformation;
+		return (
+			<>
+				<Grid.Row className="confirmationDeliveryDetailsRow" columns={1}>
+					<Grid.Column textAlign="left">
+						<Header as="h5">Invoice</Header>
+						<div className="deliveryDetails">
+							<p>
+								Amount Due:{" "}
+								<NumberFormat
+									value={amount_due / 100}
+									displayType={"text"}
+									thousandSeparator={true}
+									prefix={"$"}
+									decimalScale={2}
+									fixedDecimalScale="true"
+								/>
+							</p>
+							<p>Due On: {new Date(due_date * 1000).toDateString()}</p>
+							<p>
+								<a href={invoice_pdf} target="_blank" rel="noopener noreferrer">
+									<Icon name="file pdf outline" size="large" link />
+									Invoice PDF
+								</a>
+							</p>
+							<p>
+								<a
+									href={hosted_invoice_url}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<Icon name="payment" size="large" link />
+									Pay For Invoice
+								</a>
+							</p>
+						</div>
+					</Grid.Column>
+				</Grid.Row>
+			</>
+		);
+	};
 	renderCreditCardInformation = (creditCardInformation) => {
 		const {
 			payment_method_details,
@@ -41,7 +85,7 @@ class ConfirmationPaymentDetails extends React.Component {
 									fixedDecimalScale="true"
 								/>
 							</p>
-							<a href={receipt_url} target="_blank">
+							<a href={receipt_url} target="_blank" rel="noopener noreferrer">
 								<Icon name="file alternate outline" size="large" link />
 								Digital Receipt
 							</a>
@@ -51,6 +95,24 @@ class ConfirmationPaymentDetails extends React.Component {
 			</>
 		);
 	};
+	renderPaymentMethod = (paymentInformation) => {
+		switch (paymentInformation.paymentType) {
+			case "cc":
+				return this.renderCreditCardInformation(
+					paymentInformation.creditCardPaymentDetails.charges.data[0]
+				);
+			case "check":
+				return this.renderInvoiceInformation(
+					paymentInformation.invoicePaymentDetails
+				);
+			case "univ":
+				return this.renderInvoiceInformation(
+					paymentInformation.invoicePaymentDetails
+				);
+			default:
+				return null;
+		}
+	};
 	render() {
 		const { paymentInformation } = this.props;
 		return (
@@ -58,23 +120,10 @@ class ConfirmationPaymentDetails extends React.Component {
 				<Grid.Row className="confirmationDeliveryDetailsRow">
 					<Header as="h3">Payment Details</Header>
 				</Grid.Row>
-				{this.renderCreditCardInformation(
-					paymentInformation.creditCardPaymentDetails.charges.data[0]
-				)}
+				{this.renderPaymentMethod(paymentInformation)}
 			</Grid>
 		);
 	}
 }
 
 export default ConfirmationPaymentDetails;
-
-/**
- * 									<NumberFormat
-										value={this.props.totals.subTotal}
-										displayType={"text"}
-										thousandSeparator={true}
-										prefix={"$"}
-										decimalScale={2}
-										fixedDecimalScale="true"
-									/>
- */

@@ -63,8 +63,8 @@ class CheckForm extends React.Component {
 				order,
 				contactInformation,
 				paymentInformation,
-				"",
-				newInvoice.data
+				newInvoice.data,
+				""
 			);
 			//save order to the db
 			const newSpecialOrder = await createSpecialOrder(formattedOrder);
@@ -139,7 +139,7 @@ class CheckForm extends React.Component {
 					/>
 					{purchaseOrder ? (
 						<Field
-							name="poNumber"
+							name="purchaseOrderNumber"
 							component={paymentInputField}
 							label="Purchase Order Number"
 							placeholder="PO#15677332"
@@ -154,7 +154,7 @@ class CheckForm extends React.Component {
 					/>
 					{taxExempt ? (
 						<Field
-							name="taxExemptNumber"
+							name="taxExemptId"
 							component={paymentInputField}
 							label="Tax Exempt EIN"
 							placeholder="Tax Exempt ID# 141232"
