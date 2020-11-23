@@ -2,6 +2,8 @@
 import React from "react";
 //ui components
 import { Form, Checkbox } from "semantic-ui-react";
+//css
+import "../../checkout-components/checkout-css/checkoutForm.css";
 
 export const paymentCheckboxField = ({ input, type, label }) => {
 	return (
@@ -17,7 +19,13 @@ export const paymentCheckboxField = ({ input, type, label }) => {
 	);
 };
 
-export const paymentInputField = ({ input, label, placeholder }) => {
+export const paymentInputField = ({
+	input,
+	label,
+	placeholder,
+	meta,
+	errorMessagePrefix,
+}) => {
 	return (
 		<>
 			<Form.Field>
@@ -26,8 +34,23 @@ export const paymentInputField = ({ input, label, placeholder }) => {
 					placeholder={placeholder}
 					onChange={input.onChange}
 					value={input.value}
+					className={`${
+						meta.touched && !meta.valid ? "inputValidationError" : ""
+					}`}
 				/>
+				{meta.touched && !meta.valid ? (
+					<span className="validationErrorMessage">
+						{errorMessagePrefix}
+						{meta.error}
+					</span>
+				) : null}
 			</Form.Field>
 		</>
 	);
+};
+
+export const required = (value) => {
+	if (!value || value === "") {
+		return " is required";
+	}
 };

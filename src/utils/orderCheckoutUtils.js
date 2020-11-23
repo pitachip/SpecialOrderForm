@@ -128,6 +128,9 @@ export const formatOrderForDb = (
 			purchaseOrderNumber: paymentInformation.purchaseOrderNumber
 				? paymentInformation.purchaseOrderNumber
 				: "",
+			universityMoneyAccount: paymentInformation.universityMoneyAccount
+				? paymentInformation.universityMoneyAccount
+				: "",
 			invoicePaymentDetails,
 			creditCardPaymentDetails,
 		},

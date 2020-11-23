@@ -57,7 +57,11 @@ class CheckForm extends React.Component {
 				}
 			);
 			//create the invoice
-			const newInvoice = await createNewInvoice(contactInformation, orderItems);
+			const newInvoice = await createNewInvoice(
+				contactInformation,
+				orderItems,
+				paymentInformation
+			);
 			//format order for db
 			const formattedOrder = formatOrderForDb(
 				order,
@@ -66,6 +70,7 @@ class CheckForm extends React.Component {
 				newInvoice.data,
 				""
 			);
+
 			//save order to the db
 			const newSpecialOrder = await createSpecialOrder(formattedOrder);
 
@@ -73,7 +78,6 @@ class CheckForm extends React.Component {
 			const removeDeliveryAndTax = remove(
 				newSpecialOrder.data.orderItems,
 				(orderItem) => {
-					console.log(orderItem);
 					return (
 						orderItem.menuItem !== "Delivery" && orderItem.menuItem !== "Tax"
 					);

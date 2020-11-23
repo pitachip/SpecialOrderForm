@@ -1,9 +1,11 @@
 import pitachip from "../apis/pitachip";
 import { getUserToken } from "../utils/authUtils";
 
-export const createNewInvoice = (contactInformation, orderItems) => async (
-	dispatch
-) => {
+export const createNewInvoice = (
+	contactInformation,
+	orderItems,
+	paymentInformation
+) => async (dispatch) => {
 	try {
 		const userToken = await getUserToken();
 		const createInvoice = await pitachip.post(
@@ -11,6 +13,7 @@ export const createNewInvoice = (contactInformation, orderItems) => async (
 			{
 				contactInformation,
 				orderItems,
+				paymentInformation,
 			},
 			{
 				headers: { Authorization: `Bearer ${userToken.token}` },
