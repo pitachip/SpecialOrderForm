@@ -30,8 +30,7 @@ class UnivForm extends React.Component {
 		submissionError: { header: "", message: "", hidden: true },
 	};
 
-	submitOrderClicked = async (e) => {
-		e.preventDefault();
+	submitOrderClicked = async () => {
 		if (this.props.valid) {
 			this.setState({ submitting: true });
 			const {
@@ -63,7 +62,8 @@ class UnivForm extends React.Component {
 				//create the invoice
 				const newInvoice = await createNewInvoice(
 					contactInformation,
-					orderItems
+					orderItems,
+					paymentInformation
 				);
 				//format order for db
 				const formattedOrder = formatOrderForDb(
@@ -131,12 +131,13 @@ class UnivForm extends React.Component {
 		}
 	};
 	render() {
+		const { handleSubmit } = this.props;
 		const { taxExempt } = this.props.paymentInformation;
 		const totals = this.props.orderTotals;
 		return (
 			<>
 				<UnivDisclaimer />
-				<Form onSubmit={(e) => this.submitOrderClicked(e)}>
+				<Form onSubmit={handleSubmit(this.submitOrderClicked)}>
 					<Field
 						name="universityMoneyAccount"
 						component={paymentInputField}
