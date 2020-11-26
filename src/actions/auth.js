@@ -116,11 +116,13 @@ export const sendPasswordResetEmail = (email) => async (dispatch) => {
 	}
 };
 
-export const authStateChanged = (user, authLoadingFlag) => (dispatch) => {
+export const authStateChanged = (user, authLoadingFlag) => async (dispatch) => {
+	const token = await auth.currentUser.getIdToken();
 	dispatch({
 		type: "SET_USER",
 		payload: {
 			user: user,
+			token: token,
 			authLoading: authLoadingFlag,
 			errorMessage: "",
 			showAuthErrorMessage: false,

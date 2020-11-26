@@ -39,7 +39,9 @@ class SpecialOrder extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { specialOrder: state.specialOrder };
+	return {
+		specialOrder: state.specialOrder,
+	};
 };
 
 export default connect(mapStateToProps, {

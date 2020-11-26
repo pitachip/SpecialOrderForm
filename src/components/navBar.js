@@ -14,8 +14,8 @@ import AuthModal from "./auth-components/auth-modals/authModal";
 class NavBar extends React.Component {
 	state = { showModal: false };
 
-	componentDidMount() {
-		auth.onAuthStateChanged((user) => {
+	async componentDidMount() {
+		auth.onIdTokenChanged((user) => {
 			if (user) {
 				this.props.authStateChanged(user, false);
 			} else {
