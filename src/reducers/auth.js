@@ -1,6 +1,5 @@
 const INITIAL_STATE = {
 	user: null,
-	token: null,
 	authLoading: true,
 	authForm: "",
 	showAuthMessage: false,
@@ -14,7 +13,6 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				user: action.payload.user,
-				token: action.payload.token,
 				authLoading: action.payload.authLoading,
 				authMessage: action.payload.errorMessage,
 				showAuthMessage: action.payload.errorMessage,
