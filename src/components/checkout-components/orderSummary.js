@@ -39,56 +39,30 @@ class OrderSummary extends React.Component {
 				city,
 				state,
 				zip,
-				firstNameDelivery,
-				lastNameDelivery,
-				emailDelivery,
-				phoneNumberDelivery,
+				deliveryInstructions,
 			} = this.props.contactInformation;
 			return (
 				<>
+					<hr />
+					<Card.Subtitle className="mb-2 text-muted">
+						Delivery Details
+					</Card.Subtitle>
 					<Row>
-						<Col md={4}>
-							<p>Address</p>
-						</Col>
-					</Row>
-					<Row>
-						<Col>
-							<p>{address1}</p>
-						</Col>
-					</Row>
-					<Row>
-						<Col md={8}>
-							<p>{address2}</p>
-						</Col>
-					</Row>
-					<Row>
-						<Col>
+						<Col md={6} className="text-center">
 							<p>
+								<u>Delivery Address</u>
+							</p>
+							<p className="contactDetails">{address1}</p>
+							{address2 ? <p className="contactDetails">{address2}</p> : null}
+							<p className="contactDetails">
 								{city}, {state} {zip}
 							</p>
 						</Col>
-					</Row>
-					<hr />
-					<Row>
-						<Col>
-							<p>Delivery Contact</p>
-						</Col>
-					</Row>
-					<Row>
-						<Col>
+						<Col md={6} className="text-center">
 							<p>
-								{firstNameDelivery} {lastNameDelivery}
+								<u>Delivery Notes</u>
 							</p>
-						</Col>
-					</Row>
-					<Row>
-						<Col>
-							<p>{emailDelivery}</p>
-						</Col>
-					</Row>
-					<Row>
-						<Col>
-							<p>{phoneNumberDelivery}</p>
+							<p className="contactDetails">{deliveryInstructions}</p>
 						</Col>
 					</Row>
 				</>
@@ -101,40 +75,44 @@ class OrderSummary extends React.Component {
 	renderContactDetails = () => {
 		if (
 			this.props.location.pathname === "/checkout/payment" &&
-			this.props.contactInformatio
+			this.props.contactInformation
 		) {
 			const {
 				firstName,
 				lastName,
 				email,
 				phoneNumber,
+				firstNameDelivery,
+				lastNameDelivery,
+				emailDelivery,
+				phoneNumberDelivery,
 			} = this.props.contactInformation;
 			return (
 				<>
+					<hr />
+					<Card.Subtitle className="mb-2 text-muted">
+						Contact Details
+					</Card.Subtitle>
 					<Row>
-						<Col md={4}>
-							<p>Name</p>
-						</Col>
-						<Col md={8} className="shoppingCartItemPrice">
+						<Col md={6} className="text-center">
 							<p>
+								<u>Primary Contact</u>
+							</p>
+							<p className="contactDetails">
 								{firstName} {lastName}
 							</p>
+							<p className="contactDetails">{email}</p>
+							<p className="contactDetails">{phoneNumber}</p>
 						</Col>
-					</Row>
-					<Row>
-						<Col md={4}>
-							<p>Email</p>
-						</Col>
-						<Col md={8} className="shoppingCartItemPrice">
-							<p>{email}</p>
-						</Col>
-					</Row>
-					<Row>
-						<Col md={5}>
-							<p>Phone Number</p>
-						</Col>
-						<Col md={7} className="shoppingCartItemPrice">
-							<p>{phoneNumber}</p>
+						<Col md={6} className="text-center">
+							<p>
+								<u>Delivery Contact</u>
+							</p>
+							<p className="contactDetails">
+								{firstNameDelivery} {lastNameDelivery}
+							</p>
+							<p className="contactDetails">{emailDelivery}</p>
+							<p className="contactDetails">{phoneNumberDelivery}</p>
 						</Col>
 					</Row>
 				</>
@@ -166,14 +144,12 @@ class OrderSummary extends React.Component {
 		return (
 			<>
 				<Row>
-					<Col md={4}>
-						<p>Order Date</p>
-					</Col>
-					<Col md={8} className="shoppingCartItemPrice">
-						<p>{formattedDate}</p>
+					<Col>
+						<p className="shoppingCartTotalPrice">
+							Order Date:&nbsp;{formattedDate}
+						</p>
 					</Col>
 				</Row>
-				<hr />
 			</>
 		);
 	};
@@ -199,10 +175,10 @@ class OrderSummary extends React.Component {
 					</Col>
 				</Row>
 				<Row>
-					<Col md={8}>
+					<Col md={6}>
 						<p>Tax</p>
 					</Col>
-					<Col md={4} className="shoppingCartTotalPrice">
+					<Col md={6} className="shoppingCartTotalPrice">
 						{this.props.totals.tax > 0 ? (
 							<p>
 								<NumberFormat
@@ -285,7 +261,10 @@ class OrderSummary extends React.Component {
 			<div className="sticky-top orderSummaryOffset">
 				<Card>
 					<Card.Header>
-						My Order: {this.getNumberOfItemsOrdered()} Items
+						<Row>
+							<Col md={4}>My Order: {this.getNumberOfItemsOrdered()} Items</Col>
+							<Col md={8}>{this.renderOrderDate()}</Col>
+						</Row>
 					</Card.Header>
 					<Card.Body>
 						<Card.Subtitle className="mb-2 text-muted">Items</Card.Subtitle>
@@ -293,16 +272,7 @@ class OrderSummary extends React.Component {
 						<hr />
 						<Card.Subtitle className="mb-2 text-muted">Totals</Card.Subtitle>
 						{this.renderShoppingCartTotals(this.props.totals)}
-						<hr />
-						<Card.Subtitle className="mb-2 text-muted">
-							Contact Details
-						</Card.Subtitle>
 						{this.renderContactDetails()}
-						<hr />
-						<Card.Subtitle className="mb-2 text-muted">
-							Delivery Details
-						</Card.Subtitle>
-						{this.renderOrderDate()}
 						{this.renderDeliveryDetails()}
 					</Card.Body>
 				</Card>

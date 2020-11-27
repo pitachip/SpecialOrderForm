@@ -17,6 +17,10 @@ class PaymentInformationForm extends React.Component {
 		this.stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 	}
 
+	componentDidMount() {
+		window.scrollTo(0, 0);
+	}
+
 	renderPaymentForm = (paymentType) => {
 		switch (paymentType) {
 			case "cc":

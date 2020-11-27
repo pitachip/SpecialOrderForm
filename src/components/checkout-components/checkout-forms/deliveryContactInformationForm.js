@@ -144,7 +144,7 @@ const DeliveryContactInformationForm = ({ contactInformation, change }) => {
 						component={deliveryContactInformationInput}
 						type="text"
 						placeholder="First"
-						errorMessagePrefix="First"
+						errorMessagePrefix="First name"
 						validate={required}
 						sameAsAbove={sameAsAbove}
 					/>
@@ -156,7 +156,7 @@ const DeliveryContactInformationForm = ({ contactInformation, change }) => {
 						component={deliveryContactInformationInput}
 						type="text"
 						placeholder="Last"
-						errorMessagePrefix="Last"
+						errorMessagePrefix="Last name"
 						validate={required}
 						sameAsAbove={sameAsAbove}
 					/>

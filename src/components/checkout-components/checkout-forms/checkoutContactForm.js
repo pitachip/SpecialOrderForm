@@ -15,6 +15,10 @@ import CustomerInformationForm from "./customerInformationForm";
 import DeliveryContactInformationForm from "./deliveryContactInformationForm";
 
 class CheckoutContactForm extends React.Component {
+	componentDidMount() {
+		window.scrollTo(0, 0);
+	}
+
 	handleForwardClick = () => {
 		if (this.props.valid) {
 			history.push("/checkout/payment");

@@ -33,7 +33,7 @@ class ConfirmationDetails extends React.Component {
 				completed: true,
 				disabled: false,
 				active: false,
-				description: "Enter your payment details",
+				description: "Enter your payment details and submit order",
 			},
 			{
 				icon: "flag checkered",
@@ -41,7 +41,7 @@ class ConfirmationDetails extends React.Component {
 				completed: false,
 				disabled: false,
 				active: true,
-				description: "Review and submit your order",
+				description: "Review your submitted order",
 			},
 		];
 		return (

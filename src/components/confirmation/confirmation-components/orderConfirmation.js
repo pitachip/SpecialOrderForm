@@ -17,6 +17,7 @@ import "../confirmation-css/orderConfirmation.css";
 
 class OrderConfirmation extends React.Component {
 	componentDidMount = async () => {
+		window.scrollTo(0, 0);
 		/**
 		 * Clear out the redux persist values and the redux form values
 		 */

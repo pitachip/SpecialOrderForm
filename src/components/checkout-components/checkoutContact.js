@@ -37,7 +37,7 @@ class CheckoutDetails extends React.Component {
 				completed: false,
 				disabled: true,
 				active: false,
-				description: "Enter your payment details",
+				description: "Enter your payment details and submit order",
 			},
 			{
 				icon: "flag checkered",
@@ -45,17 +45,17 @@ class CheckoutDetails extends React.Component {
 				completed: false,
 				disabled: true,
 				active: false,
-				description: "Review and submit your order",
+				description: "Review your submitted order",
 			},
 		];
 		return (
 			<Container className="checkoutDetailsContainer">
 				<CheckoutProgressBar progressBarData={progressBar} />
 				<Row>
-					<Col md={8}>
+					<Col md={6}>
 						<CheckoutContactForm />
 					</Col>
-					<Col md={4}>
+					<Col md={6}>
 						<OrderSummary />
 					</Col>
 				</Row>

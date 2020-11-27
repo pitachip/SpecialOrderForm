@@ -64,7 +64,17 @@ class CreditCardForm extends React.Component {
 		}
 	}
 
-	taxExemptToggled = (toggle, totals) => {
+	async componentDidUpdate(prevProps, prevState) {
+		const { createPaymentIntent, orderTotals } = this.props;
+		if (orderTotals !== prevProps.orderTotals) {
+			const paymentIntentSecret = await createPaymentIntent(
+				orderTotals.total * 100
+			);
+			this.setState({ paymentIntentSecret });
+		}
+	}
+
+	taxExemptToggled = async (toggle, totals) => {
 		if (toggle) {
 			let removeTaxFromTotal = totals;
 			//Weird that I had to format the object like this before sending or comp wouldnt update
@@ -190,7 +200,7 @@ class CreditCardForm extends React.Component {
 					/>
 					{taxExempt ? (
 						<Field
-							name="taxExemptNumber"
+							name="taxExemptId"
 							component={paymentInputField}
 							label="Tax Exempt EIN"
 							placeholder="Tax Exempt ID# 141232"

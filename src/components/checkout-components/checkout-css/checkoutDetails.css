@@ -10,6 +10,7 @@
 
 .orderSummaryOffset {
 	top: 6em;
+	z-index: 0 !important;
 }
 
 .shoppingCartTotalPrice {
@@ -19,4 +20,12 @@
 
 .checkoutNavigationBottomMargin {
 	margin-bottom: 50px;
+}
+
+.card-subtitle.h6 {
+	font-size: 1.25rem;
+}
+
+.contactDetails {
+	line-height: 0.5em;
 }

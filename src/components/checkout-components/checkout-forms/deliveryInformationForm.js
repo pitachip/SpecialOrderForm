@@ -158,7 +158,7 @@ const DeliveryInformationForm = () => {
 					/>
 				</Form.Group>
 			</Form.Row>
-			<Form.Group controlId="exampleForm.ControlTextarea1">
+			<Form.Group>
 				<Form.Label>Delivery Notes/Instructions</Form.Label>
 				<Field
 					name="deliveryInstructions"
