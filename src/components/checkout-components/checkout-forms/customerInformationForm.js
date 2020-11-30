@@ -103,6 +103,9 @@ const CustomerInformationForm = () => {
 						errorMessagePrefix="Email"
 						validate={[required, validateEmail]}
 					/>
+					<Form.Text className="text-muted">
+						We will send the order confirmation to this email.
+					</Form.Text>
 				</Form.Group>
 				<Form.Group as={Col}>
 					<Form.Label>Phone Number</Form.Label>

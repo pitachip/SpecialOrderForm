@@ -1,18 +1,30 @@
-import { auth } from "../apis/firebase";
+import { auth, guestAuth } from "../apis/firebase";
 import pitachip from "../apis/pitachip";
+import { getUserToken } from "../utils/authUtils";
 
 export const signInWithEmailAndPassword = (email, password) => async (
 	dispatch
 ) => {
 	try {
+		let metaData = {};
+
 		const signInAttempt = await auth.signInWithEmailAndPassword(
 			email,
 			password
 		);
+
+		if (signInAttempt) {
+			const userToken = await getUserToken();
+			const userMetaData = await pitachip.get("/user/", {
+				headers: { Authorization: `Bearer ${userToken.token}` },
+			});
+			metaData = userMetaData.data.metaData;
+		}
 		dispatch({
 			type: "SET_USER",
 			payload: {
 				user: signInAttempt.user,
+				metaData: metaData,
 				authLoading: false,
 				message: "",
 				showAuthMessage: false,
@@ -35,7 +47,32 @@ export const signInWithEmailAndPassword = (email, password) => async (
 export const signInGuestUser = () => async (dispatch) => {
 	try {
 		const guestSignInAttempt = await auth.signInAnonymously();
-		console.log("Guest Sign in: ", guestSignInAttempt);
+		const userToken = await getUserToken();
+		const saveGuestUser = await pitachip.post(
+			"/user",
+			{
+				isAnonymous: true,
+				metaData: {
+					firstName: "",
+					lastName: "",
+					email: "",
+				},
+			},
+			{
+				headers: { Authorization: `Bearer ${userToken.token}` },
+			}
+		);
+		console.log("Save Guest User: ", saveGuestUser);
+		dispatch({
+			type: "SET_USER",
+			payload: {
+				user: guestSignInAttempt,
+				metaData: saveGuestUser.data.metaData,
+				authLoading: false,
+				errorMessage: "",
+				showAuthErrorMessage: false,
+			},
+		});
 	} catch (error) {
 		console.log(error);
 	}
@@ -71,6 +108,7 @@ export const createUserAccount = (
 			type: "SET_USER",
 			payload: {
 				user: createUser.user,
+				metaDat: createUser.metaData,
 				authLoading: false,
 				errorMessage: "",
 				showAuthErrorMessage: false,
@@ -81,6 +119,56 @@ export const createUserAccount = (
 			type: "SET_AUTH_MESSAGE",
 			payload: {
 				message: error,
+				showAuthMessage: true,
+				authMessageVariant: "danger",
+			},
+		});
+	}
+};
+
+export const upgradeGuestUserAccount = (
+	firstName,
+	lastName,
+	email,
+	password,
+	phoneNumber
+) => async (dispatch) => {
+	try {
+		//upgrade guest account to regular account
+		const credential = await guestAuth.EmailAuthProvider.credential(
+			email,
+			password
+		);
+		await auth.currentUser.linkWithCredential(credential);
+
+		//update user info in firebase
+		const updateUserInfo = await auth.currentUser;
+		await updateUserInfo.updateProfile({
+			displayName: `${firstName} ${lastName}`,
+		});
+
+		//update user record in mongo
+		const userToken = await getUserToken();
+		await pitachip.put(
+			"/user",
+			{
+				isAnonymous: false,
+				metaData: {
+					firstName,
+					lastName,
+					email,
+					phoneNumber,
+				},
+			},
+			{
+				headers: { Authorization: `Bearer ${userToken.token}` },
+			}
+		);
+	} catch (error) {
+		dispatch({
+			type: "SET_AUTH_MESSAGE",
+			payload: {
+				message: error.message,
 				showAuthMessage: true,
 				authMessageVariant: "danger",
 			},
@@ -112,20 +200,49 @@ export const sendPasswordResetEmail = (email) => async (dispatch) => {
 					authMessageVariant: "danger",
 				},
 			});
+		} else {
+			dispatch({
+				type: "SET_AUTH_MESSAGE",
+				payload: {
+					message: error,
+					showAuthMessage: true,
+					authMessageVariant: "danger",
+				},
+			});
 		}
 	}
 };
 
 export const authStateChanged = (user, authLoadingFlag) => async (dispatch) => {
-	dispatch({
-		type: "SET_USER",
-		payload: {
-			user: user,
-			authLoading: authLoadingFlag,
-			errorMessage: "",
-			showAuthErrorMessage: false,
-		},
-	});
+	let metaData = {};
+	if (user) {
+		const userToken = await getUserToken();
+		const userMetaData = await pitachip.get("/user/", {
+			headers: { Authorization: `Bearer ${userToken.token}` },
+		});
+		metaData = userMetaData;
+		dispatch({
+			type: "SET_USER",
+			payload: {
+				user: user,
+				metaData: metaData.data ? metaData.data.metaData : {},
+				authLoading: authLoadingFlag,
+				errorMessage: "",
+				showAuthErrorMessage: false,
+			},
+		});
+	} else {
+		dispatch({
+			type: "SET_USER",
+			payload: {
+				user,
+				metaData,
+				authLoading: authLoadingFlag,
+				errorMessage: "",
+				showAuthErrorMessage: false,
+			},
+		});
+	}
 };
 
 export const setAuthMessage = (

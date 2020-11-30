@@ -1,7 +1,6 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 import { persistor } from "../../../store";
 import { reset, getFormValues } from "redux-form";
 //ui components
@@ -26,7 +25,6 @@ class OrderConfirmation extends React.Component {
 		this.props.reset("paymentInformationForm");
 	};
 	render() {
-		//set all data passed from the payment components through the router
 		const {
 			orderNumber,
 			customerInformation,
@@ -35,9 +33,9 @@ class OrderConfirmation extends React.Component {
 			orderItems,
 			orderTotals,
 			paymentInformation,
-		} = this.props.location.state.orderConfirmation.data;
+		} = this.props.orderConfirmationDetails;
 		return (
-			<Card fluid color="green" centered className="confirmationCard">
+			<Card fluid color="green" centered>
 				<Card.Content>
 					<Card.Header>
 						<ConfirmationHeader
@@ -72,6 +70,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default withRouter(
-	connect(mapStateToProps, { reset })(OrderConfirmation)
-);
+export default connect(mapStateToProps, { reset })(OrderConfirmation);

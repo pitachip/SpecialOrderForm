@@ -20,7 +20,6 @@ class ConfirmationDeliveryDetails extends React.Component {
 			zip,
 			deliveryInstructions,
 		} = this.props.deliveryInformation;
-		console.log(orderDate);
 		return (
 			<Grid container>
 				<Grid.Row className="confirmationDeliveryDetailsRow">

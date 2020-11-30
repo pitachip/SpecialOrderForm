@@ -14,7 +14,7 @@ import AuthModal from "./auth-components/auth-modals/authModal";
 class NavBar extends React.Component {
 	state = { showModal: false };
 
-	async componentDidMount() {
+	componentDidMount() {
 		auth.onIdTokenChanged((user) => {
 			if (user) {
 				this.props.authStateChanged(user, false);
@@ -48,11 +48,15 @@ class NavBar extends React.Component {
 	};
 
 	renderAuthState = () => {
-		const { user } = this.props.auth;
-		if (user) {
+		const { user, metaData } = this.props.auth;
+		if (user && metaData) {
 			return (
 				<NavDropdown
-					title="Hi {User}!"
+					title={
+						metaData.firstName !== ""
+							? `Hi,  ${metaData.firstName}!`
+							: `Hi, guest!`
+					}
 					id="nav-dropdown"
 					className="ml-auto"
 					alignRight

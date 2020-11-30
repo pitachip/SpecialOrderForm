@@ -50,6 +50,11 @@ class CheckoutContactForm extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		initialValues: {
+			firstName: state.auth.metaData ? state.auth.metaData.firstName : "",
+			lastName: state.auth.metaData ? state.auth.metaData.lastName : "",
+			email: state.auth.metaData ? state.auth.metaData.email : "",
+		},
 		deliveryInformation: state.order.orderDetails.deliveryInformation,
 		contactInformation: getFormValues("checkoutContactForm")(state),
 	};

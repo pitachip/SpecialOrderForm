@@ -5,7 +5,10 @@ import each from "lodash/each";
 //ui components
 import Card from "react-bootstrap/Card";
 //app componenets
+import ShoppingCartItems from "./shoppingCartItems";
 import ShoppingCartItem from "./shoppingCartItem";
+import ShoppingCartTotal from "./shoppingCartTotal";
+import ShoppingCartDetails from "./shoppingCartDetails";
 
 class ShoppingCart extends React.Component {
 	//TODO: put this in utils
@@ -31,7 +34,13 @@ class ShoppingCart extends React.Component {
 					<Card.Header>
 						My Order: {this.getNumberOfItemsOrdered()} Items
 					</Card.Header>
-					<Card.Body>{this.renderShoppingCartItems()}</Card.Body>
+					<Card.Body>
+						<ShoppingCartItems />
+						<hr />
+						<ShoppingCartTotal />
+						<hr />
+						<ShoppingCartDetails />
+					</Card.Body>
 				</Card>
 			</div>
 		);

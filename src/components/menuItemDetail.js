@@ -11,7 +11,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdCreate } from "react-icons/md";
 //app componenets
 import ItemQuantity from "../utils/itemQuantity";
 import {
@@ -273,7 +273,7 @@ class MenuItemDetail extends React.Component {
 		});
 	};
 
-	renderForm = (menuItemName, modifiers) => {
+	renderForm = (menuItemName, modifiers, submitLabel, submitIcon) => {
 		return (
 			<div>
 				<Form onSubmit={(e) => this.formSubmitted(e)}>
@@ -294,10 +294,8 @@ class MenuItemDetail extends React.Component {
 							onQuantityChanged={this.quantityUpdated}
 							quantity={this.state.quantity}
 						/>
-						{/*TODO: this is where we'd render two different button*/}
 						<Button type="submit" block>
-							<MdAdd />
-							Add to Order
+							{submitIcon}&nbsp;{submitLabel}
 						</Button>
 					</Container>
 					{this.state.validationErrors.length > 0
@@ -310,7 +308,7 @@ class MenuItemDetail extends React.Component {
 
 	renderAddItem = () => {
 		const { name, modifiers } = this.props.menuItem[0];
-		return this.renderForm(name, modifiers);
+		return this.renderForm(name, modifiers, "Add to Order", <MdAdd />);
 	};
 	renderEditItem = () => {
 		/**
@@ -318,7 +316,7 @@ class MenuItemDetail extends React.Component {
 		 * for that shopping cart item
 		 */
 		const { name, modifiers } = this.props.orderItemToEdit.originalMenuItem;
-		return this.renderForm(name, modifiers);
+		return this.renderForm(name, modifiers, "Update Item", <MdCreate />);
 	};
 	/**
 	 * Determine if we are adding a new item or editing one

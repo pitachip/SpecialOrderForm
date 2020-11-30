@@ -17,3 +17,12 @@
 .loginButtonContainer {
 	margin: auto;
 }
+
+.stickyTopOffset {
+	top: 6em;
+	z-index: 0 !important;
+}
+
+.benefitsList {
+	list-style-type: none;
+}

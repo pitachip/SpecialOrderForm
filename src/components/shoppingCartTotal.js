@@ -3,7 +3,6 @@ import React from "react";
 import { connect } from "react-redux";
 import NumberFormat from "react-number-format";
 //ui componenets
-import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -67,88 +66,84 @@ class ShoppingCartTotal extends React.Component {
 		const { menuConfig } = this.props;
 		return (
 			<div>
-				<Card>
-					<Card.Body>
-						<Row>
-							<Col md={8}>
-								<p>
-									Subtotal{" (min: "}
-									{menuConfig ? this.renderOrderMinmumText() : null}
-									{")"}
-								</p>
-							</Col>
-							<Col md={4} className="shoppingCartTotalPrice">
-								<p>
-									<NumberFormat
-										value={this.props.totals.subTotal}
-										displayType={"text"}
-										thousandSeparator={true}
-										prefix={"$"}
-										decimalScale={2}
-										fixedDecimalScale="true"
-									/>
-								</p>
-							</Col>
-						</Row>
-						<Row>
-							<Col md={8}>
-								<p>
-									Tax
-									<span>
-										<OverlayTrigger
-											placement="left"
-											overlay={
-												<Tooltip>
-													If you're a tax exempt organization don't worry, we'll
-													ask for this information during checkout
-												</Tooltip>
-											}
-										>
-											<MdHelp />
-										</OverlayTrigger>
-									</span>
-								</p>
-							</Col>
-							<Col md={4} className="shoppingCartTotalPrice">
-								<p>
-									<NumberFormat
-										value={this.props.totals.tax}
-										displayType={"text"}
-										thousandSeparator={true}
-										prefix={"$"}
-										decimalScale={2}
-										fixedDecimalScale="true"
-									/>
-								</p>
-							</Col>
-						</Row>
-						<Row>
-							<Col md={8}>
-								<p>Delivery</p>
-							</Col>
-							<Col md={4} className="shoppingCartTotalPrice">
-								<p>{this.renderDeliverFee()}</p>
-							</Col>
-						</Row>
-						<Row>
-							<Col md={8}>
-								<p>Total</p>
-							</Col>
-							<Col md={4} className="shoppingCartTotalPrice">
-								<p>
-									<NumberFormat
-										value={this.props.totals.total}
-										displayType={"text"}
-										thousandSeparator={true}
-										prefix={"$"}
-										decimalScale={2}
-										fixedDecimalScale="true"
-									/>
-								</p>
-							</Col>
-						</Row>
-					</Card.Body>
-				</Card>
+				<Row>
+					<Col md={8}>
+						<p>
+							Subtotal{" (min: "}
+							{menuConfig ? this.renderOrderMinmumText() : null}
+							{")"}
+						</p>
+					</Col>
+					<Col md={4} className="shoppingCartTotalPrice">
+						<p>
+							<NumberFormat
+								value={this.props.totals.subTotal}
+								displayType={"text"}
+								thousandSeparator={true}
+								prefix={"$"}
+								decimalScale={2}
+								fixedDecimalScale="true"
+							/>
+						</p>
+					</Col>
+				</Row>
+				<Row>
+					<Col md={8}>
+						<p>
+							Tax
+							<span>
+								<OverlayTrigger
+									placement="left"
+									overlay={
+										<Tooltip>
+											If you're a tax exempt organization don't worry, we'll ask
+											for this information during checkout
+										</Tooltip>
+									}
+								>
+									<MdHelp />
+								</OverlayTrigger>
+							</span>
+						</p>
+					</Col>
+					<Col md={4} className="shoppingCartTotalPrice">
+						<p>
+							<NumberFormat
+								value={this.props.totals.tax}
+								displayType={"text"}
+								thousandSeparator={true}
+								prefix={"$"}
+								decimalScale={2}
+								fixedDecimalScale="true"
+							/>
+						</p>
+					</Col>
+				</Row>
+				<Row>
+					<Col md={8}>
+						<p>Delivery</p>
+					</Col>
+					<Col md={4} className="shoppingCartTotalPrice">
+						<p>{this.renderDeliverFee()}</p>
+					</Col>
+				</Row>
+				<Row>
+					<Col md={8}>
+						<p>Total</p>
+					</Col>
+					<Col md={4} className="shoppingCartTotalPrice">
+						<p>
+							<NumberFormat
+								value={this.props.totals.total}
+								displayType={"text"}
+								thousandSeparator={true}
+								prefix={"$"}
+								decimalScale={2}
+								fixedDecimalScale="true"
+							/>
+						</p>
+					</Col>
+				</Row>
 			</div>
 		);
 	}

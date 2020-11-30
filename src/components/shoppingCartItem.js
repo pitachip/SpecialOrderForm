@@ -2,16 +2,11 @@
 import React from "react";
 import { connect } from "react-redux";
 //ui components
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import Accordion from "react-bootstrap/Accordion";
-import Button from "react-bootstrap/Button";
-import { MdCreate, MdDelete } from "react-icons/md";
+import { Table, Button, Icon, Accordion } from "semantic-ui-react";
 //app components
 import UpdateShoppingCartItemModal from "./modals/updateShoppingCartItemModal";
 import DeleteShoppingCartItemModal from "./modals/deleteShoppingCartItemModal";
-
+//css
 import "../css/shoppingCartItem.css";
 
 class ShoppingCartItem extends React.Component {
@@ -19,6 +14,7 @@ class ShoppingCartItem extends React.Component {
 		showUpdateModal: false,
 		showDeleteModal: false,
 		editOrderItem: false,
+		activeIndex: null,
 	};
 
 	//TODO: Can probably combine the two below by passing in the state you want to update
@@ -30,109 +26,115 @@ class ShoppingCartItem extends React.Component {
 		this.setState({ showDeleteModal: false });
 	};
 
-	renderDeleteShoppingCartItemModal = () => {
+	handleModifierAccordionClick = (e, accordion) => {
+		const newIndex =
+			this.state.activeIndex === accordion.index ? null : accordion.index;
+		this.setState({ activeIndex: newIndex });
+	};
+
+	renderDeleteShoppingCartItemModal = (orderItem) => {
 		return this.state.showDeleteModal ? (
 			<DeleteShoppingCartItemModal
 				show={this.state.showDeleteModal}
 				close={this.handleDeleteShoppingCartItemModalClose}
-				orderItemToDelete={this.props.item}
+				orderItemToDelete={orderItem}
 			/>
 		) : null;
 	};
 
-	renderUpdateShoppingCartItemModal = () => {
+	renderUpdateShoppingCartItemModal = (orderItem) => {
 		return this.state.showUpdateModal ? (
 			<UpdateShoppingCartItemModal
 				show={this.state.showUpdateModal}
 				close={this.handleMenuItemDetailModalClose}
 				editOrderItem={true}
-				orderItemToEdit={this.props.item}
+				orderItemToEdit={orderItem}
 			/>
 		) : null;
 	};
 
-	renderCalculatedPrice = () => {
-		return (this.props.item.basePrice / 100) * this.props.item.quantity;
-	};
-
-	renderDeleteButton = (key) => {
-		return (
-			<Button
-				variant="link"
-				value={key}
-				onClick={() => {
-					this.setState({ showDeleteModal: true });
-				}}
-			>
-				<MdDelete />
-			</Button>
-		);
-	};
-
-	renderEditButton = (key) => {
-		return (
-			<Button
-				variant="link"
-				value={key}
-				onClick={() => {
-					this.setState({ showUpdateModal: true, editOrderItem: true });
-				}}
-			>
-				<MdCreate />
-			</Button>
-		);
-	};
-
-	renderOrderItemSpecialInstructions = () => {
-		return <p>Special Instructions: {this.props.item.specialInstructions}</p>;
-	};
-
-	renderOrderItemDetails = () => {
-		return this.props.item.modifiers.map((modifier) => {
-			return (
-				<div key={modifier.modifierId}>
-					<p>
-						{modifier.modifierName}:{" "}
-						{modifier.modifierChoices.map((choice) => {
-							return "" + choice.name + ", ";
-						})}
-					</p>
-				</div>
-			);
+	renderModifierChoices = (modifierChoices) => {
+		let choices = "";
+		modifierChoices.map((modifierChoice) => {
+			return (choices = choices + modifierChoice.name + ", ");
 		});
+		return choices;
 	};
+
+	renderOrderModifiers = (modifiers, index, specialInsructions) => {
+		return (
+			<Accordion>
+				<Accordion.Title
+					active={this.state.activeIndex === index}
+					index={index}
+					onClick={(e, index) => this.handleModifierAccordionClick(e, index)}
+				>
+					<Icon name="dropdown" />
+					Details
+				</Accordion.Title>
+				<Accordion.Content active={this.state.activeIndex === index}>
+					<div>
+						<ul>
+							{modifiers.map((modifier) => {
+								return (
+									<li>
+										<b>{modifier.modifierName}</b>:{" "}
+										{this.renderModifierChoices(modifier.modifierChoices)}
+									</li>
+								);
+							})}
+						</ul>
+						<p>Special Instructions: {specialInsructions}</p>
+					</div>
+				</Accordion.Content>
+			</Accordion>
+		);
+	};
+
+	renderCalculatedPrice = (orderItem) => {
+		return (orderItem.basePrice / 100) * orderItem.quantity;
+	};
+
 	render() {
+		const { orderItem, index } = this.props;
 		return (
 			<>
-				<Row>
-					<Col md={8}>
-						<p>
-							{this.props.item.quantity}x {this.props.item.menuItem}
-						</p>
-					</Col>
-					<Col md={4} className="shoppingCartItemPrice">
-						<p>${this.renderCalculatedPrice()}</p>
-					</Col>
-					<Col>
-						{this.renderEditButton(this.props.item.uniqueId)}
-						{this.renderDeleteButton(this.props.item.uniqueId)}
-					</Col>
-				</Row>
-				<Row>
-					<Accordion>
-						<Accordion.Toggle as={Button} variant="link" eventKey="0">
-							Details
-						</Accordion.Toggle>
-						<Accordion.Collapse eventKey="0">
-							<Card.Body>
-								{this.renderOrderItemDetails()}
-								{this.renderOrderItemSpecialInstructions()}
-							</Card.Body>
-						</Accordion.Collapse>
-					</Accordion>
-				</Row>
-				{this.renderUpdateShoppingCartItemModal()}
-				{this.renderDeleteShoppingCartItemModal()}
+				<Table.Row>
+					<Table.Cell verticalAlign="middle">
+						{orderItem.quantity}x {orderItem.menuItem}
+						{this.renderOrderModifiers(
+							orderItem.modifiers,
+							index,
+							orderItem.specialInstructions
+						)}
+					</Table.Cell>
+					<Table.Cell verticalAlign="top">
+						${this.renderCalculatedPrice(orderItem)}
+					</Table.Cell>
+					<Table.Cell verticalAlign="top" textAlign="right">
+						<Button
+							compact
+							icon
+							onClick={() => {
+								this.setState({ showUpdateModal: true, editOrderItem: true });
+							}}
+						>
+							<Icon name="edit" />
+						</Button>
+						<Button
+							compact
+							icon
+							onClick={() => {
+								this.setState({ showDeleteModal: true });
+							}}
+						>
+							<Icon name="delete" />
+						</Button>
+					</Table.Cell>
+				</Table.Row>
+				<Table.Row></Table.Row>
+				{this.renderUpdateShoppingCartItemModal(orderItem)}
+				{this.renderDeleteShoppingCartItemModal(orderItem)}
 			</>
 		);
 	}

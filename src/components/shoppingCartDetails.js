@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import DatePicker from "react-datepicker";
 //ui components
-import Card from "react-bootstrap/Card";
+import { Grid } from "semantic-ui-react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -134,19 +134,25 @@ class ShoppingCartDetails extends React.Component {
 
 	renderDateTimeSelector = () => {
 		return (
-			<DatePicker
-				selected={new Date(this.props.orderDetails.orderDate)}
-				onChange={(date) => this.props.updateOrderDate(date)}
-				timeInputLabel="Time:"
-				dateFormat="MM/dd/yyyy h:mm aa"
-				showTimeInput
-			/>
+			<div>
+				<Form.Label>Choose Order Date & Time:</Form.Label>
+				<br />
+				<DatePicker
+					selected={new Date(this.props.orderDetails.orderDate)}
+					onChange={(date) => this.props.updateOrderDate(date)}
+					timeInputLabel="Time:"
+					dateFormat="MM/dd/yyyy h:mm aa"
+					showTimeInput
+					className="form-control"
+				/>
+			</div>
 		);
 	};
 
 	renderShippingOptions = () => {
 		return (
 			<Form.Group>
+				<Form.Label>Choose Delivery Method:</Form.Label>
 				<Form.Check
 					type="radio"
 					value="delivery"
@@ -206,8 +212,12 @@ class ShoppingCartDetails extends React.Component {
 				style={{ cursor: "pointer" }}
 				onClick={() => this.toggleSpecialInstructionsTextArea()}
 			>
-				<MdAdd />
-				Special Instructions
+				<p>
+					<b>
+						<MdAdd />
+						Add Special Instructions
+					</b>
+				</p>
 			</div>
 		);
 	};
@@ -235,30 +245,29 @@ class ShoppingCartDetails extends React.Component {
 		const { orderDetails } = this.props;
 		return (
 			<div>
-				<Card>
-					<Card.Body>
-						<Form
-							noValidate
-							validated={this.state.validated}
-							onSubmit={this.orderSubmitted}
-						>
-							{this.state.showTextArea
-								? this.renderTextArea()
-								: this.renderTextAreaPlaceholder()}
-							{this.renderShippingOptions()}
-							{orderDetails.shippingMethod === "pickup"
-								? this.renderLocationDropdown()
-								: null}
-							{this.renderDateTimeSelector()}
-							{this.renderOrderButton()}
-						</Form>
-					</Card.Body>
-					<AuthModal
-						show={this.state.showAuthModal}
-						close={this.handleAuthModalClose}
-						onSuccess={this.handleAuthModalSuccess}
-					/>
-				</Card>
+				<Form
+					noValidate
+					validated={this.state.validated}
+					onSubmit={this.orderSubmitted}
+				>
+					{this.state.showTextArea
+						? this.renderTextArea()
+						: this.renderTextAreaPlaceholder()}
+					<hr />
+					{this.renderShippingOptions()}
+					{orderDetails.shippingMethod === "pickup"
+						? this.renderLocationDropdown()
+						: null}
+					<hr />
+					{this.renderDateTimeSelector()}
+					<hr />
+					{this.renderOrderButton()}
+				</Form>
+				<AuthModal
+					show={this.state.showAuthModal}
+					close={this.handleAuthModalClose}
+					onSuccess={this.handleAuthModalSuccess}
+				/>
 			</div>
 		);
 	}
