@@ -62,3 +62,22 @@ export const createErrorMessage = (
 	}
 	return errorMessage;
 };
+
+export const validateQuantity = (quantity) => {
+	return quantity <= 0 ? "Quantity must be greater than 0" : null;
+};
+
+export const createQuantityErrorMessage = (errorMessageArray, message) => {
+	//only create it if it doesnt exist already in the array
+	//return an array to be set as the new state
+	let errorMessage;
+
+	const errorAlreadyExists = errorMessageArray.filter((el) => {
+		return el.indexOf(message) > -1;
+	}).length;
+
+	if (errorAlreadyExists < 0 || errorAlreadyExists === 0) {
+		errorMessage = errorAlreadyExists;
+	}
+	return errorMessage;
+};

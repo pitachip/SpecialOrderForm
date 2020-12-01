@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from "redux";
 import { persistStore, persistReducer } from "redux-persist"; // imports from redux-persist
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import storage from "redux-persist/lib/storage/session"; // defaults to localStorage for web
 import thunk from "redux-thunk";
 
 import rootReducer from "./reducers"; // Root reducer
@@ -12,7 +12,7 @@ const persistConfig = {
 	blacklist: ["auth"],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer); // create a persisted reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = createStore(
 	persistedReducer, // pass the persisted reducer instead of rootReducer to createStore

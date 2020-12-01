@@ -3,7 +3,6 @@ import React from "react";
 import { connect } from "react-redux";
 import DatePicker from "react-datepicker";
 //ui components
-import { Grid } from "semantic-ui-react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -174,7 +173,7 @@ class ShoppingCartDetails extends React.Component {
 	renderLocationDropdownOptions = () => {
 		return this.props.storeInformation.locations.map((store) => {
 			return (
-				<option key={store.storeName}>
+				<option key={store.storeName} value={store.storeName}>
 					{store.storeName}: {store.storeAddress}
 				</option>
 			);

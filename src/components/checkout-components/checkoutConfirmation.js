@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 //ui components
 import Container from "react-bootstrap/Container";
 import { Grid } from "semantic-ui-react";
@@ -8,6 +9,7 @@ import { Grid } from "semantic-ui-react";
 import OrderConfirmation from "../confirmation/confirmation-components/orderConfirmation";
 import CheckoutProgressBar from "./checkoutProgressBar";
 import DelayedAccountCreation from "../auth-components/delayedAccountCreation";
+import ConfirmationNextSteps from "../confirmation/confirmation-components/confirmationNextSteps";
 //utils
 import { history } from "../../utils/history";
 //css
@@ -53,6 +55,7 @@ class ConfirmationDetails extends React.Component {
 			},
 		];
 		const { data } = this.props.location.state.orderConfirmation;
+		const { user } = this.props.auth;
 		return (
 			<Container className="checkoutDetailsContainer">
 				<Grid>
@@ -64,10 +67,14 @@ class ConfirmationDetails extends React.Component {
 							<OrderConfirmation orderConfirmationDetails={data} />
 						</Grid.Column>
 						<Grid.Column width={6}>
-							<DelayedAccountCreation
-								orderConfirmationDetails={data}
-								onAuthSuccess={this.guestAccountUpgraded}
-							/>
+							{!user ? (
+								<DelayedAccountCreation
+									orderConfirmationDetails={data}
+									onAuthSuccess={this.guestAccountUpgraded}
+								/>
+							) : (
+								<ConfirmationNextSteps />
+							)}
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
@@ -76,4 +83,10 @@ class ConfirmationDetails extends React.Component {
 	}
 }
 
-export default withRouter(ConfirmationDetails);
+const mapStateToProps = (state) => {
+	return {
+		auth: state.auth,
+	};
+};
+
+export default connect(mapStateToProps, {})(withRouter(ConfirmationDetails));

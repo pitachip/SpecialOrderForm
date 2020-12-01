@@ -11,7 +11,7 @@ class StoreInformation extends React.Component {
 					<Modal.Header closeButton>
 						<Modal.Title>Hours and Location</Modal.Title>
 					</Modal.Header>
-					<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+					<Modal.Body>(Under Construction)</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={this.props.close}>
 							Close

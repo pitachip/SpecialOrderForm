@@ -12,13 +12,15 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { MdAdd, MdCreate } from "react-icons/md";
-//app componenets
+//utils
 import ItemQuantity from "../utils/itemQuantity";
 import {
 	validateModifiers,
 	filterSelectedModifiers,
 	removeErrorMessage,
 	createErrorMessage,
+	validateQuantity,
+	createQuantityErrorMessage,
 } from "../utils/menuItemValidation";
 import {
 	formatSelectionForCheckout,
@@ -177,6 +179,28 @@ class MenuItemDetail extends React.Component {
 				}
 			}
 		});
+
+		//Validating Quantity TODO: Lots of refactoring needed here
+		const quantityValidationError = validateQuantity(this.state.quantity);
+		if (quantityValidationError) {
+			const quantityErrorMessage = createQuantityErrorMessage(
+				this.state.validationErrors,
+				"Quantity"
+			);
+			console.log(quantityErrorMessage);
+			if (quantityErrorMessage < 0 || quantityErrorMessage === 0) {
+				groupedErrorMessages.push(quantityValidationError);
+			}
+		} else {
+			//remove the error message if its already in there
+			const removedQuantityValidationMessage = removeErrorMessage(
+				"Quantity",
+				this.state.validationErrors
+			);
+			if (removedQuantityValidationMessage) {
+				groupedErrorMessages = removedQuantityValidationMessage;
+			}
+		}
 		/**
 		 * For whatever reason it's better to set the state at the very end once the loop
 		 * is done. That's why I was setting it in a temp variable
