@@ -50,7 +50,9 @@ class CheckoutDetails extends React.Component {
 		];
 		return (
 			<Container className="checkoutDetailsContainer">
-				<CheckoutProgressBar progressBarData={progressBar} />
+				<div className="checkoutSteps">
+					<CheckoutProgressBar progressBarData={progressBar} />
+				</div>
 				<Row>
 					<Col md={6}>
 						<CheckoutContactForm />

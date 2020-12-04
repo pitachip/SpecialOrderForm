@@ -11,6 +11,7 @@ import ConfirmationDeliveryDetails from "./confirmationDeliveryDetails";
 import ConfirmationOrderDetails from "./confirmationOrderDetails";
 import ConfirmationOrderTotals from "./confirmationOrderTotals";
 import ConfirmationPaymentDetails from "./confirmationPaymentDetails";
+import ConfirmationPickupDetails from "./confirmationPickupDetails";
 //css
 import "../confirmation-css/orderConfirmation.css";
 
@@ -33,7 +34,9 @@ class OrderConfirmation extends React.Component {
 			orderItems,
 			orderTotals,
 			paymentInformation,
+			pickupInformation,
 		} = this.props.orderConfirmationDetails;
+		console.log(this.props.orderConfirmationDetails);
 		return (
 			<Card fluid color="green" centered>
 				<Card.Content>
@@ -44,10 +47,17 @@ class OrderConfirmation extends React.Component {
 						/>
 					</Card.Header>
 					<Divider />
-					<ConfirmationDeliveryDetails
-						deliveryInformation={deliveryInformation}
-						orderDate={orderDetails.orderDate}
-					/>
+					{orderDetails.shippingMethod === "delivery" ? (
+						<ConfirmationDeliveryDetails
+							deliveryInformation={deliveryInformation}
+							orderDate={orderDetails.orderDate}
+						/>
+					) : (
+						<ConfirmationPickupDetails
+							pickupInformation={pickupInformation}
+							orderDetails={orderDetails}
+						/>
+					)}
 					<Divider />
 					<ConfirmationOrderDetails
 						orderItems={orderItems}

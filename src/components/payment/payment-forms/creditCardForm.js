@@ -104,7 +104,6 @@ class CreditCardForm extends React.Component {
 
 	handleChange = async (e) => {
 		this.setState({ disableSubmitButton: e.empty });
-		console.log(e.error);
 		if (e.error) {
 			this.setState({
 				submissionError: {

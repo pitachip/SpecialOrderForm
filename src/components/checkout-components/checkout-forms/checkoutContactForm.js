@@ -35,18 +35,12 @@ class CheckoutContactForm extends React.Component {
 			</>
 		);
 	};
-	renderPickupComponents = (locations, location) => {
-		return (
-			<PickupInformation
-				locationInformation={locations}
-				selectedStore={location}
-			/>
-		);
+	renderPickupComponents = (orderDetails) => {
+		return <PickupInformation orderDetails={orderDetails} />;
 	};
 	render() {
 		//TODO: might want to remove the weird form wrap here. Find another way to check if form is valid
-		const { handleSubmit, orderDetails, locationInformation } = this.props;
-		console.log(this.props);
+		const { handleSubmit, orderDetails } = this.props;
 		return (
 			<div>
 				<Form onSubmit={handleSubmit(this.handleForwardClick)}>
@@ -54,10 +48,7 @@ class CheckoutContactForm extends React.Component {
 					<CustomerInformationForm />
 					{orderDetails.shippingMethod === "delivery"
 						? this.renderDeliveryComponents()
-						: this.renderPickupComponents(
-								locationInformation.storeInformation.locations,
-								orderDetails.location
-						  )}
+						: this.renderPickupComponents(orderDetails)}
 					<CheckoutNavigation
 						backNav="/order"
 						backText="Order"
@@ -88,6 +79,6 @@ export default connect(mapStateToProps, { updateDeliveryDetails })(
 	reduxForm({
 		form: "checkoutContactForm",
 		destroyOnUnmount: false,
-		enableReinitialize: true,
+		enableReinitialize: false,
 	})(CheckoutContactForm)
 );

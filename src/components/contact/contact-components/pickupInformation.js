@@ -1,42 +1,56 @@
 //libs
 import React from "react";
-import findIndex from "lodash/findIndex";
+import { connect } from "react-redux";
 //ui components
-import { Grid } from "semantic-ui-react";
+import { Grid, Form } from "semantic-ui-react";
+//actions
+import { updatePickupInstructions } from "../../../actions";
 //css
 import "../contact-css/pickup.css";
 
 class PickUpInformation extends React.Component {
 	render() {
-		const { selectedStore, locationInformation } = this.props;
-
-		const indexOfSelectedStore = findIndex(locationInformation, (location) => {
-			return location.storeName === selectedStore;
-		});
+		const { location, pickupInformation } = this.props.orderDetails;
 		return (
-			<div className="storeInformation">
-				<h2>Pick-Up Information</h2>
-				<h4>Location: {locationInformation[indexOfSelectedStore].storeName}</h4>
-				<p className="storeInformation">
-					{locationInformation[indexOfSelectedStore].address1}
-				</p>
-				<p className="storeInformation">
-					{locationInformation[indexOfSelectedStore].address2}
-				</p>
-				<p className="storeInformation">
-					{locationInformation[indexOfSelectedStore].city},{" "}
-					{locationInformation[indexOfSelectedStore].state}{" "}
-					{locationInformation[indexOfSelectedStore].zip}
-				</p>
-				<p className="storeInformation">
-					{locationInformation[indexOfSelectedStore].email}
-				</p>
-				<p className="storeInformation">
-					{locationInformation[indexOfSelectedStore].phoneNumber}
-				</p>
-			</div>
+			<Grid container className="containerMargin">
+				<Grid.Row columns={1}>
+					<Grid.Column>
+						<h2>Pick-Up Information</h2>
+					</Grid.Column>
+				</Grid.Row>
+				<Grid.Row columns={2}>
+					<Grid.Column>
+						<div className="storeInformation">
+							<h4>Location: {location}</h4>
+							<p className="storeInformation">{pickupInformation.address1}</p>
+							<p className="storeInformation">{pickupInformation.address2}</p>
+							<p className="storeInformation">
+								{pickupInformation.city}, {pickupInformation.state}{" "}
+								{pickupInformation.zip}
+							</p>
+							<p className="storeInformation">{pickupInformation.email}</p>
+							<p className="storeInformation">
+								{pickupInformation.phoneNumber}
+							</p>
+						</div>
+					</Grid.Column>
+					<Grid.Column>
+						<Form>
+							<Form.TextArea
+								value={pickupInformation.pickupInstructions}
+								rows={5}
+								label="Pickup Notes"
+								placeholder="Let us know about any specific instructions for when you pickup your order"
+								onChange={(e, data) =>
+									this.props.updatePickupInstructions(data.value)
+								}
+							/>
+						</Form>
+					</Grid.Column>
+				</Grid.Row>
+			</Grid>
 		);
 	}
 }
 
-export default PickUpInformation;
+export default connect(null, { updatePickupInstructions })(PickUpInformation);

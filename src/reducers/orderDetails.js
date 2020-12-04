@@ -6,12 +6,13 @@ const INITIAL_STATE = {
 		orderDate: new Date(),
 		location: "",
 		specialInstructions: "",
-		deliveryInformation: {
+		pickupInformation: {
 			address1: "",
 			address2: "",
 			city: "",
 			state: "",
 			zip: "",
+			pickupInstructions: "",
 		},
 	},
 };
@@ -40,7 +41,22 @@ export default (state = INITIAL_STATE, action) => {
 		case "UPDATE_PICKUP_LOCATION":
 			return {
 				...state,
-				orderDetails: { ...state.orderDetails, location: action.payload },
+				orderDetails: {
+					...state.orderDetails,
+					location: action.payload.location,
+					pickupInformation: action.payload.pickupInformation,
+				},
+			};
+		case "UPDATE_PICKUP_INSTRUCTIONS":
+			return {
+				...state,
+				orderDetails: {
+					...state.orderDetails,
+					pickupInformation: {
+						...state.orderDetails.pickupInformation,
+						pickupInstructions: action.payload,
+					},
+				},
 			};
 		case "UPDATE_SPECIAL_INSTRUCTIONS":
 			return {

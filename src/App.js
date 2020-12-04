@@ -5,12 +5,14 @@ import { Router, Switch, Route, Redirect } from "react-router-dom";
 import { history } from "./utils/history";
 //app components
 import NavBar from "./components/navBar";
+import AppFooter from "./components/appFooter";
 import SpecialOrder from "./components/SpecialOrder";
 import CheckoutContact from "./components/checkout-components/checkoutContact";
 import CheckoutPayment from "./components/checkout-components/checkoutPayment";
 import ConfirmationDetails from "./components/checkout-components/checkoutConfirmation";
 //css
 import "./App.css";
+import "semantic-ui-css/semantic.min.css";
 
 function App() {
 	return (
@@ -29,6 +31,7 @@ function App() {
 					<Redirect path="/" exact to="/order" />
 				</Switch>
 			</Router>
+			<AppFooter />
 		</div>
 	);
 }

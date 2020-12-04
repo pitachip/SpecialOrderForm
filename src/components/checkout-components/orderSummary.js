@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getFormValues } from "redux-form";
 import each from "lodash/each";
+import findIndex from "lodash/findIndex";
 import NumberFormat from "react-number-format";
 //ui components
 import Card from "react-bootstrap/Card";
@@ -26,6 +27,42 @@ class OrderSummary extends React.Component {
 		});
 
 		return numberOfItemsOrdered;
+	};
+
+	renderPickupDetails = (location, pickupInformation) => {
+		if (
+			this.props.location.pathname === "/checkout/payment" &&
+			this.props.contactInformation
+		) {
+			return (
+				<>
+					<hr />
+					<Card.Subtitle className="mb-2 text-muted">
+						Pick-Up Details
+					</Card.Subtitle>
+					<Row>
+						<Col md={6} className="text-center">
+							<div className="storeInformation">
+								<h4>Location</h4>
+								<p className="storeInformation">{location}</p>
+								<p className="storeInformation">{pickupInformation.address1}</p>
+								<p className="storeInformation">{pickupInformation.address2}</p>
+								<p className="storeInformation">
+									{pickupInformation.city}, {pickupInformation.state}{" "}
+									{pickupInformation.zip}
+								</p>
+								<p className="storeInformation">{pickupInformation.email}</p>
+								<p className="storeInformation">
+									{pickupInformation.phoneNumber}
+								</p>
+							</div>
+						</Col>
+					</Row>
+				</>
+			);
+		} else {
+			return null;
+		}
 	};
 
 	renderDeliveryDetails = () => {
@@ -257,6 +294,11 @@ class OrderSummary extends React.Component {
 	};
 
 	render() {
+		const {
+			shippingMethod,
+			location,
+			pickupInformation,
+		} = this.props.orderDetails;
 		return (
 			<div className="sticky-top orderSummaryOffset">
 				<Card>
@@ -273,7 +315,9 @@ class OrderSummary extends React.Component {
 						<Card.Subtitle className="mb-2 text-muted">Totals</Card.Subtitle>
 						{this.renderShoppingCartTotals(this.props.totals)}
 						{this.renderContactDetails()}
-						{this.renderDeliveryDetails()}
+						{shippingMethod === "delivery"
+							? this.renderDeliveryDetails()
+							: this.renderPickupDetails(location, pickupInformation)}
 					</Card.Body>
 				</Card>
 			</div>
@@ -286,6 +330,7 @@ const mapStateToProps = (state) => {
 		totals: state.order.totals,
 		orderItems: state.order.orderItems,
 		orderDetails: state.order.orderDetails,
+		locationInformation: state.storeInformation,
 		contactInformation: getFormValues("checkoutContactForm")(state),
 	};
 };

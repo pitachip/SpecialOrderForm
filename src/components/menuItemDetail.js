@@ -12,6 +12,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { MdAdd, MdCreate } from "react-icons/md";
+import { Card } from "semantic-ui-react";
 //utils
 import ItemQuantity from "../utils/itemQuantity";
 import {
@@ -28,6 +29,8 @@ import {
 } from "../utils/orderCheckoutUtils";
 //actions
 import { addItemToOrder, updateOrderItem, updateOrderTotals } from "../actions";
+//css
+import "../css/menuItemDetail.css";
 
 class ModifierOptionCheckbox extends React.Component {
 	state = { checked: false };
@@ -282,17 +285,19 @@ class MenuItemDetail extends React.Component {
 	renderModifierSections = (modifiers) => {
 		return modifiers.map((modifier) => {
 			return (
-				<div key={modifier.name}>
-					<h4 key={modifier.name}>{modifier.name}</h4>
-					<p>Choose up to {modifier.max_number_options}</p>
-					<Row>
-						{this.renderModifierOptions(
-							modifier.options,
-							modifier.name,
-							modifier._id
-						)}
-					</Row>
-				</div>
+				<Card fluid color="red" key={modifier.name}>
+					<Card.Content>
+						<Card.Header>{modifier.name}</Card.Header>
+						<Card.Meta>Choose up to {modifier.max_number_options}</Card.Meta>
+						<Row>
+							{this.renderModifierOptions(
+								modifier.options,
+								modifier.name,
+								modifier._id
+							)}
+						</Row>
+					</Card.Content>
+				</Card>
 			);
 		});
 	};
@@ -302,17 +307,24 @@ class MenuItemDetail extends React.Component {
 			<div>
 				<Form onSubmit={(e) => this.formSubmitted(e)}>
 					{modifiers ? this.renderModifierSections(modifiers) : null}
-					<Form.Group>
-						<Form.Control
-							as="textarea"
-							rows="2"
-							placeholder="Let us know about any special requests you need for this order"
-							value={this.state.specialInstructions}
-							onChange={(e) =>
-								this.setState({ specialInstructions: e.target.value })
-							}
-						/>
-					</Form.Group>
+					<Card fluid color="red">
+						<Card.Content>
+							<Card.Header className="specialInstructions">
+								Special Instructions
+							</Card.Header>
+							<Form.Group>
+								<Form.Control
+									as="textarea"
+									rows="2"
+									placeholder="Let us know about any special requests you need for this item"
+									value={this.state.specialInstructions}
+									onChange={(e) =>
+										this.setState({ specialInstructions: e.target.value })
+									}
+								/>
+							</Form.Group>
+						</Card.Content>
+					</Card>
 					<Container fluid>
 						<ItemQuantity
 							onQuantityChanged={this.quantityUpdated}

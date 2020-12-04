@@ -11,11 +11,15 @@ class AddShoppingCartItemModal extends React.Component {
 		this.props.close();
 	};
 	render() {
-		const { name } = this.props.menuItem[0];
+		const { name, description } = this.props.menuItem[0];
 		return (
 			<Modal size="lg" show={this.props.show} onHide={this.modalClosed}>
 				<Modal.Header closeButton>
-					<Modal.Title>{name}</Modal.Title>
+					<Modal.Title>
+						{name}
+						<br />
+						<h6 className="text-muted">{description}</h6>
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<MenuItemDetail

@@ -83,6 +83,12 @@ export const formatOrderForDb = (
 	invoicePaymentDetails,
 	creditCardPaymentDetails
 ) => {
+	/**
+	 * TODO
+	 * Might want to consider cleaning this up a little
+	 * Also might want to consider combining delivery and pickup into a
+	 * "shipping" section.
+	 */
 	let orderItemsArray = [];
 	each(order.orderItems, (orderItem) => {
 		orderItemsArray.push({
@@ -115,6 +121,17 @@ export const formatOrderForDb = (
 			deliveryInstructions: customerInformation.deliveryInstructions
 				? customerInformation.deliveryInstructions
 				: "",
+		},
+		pickupInformation: {
+			address1: order.orderDetails.pickupInformation.address1,
+			address2: order.orderDetails.pickupInformation.address2,
+			city: order.orderDetails.pickupInformation.city,
+			state: order.orderDetails.pickupInformation.state,
+			zip: order.orderDetails.pickupInformation.zip,
+			email: order.orderDetails.pickupInformation.email,
+			phoneNumber: order.orderDetails.pickupInformation.phoneNumber,
+			pickupInstructions:
+				order.orderDetails.pickupInformation.pickupInstructions,
 		},
 		paymentInformation: {
 			paymentType: paymentInformation.paymentType,

@@ -15,6 +15,8 @@ import {
 } from "../../actions";
 import RegistrationMessage from "./registrationMessage";
 import GuestMessage from "./guestMessage";
+//css
+import "./auth-css/auth.css";
 
 class SignInForm extends React.Component {
 	state = { email: "", password: "", isLoading: false, validated: false };
@@ -64,7 +66,7 @@ class SignInForm extends React.Component {
 							<Form.Control
 								required
 								type="email"
-								placeholder="falafel@email.com"
+								placeholder="example@email.com"
 								value={this.state.email}
 								onChange={(e) => this.setState({ email: e.target.value })}
 							/>
@@ -84,7 +86,7 @@ class SignInForm extends React.Component {
 							<Form.Control
 								required
 								type="password"
-								placeholder="Your First Pet's Name"
+								placeholder="*******"
 								value={this.state.password}
 								onChange={(e) => this.setState({ password: e.target.value })}
 							/>
@@ -110,7 +112,9 @@ class SignInForm extends React.Component {
 					</Form.Row>
 				</Form>
 				<RegistrationMessage cardType="newUser" />
-				<GuestMessage onAuthSuccess={this.props.onAuthSuccess} />
+				<div className="guestAccountDiv">
+					<GuestMessage onAuthSuccess={this.props.onAuthSuccess} />
+				</div>
 			</div>
 		);
 	}

@@ -48,7 +48,7 @@
 	padding-right: 0 !important;
 }
 
-.nextSteps h5 {
+.nextSteps h5:first-child {
 	width: 100%;
 	text-align: center;
 	border-bottom: 1px solid #000;

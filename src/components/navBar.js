@@ -50,23 +50,30 @@ class NavBar extends React.Component {
 	renderAuthState = () => {
 		const { user, metaData } = this.props.auth;
 		if (user && metaData) {
-			return (
+			console.log(user.isAnonymous);
+			return !user.isAnonymous ? (
 				<NavDropdown
 					title={
 						metaData.firstName !== ""
 							? `Hi,  ${metaData.firstName}!`
 							: `Hi, guest!`
 					}
-					id="nav-dropdown"
 					className="ml-auto"
 					alignRight
 				>
-					<NavDropdown.Item eventKey="4.1">Action</NavDropdown.Item>
-					<NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
-					<NavDropdown.Item eventKey="4.3">
-						Something else here
+					<NavDropdown.Item eventKey="4.1" disabled>
+						My Orders (Under Construction)
+					</NavDropdown.Item>
+					<NavDropdown.Item eventKey="4.2" disabled>
+						Profile (Under Construction)
 					</NavDropdown.Item>
 					<NavDropdown.Divider />
+					<NavDropdown.Item eventKey="4.4" onClick={this.signoutClicked}>
+						Sign Out
+					</NavDropdown.Item>
+				</NavDropdown>
+			) : (
+				<NavDropdown title="Hi, guest!" className="ml-auto" alignRight>
 					<NavDropdown.Item eventKey="4.4" onClick={this.signoutClicked}>
 						Sign Out
 					</NavDropdown.Item>
@@ -93,8 +100,8 @@ class NavBar extends React.Component {
 						className="d-inline-block align-top"
 						alt="Pita Chip Logo"
 					/>
-					Pita Chip Special Orders
 				</Navbar.Brand>
+				<h3 className="ml-auto">Pita Chip Special Orders</h3>
 				{!user && authLoading
 					? this.renderLoadingSpinner()
 					: this.renderAuthState()}

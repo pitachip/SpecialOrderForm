@@ -59,7 +59,7 @@ class ConfirmationDetails extends React.Component {
 		return (
 			<Container className="checkoutDetailsContainer">
 				<Grid>
-					<Grid.Row>
+					<Grid.Row className="checkoutConfirmationRow">
 						<CheckoutProgressBar progressBarData={progressBar} />
 					</Grid.Row>
 					<Grid.Row columns={2}>

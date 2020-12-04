@@ -2,7 +2,7 @@
 import React from "react";
 import { Step, Icon } from "semantic-ui-react";
 //css
-import "semantic-ui-css/semantic.min.css";
+import "./checkout-css/checkoutDetails.css";
 
 class CheckoutProgressBar extends React.Component {
 	renderSteps = () => {

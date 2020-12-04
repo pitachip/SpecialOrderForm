@@ -93,6 +93,7 @@ class ShoppingCartDetails extends React.Component {
 				shippingMethod: this.props.orderDetails.shippingMethod,
 				orderDate: this.props.orderDetails.orderDate,
 				location: this.props.orderDetails.location,
+				pickupInformation: this.props.orderDetails.pickupInformation,
 				specialInstructions: this.props.orderDetails.specialInstructions,
 			};
 			this.props.updateOrderDetails(orderDetails);
@@ -180,9 +181,6 @@ class ShoppingCartDetails extends React.Component {
 		});
 	};
 
-	/**
-	 * TODO: Fix redux in order to only update the correct part of the object
-	 */
 	renderLocationDropdown = () => {
 		return (
 			<Form.Group>
@@ -193,7 +191,12 @@ class ShoppingCartDetails extends React.Component {
 					as="select"
 					size="sm"
 					value={this.props.orderDetails.location}
-					onChange={(e) => this.props.updatePickupLocation(e.target.value)}
+					onChange={(e) =>
+						this.props.updatePickupLocation(
+							e.target.value,
+							this.props.storeInformation
+						)
+					}
 				>
 					<option value=""></option>
 					{this.renderLocationDropdownOptions()}

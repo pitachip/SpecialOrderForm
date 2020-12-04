@@ -3,24 +3,43 @@ import React from "react";
 import { connect } from "react-redux";
 //ui components
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 //actions
 import { signInGuestUser } from "../../actions";
 
 class GuestMessage extends React.Component {
+	state = { isLoading: false };
 	continueAsGuestClicked = async () => {
+		this.setState({ isLoading: true });
 		await this.props.signInGuestUser();
 		if (this.props.auth.user) {
-			//call a success function
-			//history.push("/checkout/details");
+			this.setState({ isLoading: false });
 			this.props.onAuthSuccess();
 		}
 	};
 	render() {
 		return (
 			<>
-				<Button variant="link" onClick={this.continueAsGuestClicked}>
-					Continue as guest
-				</Button>
+				{!this.state.isLoading ? (
+					<Button
+						variant="link"
+						size="sm"
+						onClick={this.continueAsGuestClicked}
+					>
+						Continue as guest
+					</Button>
+				) : (
+					<Button variant="link" disabled size="sm">
+						<Spinner
+							as="span"
+							animation="border"
+							size="sm"
+							role="status"
+							aria-hidden="true"
+						/>
+						<span> Creating Guest Account...</span>
+					</Button>
+				)}
 			</>
 		);
 	}

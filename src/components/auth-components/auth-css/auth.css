@@ -26,3 +26,8 @@
 .benefitsList {
 	list-style-type: none;
 }
+
+.guestAccountDiv {
+	margin-top: 15px;
+	text-align: center;
+}

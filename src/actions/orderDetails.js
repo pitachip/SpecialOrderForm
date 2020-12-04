@@ -35,8 +35,36 @@ export const updateShippingMethod = (method) => (dispatch) => {
 	dispatch({ type: "UPDATE_SHIPPING_METHOD", payload: method });
 };
 
-export const updatePickupLocation = (location) => (dispatch) => {
-	dispatch({ type: "UPDATE_PICKUP_LOCATION", payload: location });
+export const updatePickupLocation = (location, storeInformation) => (
+	dispatch
+) => {
+	const locationName = location;
+	const indexOfSelectedStore = findIndex(
+		storeInformation.locations,
+		(location) => {
+			return location.storeName === locationName;
+		}
+	);
+	const pickupInformation = storeInformation.locations[indexOfSelectedStore];
+	dispatch({
+		type: "UPDATE_PICKUP_LOCATION",
+		payload: {
+			location,
+			pickupInformation: {
+				address1: pickupInformation ? pickupInformation.address1 : "",
+				address2: pickupInformation ? pickupInformation.address2 : "",
+				city: pickupInformation ? pickupInformation.city : "",
+				state: pickupInformation ? pickupInformation.state : "",
+				zip: pickupInformation ? pickupInformation.zip : "",
+				phoneNumber: pickupInformation ? pickupInformation.phoneNumber : "",
+				email: pickupInformation ? pickupInformation.email : "",
+			},
+		},
+	});
+};
+
+export const updatePickupInstructions = (pickupInstructions) => (dispatch) => {
+	dispatch({ type: "UPDATE_PICKUP_INSTRUCTIONS", payload: pickupInstructions });
 };
 
 export const updateSpecialInstructions = (specialInstructions) => (
