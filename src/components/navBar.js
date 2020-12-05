@@ -93,13 +93,15 @@ class NavBar extends React.Component {
 		return (
 			<Navbar bg="light" fixed="top" sticky="top" className="fluid">
 				<Navbar.Brand>
-					<img
-						src="/assets/logo.png"
-						width="50"
-						height="50"
-						className="d-inline-block align-top"
-						alt="Pita Chip Logo"
-					/>
+					<a class="navbar-brand" href="/order">
+						<img
+							src="/assets/logo.png"
+							width="50"
+							height="50"
+							className="d-inline-block align-top"
+							alt="Pita Chip Logo"
+						/>
+					</a>
 				</Navbar.Brand>
 				<h3 className="ml-auto">Pita Chip Special Orders</h3>
 				{!user && authLoading

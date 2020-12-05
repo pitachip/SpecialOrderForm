@@ -79,6 +79,7 @@ export default connect(mapStateToProps, { updateDeliveryDetails })(
 	reduxForm({
 		form: "checkoutContactForm",
 		destroyOnUnmount: false,
-		enableReinitialize: false,
+		enableReinitialize: true,
+		keepDirtyOnReinitialize: true,
 	})(CheckoutContactForm)
 );
