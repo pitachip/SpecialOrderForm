@@ -67,7 +67,7 @@ class ConfirmationDetails extends React.Component {
 							<OrderConfirmation orderConfirmationDetails={data} />
 						</Grid.Column>
 						<Grid.Column width={6}>
-							{!user ? (
+							{!user || user.isAnonymous ? (
 								<DelayedAccountCreation
 									orderConfirmationDetails={data}
 									onAuthSuccess={this.guestAccountUpgraded}
