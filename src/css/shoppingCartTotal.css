@@ -1,0 +1,4 @@
+.shoppingCartTotalPrice {
+	display: flex;
+	justify-content: flex-end;
+}

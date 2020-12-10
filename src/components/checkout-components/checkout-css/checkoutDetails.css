@@ -1,0 +1,44 @@
+.checkoutDetailsContainer {
+	margin-top: 20px;
+	margin-bottom: 50px;
+}
+
+.checkoutSteps {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.ui.grid > .row.checkoutConfirmationRow {
+	justify-content: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.shoppingCartItemPrice {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.orderSummaryOffset {
+	top: 6em;
+	z-index: 0 !important;
+}
+
+.shoppingCartTotalPrice {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.checkoutNavigationBottomMargin {
+	margin-bottom: 50px;
+	margin-top: 30px;
+}
+
+.card-subtitle.h6 {
+	font-size: 1.25rem;
+}
+
+.contactDetails {
+	line-height: 0.5em;
+}

@@ -1,0 +1,33 @@
+.signUpCardItems {
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.signUpButton {
+	margin: 0 !important;
+	padding: 4px !important;
+}
+
+.forgotPasswordButtonContainer {
+	justify-content: center;
+}
+
+.loginButtonContainer {
+	margin: auto;
+}
+
+.stickyTopOffset {
+	top: 6em;
+	z-index: 0 !important;
+}
+
+.benefitsList {
+	list-style-type: none;
+}
+
+.guestAccountDiv {
+	margin-top: 15px;
+	text-align: center;
+}

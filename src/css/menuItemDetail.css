@@ -1,0 +1,32 @@
+.quantityText {
+	display: flex;
+	justify-content: flex-start;
+	padding-left: 100px;
+	align-items: center;
+	font-size: 1.5em;
+}
+.quantityToggles {
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 100px;
+	align-items: center;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #b21300;
+	border-color: #b21300; /*set the color you want here*/
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+	color: #fff;
+	background-color: #ee3a25;
+	border-color: #ee3a25; /*set the color you want here*/
+}
+
+.specialInstructions {
+	margin-bottom: 15px;
+}
