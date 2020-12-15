@@ -42,3 +42,14 @@
 .contactDetails {
 	line-height: 0.5em;
 }
+
+.ui.basic.blue.button.changeButton {
+	box-shadow: 0 0 !important;
+	padding: 0;
+	font-size: 0.8em;
+}
+.ui.basic.blue.button.changeButton:hover {
+	box-shadow: 0 0 !important;
+	padding: 0;
+	font-size: 0.8em;
+}

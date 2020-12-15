@@ -11,6 +11,8 @@ import { MdMail, MdCheck, MdLock } from "react-icons/md";
 import { matchStrings } from "../../utils/authUtils";
 import { createUserAccount } from "../../actions";
 import RegistrationMessage from "./registrationMessage";
+//css
+import "./auth-css/auth.css";
 
 class CreateAccountForm extends React.Component {
 	state = {
@@ -96,7 +98,7 @@ class CreateAccountForm extends React.Component {
 				>
 					<Form.Row>
 						<Form.Group as={Col}>
-							<Form.Label>First</Form.Label>
+							<Form.Label className="required">First</Form.Label>
 							<Form.Control
 								required
 								placeholder="Enter first name"
@@ -109,7 +111,7 @@ class CreateAccountForm extends React.Component {
 						</Form.Group>
 
 						<Form.Group as={Col}>
-							<Form.Label>Last</Form.Label>
+							<Form.Label className="required">Last</Form.Label>
 							<Form.Control
 								required
 								placeholder="Enter last name"
@@ -123,7 +125,7 @@ class CreateAccountForm extends React.Component {
 					</Form.Row>
 
 					<Form.Group>
-						<Form.Label>Email</Form.Label>
+						<Form.Label className="required">Email</Form.Label>
 						<InputGroup>
 							<InputGroup.Prepend>
 								<InputGroup.Text>
@@ -144,7 +146,7 @@ class CreateAccountForm extends React.Component {
 					</Form.Group>
 
 					<Form.Group>
-						<Form.Label>Confirm Email</Form.Label>
+						<Form.Label className="required">Confirm Email</Form.Label>
 						<InputGroup>
 							<InputGroup.Prepend>
 								<InputGroup.Text>
@@ -171,7 +173,7 @@ class CreateAccountForm extends React.Component {
 					</Form.Group>
 
 					<Form.Group>
-						<Form.Label>Password</Form.Label>
+						<Form.Label className="required">Password</Form.Label>
 						<InputGroup>
 							<InputGroup.Prepend>
 								<InputGroup.Text>
@@ -196,7 +198,7 @@ class CreateAccountForm extends React.Component {
 					</Form.Group>
 
 					<Form.Group>
-						<Form.Label>Confirm Password</Form.Label>
+						<Form.Label className="required">Confirm Password</Form.Label>
 						<InputGroup>
 							<InputGroup.Prepend>
 								<InputGroup.Text>
@@ -234,6 +236,11 @@ class CreateAccountForm extends React.Component {
 					</Button>
 				</Form>
 				<RegistrationMessage cardType="existingUser" />
+				<div>
+					<p>
+						<span style={{ color: "red" }}>*</span> = Required
+					</p>
+				</div>
 			</div>
 		);
 	}

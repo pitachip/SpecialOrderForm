@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
+import { Icon } from "semantic-ui-react";
 //utils
 import { history } from "../../utils/history";
 //css
@@ -32,6 +33,7 @@ class CheckoutNavigation extends React.Component {
 							onClick={this.backButtonClicked}
 							disabled={disableBackButton}
 						>
+							<Icon name="chevron left" />
 							{backText}
 						</Button>
 					</Col>
@@ -44,6 +46,7 @@ class CheckoutNavigation extends React.Component {
 								onClick={(e) => forwardButtonClicked(e)}
 							>
 								{forwardText}
+								<Icon name="chevron right" />
 							</Button>
 						) : (
 							<Button disabled className="float-right">

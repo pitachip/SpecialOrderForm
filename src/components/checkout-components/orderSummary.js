@@ -4,12 +4,14 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getFormValues } from "redux-form";
 import each from "lodash/each";
-import findIndex from "lodash/findIndex";
 import NumberFormat from "react-number-format";
 //ui components
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Button } from "semantic-ui-react";
+//utils
+import { history } from "../../utils/history";
 //css
 import "./checkout-css/checkoutDetails.css";
 
@@ -173,6 +175,7 @@ class OrderSummary extends React.Component {
 			hour: "2-digit",
 			minute: "2-digit",
 		};
+		const { shippingMethod } = this.props.orderDetails;
 		if (this.props.orderDetails.orderDate !== "") {
 			formattedDate = new Date(
 				this.props.orderDetails.orderDate
@@ -183,7 +186,8 @@ class OrderSummary extends React.Component {
 				<Row>
 					<Col>
 						<p className="shoppingCartTotalPrice">
-							Order Date:&nbsp;{formattedDate}
+							{shippingMethod === "delivery" ? "Delivery" : "Pick-Up"} Date &
+							Time:&nbsp;{formattedDate}
 						</p>
 					</Col>
 				</Row>
@@ -255,18 +259,22 @@ class OrderSummary extends React.Component {
 				</Row>
 				<Row>
 					<Col md={8}>
-						<p>Total</p>
+						<p>
+							<b>Total</b>
+						</p>
 					</Col>
 					<Col md={4} className="shoppingCartTotalPrice">
 						<p>
-							<NumberFormat
-								value={this.props.totals.total}
-								displayType={"text"}
-								thousandSeparator={true}
-								prefix={"$"}
-								decimalScale={2}
-								fixedDecimalScale="true"
-							/>
+							<b>
+								<NumberFormat
+									value={this.props.totals.total}
+									displayType={"text"}
+									thousandSeparator={true}
+									prefix={"$"}
+									decimalScale={2}
+									fixedDecimalScale="true"
+								/>
+							</b>
 						</p>
 					</Col>
 				</Row>
@@ -310,6 +318,17 @@ class OrderSummary extends React.Component {
 					</Card.Header>
 					<Card.Body>
 						<Card.Subtitle className="mb-2 text-muted">Items</Card.Subtitle>
+						<p>
+							<Button
+								basic
+								color="blue"
+								className="changeButton"
+								onClick={() => history.push("/order")}
+							>
+								Need to make a change?
+							</Button>
+						</p>
+
 						{this.renderShoppingCartItems()}
 						<hr />
 						<Card.Subtitle className="mb-2 text-muted">Totals</Card.Subtitle>

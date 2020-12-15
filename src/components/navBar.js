@@ -50,7 +50,6 @@ class NavBar extends React.Component {
 	renderAuthState = () => {
 		const { user, metaData } = this.props.auth;
 		if (user && metaData) {
-			console.log(user.isAnonymous);
 			return !user.isAnonymous ? (
 				<NavDropdown
 					title={
@@ -93,7 +92,7 @@ class NavBar extends React.Component {
 		return (
 			<Navbar bg="light" fixed="top" sticky="top" className="fluid">
 				<Navbar.Brand>
-					<a class="navbar-brand" href="/order">
+					<a className="navbar-brand" href="/order">
 						<img
 							src="/assets/logo.png"
 							width="50"

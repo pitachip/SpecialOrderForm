@@ -43,6 +43,11 @@ class CheckoutContactForm extends React.Component {
 		const { handleSubmit, orderDetails } = this.props;
 		return (
 			<div>
+				<div>
+					<p>
+						<span style={{ color: "red" }}>*</span> = Required
+					</p>
+				</div>
 				<Form onSubmit={handleSubmit(this.handleForwardClick)}>
 					<h2>Your Information</h2>
 					<CustomerInformationForm />
@@ -51,8 +56,8 @@ class CheckoutContactForm extends React.Component {
 						: this.renderPickupComponents(orderDetails)}
 					<CheckoutNavigation
 						backNav="/order"
-						backText="Order"
-						forwardText="Payment"
+						backText="Back to Order"
+						forwardText="Proceed to Payment"
 						forwardButtonClicked={() => null}
 					/>
 				</Form>

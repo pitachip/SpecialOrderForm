@@ -70,7 +70,7 @@ const CustomerInformationForm = () => {
 		<div>
 			<Form.Row>
 				<Form.Group as={Col}>
-					<Form.Label>First Name</Form.Label>
+					<Form.Label className="required">First Name</Form.Label>
 					<Field
 						name="firstName"
 						component={customerInformationInput}
@@ -81,7 +81,7 @@ const CustomerInformationForm = () => {
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
-					<Form.Label>Last Name</Form.Label>
+					<Form.Label className="required">Last Name</Form.Label>
 					<Field
 						name="lastName"
 						component={customerInformationInput}
@@ -94,7 +94,7 @@ const CustomerInformationForm = () => {
 			</Form.Row>
 			<Form.Row>
 				<Form.Group as={Col}>
-					<Form.Label>Email</Form.Label>
+					<Form.Label className="required">Email</Form.Label>
 					<Field
 						name="email"
 						component={customerInformationInput}
@@ -108,12 +108,12 @@ const CustomerInformationForm = () => {
 					</Form.Text>
 				</Form.Group>
 				<Form.Group as={Col}>
-					<Form.Label>Phone Number</Form.Label>
+					<Form.Label className="required">Phone Number</Form.Label>
 					<Field
 						name="phoneNumber"
 						component={customerInformationInput}
 						type="text"
-						placeholder="215-412-6789"
+						placeholder="XXX-XXX-XXXX"
 						errorMessagePrefix="Phone number"
 						validate={required}
 						normalize={normalizePhone}

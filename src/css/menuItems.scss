@@ -18,6 +18,7 @@
 	&:hover,
 	&:focus {
 		transform: scale3d(1.006, 1.006, 1);
+		cursor: pointer;
 
 		&::after {
 			opacity: 1;

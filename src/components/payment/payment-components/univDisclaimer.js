@@ -21,7 +21,8 @@ class CheckDisclaimer extends React.Component {
 							records or accounts payable
 						</List.Item>
 						<List.Item>
-							We currently accept Diamond Dollars and Dragon Dollars
+							We currently accept Diamond Dollars (Temple) and Dragon Dollars
+							(Drexel)
 						</List.Item>
 					</List>
 				</Message.List>

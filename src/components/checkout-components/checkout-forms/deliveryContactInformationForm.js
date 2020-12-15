@@ -138,7 +138,7 @@ const DeliveryContactInformationForm = ({ contactInformation, change }) => {
 			</Form.Group>
 			<Form.Row>
 				<Form.Group as={Col}>
-					<Form.Label>First Name</Form.Label>
+					<Form.Label className="required">First Name</Form.Label>
 					<Field
 						name="firstNameDelivery"
 						component={deliveryContactInformationInput}
@@ -150,7 +150,7 @@ const DeliveryContactInformationForm = ({ contactInformation, change }) => {
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
-					<Form.Label>Last Name</Form.Label>
+					<Form.Label className="required">Last Name</Form.Label>
 					<Field
 						name="lastNameDelivery"
 						component={deliveryContactInformationInput}
@@ -164,7 +164,7 @@ const DeliveryContactInformationForm = ({ contactInformation, change }) => {
 			</Form.Row>
 			<Form.Row>
 				<Form.Group as={Col}>
-					<Form.Label>Email</Form.Label>
+					<Form.Label className="required">Email</Form.Label>
 					<Field
 						name="emailDelivery"
 						component={deliveryContactInformationInput}
@@ -176,12 +176,12 @@ const DeliveryContactInformationForm = ({ contactInformation, change }) => {
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
-					<Form.Label>Phone Number</Form.Label>
+					<Form.Label className="required">Phone Number</Form.Label>
 					<Field
 						name="phoneNumberDelivery"
 						component={deliveryContactInformationInput}
 						type="text"
-						placeholder="215-412-6789"
+						placeholder="XXX-XXX-XXXX"
 						errorMessagePrefix="Phone number"
 						validate={required}
 						sameAsAbove={sameAsAbove}

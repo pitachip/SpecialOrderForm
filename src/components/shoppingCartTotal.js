@@ -69,7 +69,7 @@ class ShoppingCartTotal extends React.Component {
 				<Row>
 					<Col md={8}>
 						<p>
-							Subtotal{" (min: "}
+							Subtotal{" (minimum: "}
 							{menuConfig ? this.renderOrderMinmumText() : null}
 							{")"}
 						</p>

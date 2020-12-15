@@ -31,3 +31,8 @@
 	margin-top: 15px;
 	text-align: center;
 }
+
+.required:after {
+	content: " *";
+	color: red;
+}

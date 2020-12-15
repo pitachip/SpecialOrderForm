@@ -104,7 +104,7 @@ const DeliveryInformationForm = () => {
 	return (
 		<div>
 			<Form.Group>
-				<Form.Label>Address</Form.Label>
+				<Form.Label className="required">Address</Form.Label>
 				<Field
 					name="address1"
 					component={deliveryInputField}
@@ -125,7 +125,7 @@ const DeliveryInformationForm = () => {
 			</Form.Group>
 			<Form.Row>
 				<Form.Group as={Col}>
-					<Form.Label>City</Form.Label>
+					<Form.Label className="required">City</Form.Label>
 					<Field
 						name="city"
 						component={deliveryInputField}
@@ -136,7 +136,7 @@ const DeliveryInformationForm = () => {
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
-					<Form.Label>State</Form.Label>
+					<Form.Label className="required">State</Form.Label>
 					<Field
 						name="state"
 						component={deliverySelectField}
@@ -147,11 +147,11 @@ const DeliveryInformationForm = () => {
 					/>
 				</Form.Group>
 				<Form.Group as={Col}>
-					<Form.Label>Zip</Form.Label>
+					<Form.Label className="required">Zip</Form.Label>
 					<Field
 						name="zip"
 						type="number"
-						placeholder="18929"
+						placeholder="XXXXX"
 						component={deliveryInputField}
 						errorMessagePrefix="Zip"
 						validate={[required, validateZipCode]}

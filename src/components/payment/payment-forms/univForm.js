@@ -145,6 +145,7 @@ class UnivForm extends React.Component {
 						placeholder="156773322312"
 						validate={required}
 						errorMessagePrefix="Account number "
+						css="required"
 					/>
 					<Field
 						name="taxExempt"

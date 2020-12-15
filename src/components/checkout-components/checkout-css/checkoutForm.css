@@ -11,3 +11,8 @@
 	border: 1px solid #cc0033 !important;
 	outline: none !important;
 }
+
+.required:after {
+	content: " *";
+	color: red;
+}

@@ -45,7 +45,7 @@ class ConfirmationPaymentDetails extends React.Component {
 									rel="noopener noreferrer"
 								>
 									<Icon name="payment" size="large" link />
-									Pay For Invoice
+									Pay Invoice
 								</a>
 							</p>
 						</div>

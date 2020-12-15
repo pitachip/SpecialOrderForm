@@ -103,6 +103,7 @@ class ShoppingCartDetails extends React.Component {
 
 	renderOrderButton = () => {
 		const { subTotal } = this.props.totals;
+		const { minimumOrderAmount } = this.props.menuConfig.settings;
 		if (subTotal < 130) {
 			return (
 				<OverlayTrigger
@@ -116,7 +117,7 @@ class ShoppingCartDetails extends React.Component {
 				>
 					<span className="block">
 						<Button block disabled style={{ pointerEvents: "none" }}>
-							Order Now
+							Minimum Order Amount: ${minimumOrderAmount}
 							<MdChevronRight />
 						</Button>
 					</span>
@@ -133,9 +134,13 @@ class ShoppingCartDetails extends React.Component {
 	};
 
 	renderDateTimeSelector = () => {
+		const { shippingMethod } = this.props.orderDetails;
 		return (
 			<div>
-				<Form.Label>Choose Order Date & Time:</Form.Label>
+				<Form.Label>
+					Choose {shippingMethod === "delivery" ? "Delivery" : "Pick-Up"} Date &
+					Time:
+				</Form.Label>
 				<br />
 				<DatePicker
 					selected={new Date(this.props.orderDetails.orderDate)}

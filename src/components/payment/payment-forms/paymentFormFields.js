@@ -25,11 +25,13 @@ export const paymentInputField = ({
 	placeholder,
 	meta,
 	errorMessagePrefix,
+	css,
 }) => {
+	console.log("Css: ", css);
 	return (
 		<>
 			<Form.Field>
-				<label>{label}</label>
+				<label className={css ? css : null}>{label}</label>
 				<input
 					placeholder={placeholder}
 					onChange={input.onChange}

@@ -7,7 +7,6 @@ import Card from "react-bootstrap/Card";
 //app components
 import { setMenuItem } from "../actions";
 import MenuItemsHeader from "./menuItemsHeader";
-//import MenuItemDetailModal from "./modals/menuItemDetail";
 import AddShoppingCartItemModal from "./modals/addShoppingCartItemModal";
 
 import "../css/menuItems.scss";
