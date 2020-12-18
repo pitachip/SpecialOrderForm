@@ -4,7 +4,11 @@ const INITIAL_STATE = {
 	menuCategoryId: null,
 	menuItemId: null,
 	selectedMenuItem: null,
-	menuConfig: null,
+	menuConfig: {
+		settings: {
+			minimumOrderAmount: 0,
+		},
+	},
 };
 
 export default (state = INITIAL_STATE, action) => {

@@ -262,7 +262,12 @@ class MenuItemDetail extends React.Component {
 		);
 	};
 
-	renderModifierOptions = (modifierOptions, modifierName, modifierId) => {
+	renderModifierOptions = (
+		modifierOptions,
+		modifierName,
+		modifierId,
+		maxSelectionAmount
+	) => {
 		return modifierOptions.map((option) => {
 			return (
 				<Col xs={6} key={option._id}>
@@ -288,12 +293,15 @@ class MenuItemDetail extends React.Component {
 				<Card fluid color="red" key={modifier.name}>
 					<Card.Content>
 						<Card.Header>{modifier.name}</Card.Header>
-						<Card.Meta>Choose up to {modifier.max_number_options}</Card.Meta>
+						{modifier.min_number_options > 0 ? (
+							<Card.Meta>Choose up to {modifier.max_number_options}</Card.Meta>
+						) : null}
 						<Row>
 							{this.renderModifierOptions(
 								modifier.options,
 								modifier.name,
-								modifier._id
+								modifier._id,
+								modifier.max_number_options
 							)}
 						</Row>
 					</Card.Content>
@@ -316,7 +324,7 @@ class MenuItemDetail extends React.Component {
 								<Form.Control
 									as="textarea"
 									rows="2"
-									placeholder="Let us know about any special requests you need for this item"
+									placeholder="Let us know about any special requests you have for this item"
 									value={this.state.specialInstructions}
 									onChange={(e) =>
 										this.setState({ specialInstructions: e.target.value })
@@ -347,10 +355,6 @@ class MenuItemDetail extends React.Component {
 		return this.renderForm(name, modifiers, "Add to Order", <MdAdd />);
 	};
 	renderEditItem = () => {
-		/**
-		 * Load in values from redux based on the menu item that was selected
-		 * for that shopping cart item
-		 */
 		const { name, modifiers } = this.props.orderItemToEdit.originalMenuItem;
 		return this.renderForm(name, modifiers, "Update Item", <MdCreate />);
 	};

@@ -236,7 +236,7 @@ class ShoppingCartDetails extends React.Component {
 					<Form.Control
 						as="textarea"
 						rows="3"
-						placeholder="Let us know about any special requests you need for this order"
+						placeholder="Let us know about any special requests you have for this order"
 						onBlur={() => this.toggleSpecialInstructionsTextArea()}
 						value={this.props.orderDetails.specialInstructions}
 						onChange={(e) =>
