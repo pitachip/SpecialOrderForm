@@ -4,18 +4,22 @@ import { connect } from "react-redux";
 //ui components
 import Modal from "react-bootstrap/Modal";
 //app components
-import MenuItemDetail from "../menuItemDetail";
+import MenuItemDetail from "../menu-components/menuItemDetail";
 
 class UpdateShoppingCartItemModal extends React.Component {
 	modalClosed = () => {
 		this.props.close();
 	};
 	render() {
-		const { menuItem } = this.props.orderItemToEdit;
+		const { name, description } = this.props.menuItem[0];
 		return (
 			<Modal size="lg" show={this.props.show} onHide={this.modalClosed}>
 				<Modal.Header closeButton>
-					<Modal.Title>{menuItem}</Modal.Title>
+					<Modal.Title>
+						{name}
+						<br />
+						<h6 className="text-muted">{description}</h6>
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<MenuItemDetail

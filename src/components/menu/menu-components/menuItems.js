@@ -5,11 +5,11 @@ import filter from "lodash/filter";
 //ui components
 import Card from "react-bootstrap/Card";
 //app components
-import { setMenuItem } from "../actions";
+import { setMenuItem } from "../../../actions";
 import MenuItemsHeader from "./menuItemsHeader";
-import AddShoppingCartItemModal from "./modals/addShoppingCartItemModal";
+import AddShoppingCartItemModal from "../menu-modals/addShoppingCartItemModal";
 
-import "../css/menuItems.scss";
+import "../menu-css/menuItems.scss";
 
 class MenuItems extends React.Component {
 	state = { showModal: false };

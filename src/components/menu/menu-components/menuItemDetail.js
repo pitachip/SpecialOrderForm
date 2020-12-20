@@ -13,8 +13,11 @@ import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { MdAdd, MdCreate } from "react-icons/md";
 import { Card } from "semantic-ui-react";
+//app components
+import ModifierOptionRadio from "./modifierOptionRadio";
+import ModifierOptionCheckbox from "./modifierOptionCheckbox";
 //utils
-import ItemQuantity from "../utils/itemQuantity";
+import ItemQuantity from "../../../utils/itemQuantity";
 import {
 	validateModifiers,
 	filterSelectedModifiers,
@@ -22,61 +25,25 @@ import {
 	createErrorMessage,
 	validateQuantity,
 	createQuantityErrorMessage,
-} from "../utils/menuItemValidation";
+} from "../../../utils/menuItemValidation";
 import {
 	formatSelectionForCheckout,
 	calculateTotals,
-} from "../utils/orderCheckoutUtils";
+} from "../../../utils/orderCheckoutUtils";
 //actions
-import { addItemToOrder, updateOrderItem, updateOrderTotals } from "../actions";
+import {
+	addItemToOrder,
+	updateOrderItem,
+	updateOrderTotals,
+} from "../../../actions";
 //css
-import "../css/menuItemDetail.css";
-
-class ModifierOptionCheckbox extends React.Component {
-	state = { checked: false };
-
-	componentDidMount() {
-		if (this.props.selection) {
-			let wasSelected = false;
-			wasSelected = this.wasOptionSelected(
-				this.props.option._id,
-				this.props.selection
-			);
-			if (wasSelected) {
-				this.setState({ checked: wasSelected });
-			}
-		}
-	}
-	//TODO: put this in the utils once it works
-	wasOptionSelected = (optionId, selection) => {
-		let wasSelected = false;
-		wasSelected = findKey(selection, { id: optionId });
-		return wasSelected ? true : false;
-	};
-	render() {
-		const { modifierName, modifierId, option } = this.props;
-		return (
-			<div>
-				<Form.Check
-					inline
-					type="checkbox"
-					data-modifier={modifierName}
-					data-modifier-id={modifierId}
-					label={option.name}
-					name={option.name}
-					id={option._id}
-					onChange={(e) => {
-						this.props.checkboxSelected(e);
-						this.setState({ checked: e.target.checked });
-					}}
-					checked={this.state.checked}
-				/>
-			</div>
-		);
-	}
-}
+import "../menu-css/menuItemDetail.css";
 
 class MenuItemDetail extends React.Component {
+	/**
+	 * TODO:
+	 * 3. add new selection function to the radio file
+	 */
 	state = {
 		selection: {},
 		validationErrors: [],
@@ -94,37 +61,36 @@ class MenuItemDetail extends React.Component {
 		}
 	}
 
-	modiferOptionSelected = async (option) => {
-		const name = option.target.name;
+	/**
+	 * creating this method to handle when radio button selections are made
+	 * because the validation above doesn't handle that case
+	 */
+	radioModifierOptionSelected = async (option) => {
+		const name = option.target.getAttribute("data-modifier-name");
 		const id = option.target.id;
 		const modifier = option.target.getAttribute("data-modifier");
 		const modifierId = option.target.getAttribute("data-modifier-id");
 		const checked = option.target.checked;
 
-		/**Check to see if object needs to be removed
-		 * from the state because it has been unchecked
-		 */
-		if (!option.target.checked) {
-			const objectToRemove = findKey(this.state.selection, {
-				name: option.target.name,
-			});
-			await this.setState({
-				selection: omit(this.state.selection, objectToRemove),
-			});
-		} else {
-			await this.setState({
-				selection: {
-					...this.state.selection,
-					[id]: {
-						name,
-						id,
-						modifier,
-						modifierId,
-						checked,
-					},
+		//remove any previously selected options
+		const objectToRemove = findKey(this.state.selection, {
+			modifier: option.target.getAttribute("data-modifier"),
+		});
+		await this.setState({
+			selection: omit(this.state.selection, objectToRemove),
+		});
+		await this.setState({
+			selection: {
+				...this.state.selection,
+				[id]: {
+					name,
+					id,
+					modifier,
+					modifierId,
+					checked,
 				},
-			});
-		}
+			},
+		});
 	};
 
 	quantityUpdated = (quantity) => {
@@ -266,25 +232,32 @@ class MenuItemDetail extends React.Component {
 		modifierOptions,
 		modifierName,
 		modifierId,
-		maxSelectionAmount
+		maxOptions
 	) => {
-		return modifierOptions.map((option) => {
+		if (maxOptions === 1) {
+			//Need to render them all together to manage their state.
 			return (
-				<Col xs={6} key={option._id}>
-					<ModifierOptionCheckbox
-						modifierName={modifierName}
-						modifierId={modifierId}
-						option={option}
-						checkboxSelected={this.modiferOptionSelected}
-						selection={
-							this.props.editOrderItem
-								? this.props.orderItemToEdit.originalSelectionFormat
-								: null
-						}
-					/>
-				</Col>
+				<ModifierOptionRadio
+					modifierOptions={modifierOptions}
+					modifierName={modifierName}
+					modifierId={modifierId}
+					edit={this.props.editOrderItem}
+				/>
 			);
-		});
+		} else {
+			return modifierOptions.map((option) => {
+				return (
+					<Col xs={6} key={option._id}>
+						<ModifierOptionCheckbox
+							modifierName={modifierName}
+							modifierId={modifierId}
+							option={option}
+							edit={this.props.editOrderItem}
+						/>
+					</Col>
+				);
+			});
+		}
 	};
 
 	renderModifierSections = (modifiers) => {
@@ -378,6 +351,7 @@ const mapStateToProps = (state) => {
 		orderItems: state.order.orderItems,
 		menuConfig: state.menu.menuConfig,
 		orderDetails: state.order.orderDetails,
+		selection: state.menu.selection,
 	};
 };
 

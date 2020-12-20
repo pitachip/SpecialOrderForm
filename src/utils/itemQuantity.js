@@ -6,7 +6,7 @@ import { MdAddCircleOutline, MdRemoveCircleOutline } from "react-icons/md";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
-import "../css/menuItemDetail.css";
+import "../components/menu/menu-css/menuItemDetail.css";
 
 class ItemQuantity extends React.Component {
 	increaseCount = () => {

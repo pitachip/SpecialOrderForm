@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 //ui components
 import Modal from "react-bootstrap/Modal";
 //app components
-import MenuItemDetail from "../menuItemDetail";
+import MenuItemDetail from "../menu-components/menuItemDetail";
 
 class AddShoppingCartItemModal extends React.Component {
 	modalClosed = () => {
