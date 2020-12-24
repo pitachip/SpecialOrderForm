@@ -10,15 +10,20 @@ import Col from "react-bootstrap/Col";
 import {
 	addModifierSelection,
 	removeModifierSelection,
+	loadSelectionToEdit,
 } from "../../../actions";
 
 class ModifierOptionRadio extends React.Component {
 	state = { value: "" };
 
-	componentDidMount() {
-		const { edit } = this.props;
+	async componentDidMount() {
+		const { edit, loadSelectionToEdit } = this.props;
 		if (edit) {
 			let wasSelected = false;
+
+			await loadSelectionToEdit(
+				this.props.orderItemToEdit.originalSelectionFormat
+			);
 			wasSelected = this.wasOptionSelected(
 				this.props.modifierOptions,
 				this.props.selection
@@ -28,6 +33,19 @@ class ModifierOptionRadio extends React.Component {
 			}
 		} else {
 			//Add the default selections
+			const {
+				modifierOptions,
+				addModifierSelection,
+				modifierName,
+				modifierId,
+			} = this.props;
+			each(modifierOptions, (option) => {
+				if (option.default) {
+					const { _id, name } = option;
+					this.setState({ value: option._id });
+					addModifierSelection(name, _id, modifierName, modifierId, true);
+				}
+			});
 		}
 	}
 
@@ -50,25 +68,19 @@ class ModifierOptionRadio extends React.Component {
 			selection,
 		} = this.props;
 
-		/**
-		 * TODO:
-		 * Need to figure out a way to first remove the previously selected radio button
-		 * iterate over the options and any that doesnt equal the one passed in should be removed?
-		 */
+		const modifierToRemove = findKey(selection, {
+			modifierName: modifierName,
+		});
 
-		if (!checked) {
-			const modifierToRemove = findKey(selection, {
-				name: name,
-			});
-			removeModifierSelection(modifierToRemove, selection);
-		} else {
-			addModifierSelection(name, id, modifierName, modifierId, checked);
-		}
+		//Remove any existing radio modifiers that were selected
+		removeModifierSelection(modifierToRemove, selection);
+
+		//add the new one that was clicked
+		addModifierSelection(name, id, modifierName, modifierId, checked);
 	};
 
 	render() {
-		const { modifierName, modifierId, modifierOptions, selection } = this.props;
-		console.log(selection);
+		const { modifierName, modifierId, modifierOptions } = this.props;
 		return modifierOptions.map((option) => {
 			return (
 				<Col xs={6} key={option._id}>
@@ -109,4 +121,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
 	addModifierSelection,
 	removeModifierSelection,
+	loadSelectionToEdit,
 })(ModifierOptionRadio);

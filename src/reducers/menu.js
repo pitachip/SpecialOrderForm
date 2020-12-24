@@ -38,12 +38,23 @@ export default (state = INITIAL_STATE, action) => {
 						name: action.payload.name,
 						id: action.payload.id,
 						modifierName: action.payload.modifierName,
-						modifierId: action.payload.menuCategoryId,
+						modifierId: action.payload.modifierId,
 						checked: action.payload.checked,
 					},
 				},
 			};
 		case "REMOVE_MODIFIER_SELECTION":
+			return {
+				...state,
+				selection: action.payload,
+			};
+		case "RESET_SELECTION":
+			return {
+				...state,
+				selection: action.payload.selection,
+				validationErrors: action.payload.validationErrors,
+			};
+		case "LOAD_SELECTION":
 			return {
 				...state,
 				selection: action.payload,

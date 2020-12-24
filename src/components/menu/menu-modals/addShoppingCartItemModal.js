@@ -5,9 +5,12 @@ import { connect } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 //app components
 import MenuItemDetail from "../menu-components/menuItemDetail";
+//actions
+import { resetSelection } from "../../../actions";
 
 class AddShoppingCartItemModal extends React.Component {
 	modalClosed = () => {
+		this.props.resetSelection();
 		this.props.close();
 	};
 	render() {
@@ -34,7 +37,11 @@ class AddShoppingCartItemModal extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		menuItem: state.menu.selectedMenuItem,
+		selection: state.menu.selection,
+		validationErrors: state.menu.validationErrors,
 	};
 };
 
-export default connect(mapStateToProps, {})(AddShoppingCartItemModal);
+export default connect(mapStateToProps, { resetSelection })(
+	AddShoppingCartItemModal
+);

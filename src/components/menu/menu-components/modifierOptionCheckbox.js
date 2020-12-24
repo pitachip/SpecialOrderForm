@@ -8,15 +8,20 @@ import Form from "react-bootstrap/Form";
 import {
 	addModifierSelection,
 	removeModifierSelection,
+	loadSelectionToEdit,
 } from "../../../actions";
 
 class ModifierOptionCheckbox extends React.Component {
 	state = { checked: false };
 
-	componentDidMount() {
-		const { edit } = this.props;
+	async componentDidMount() {
+		const { edit, loadSelectionToEdit } = this.props;
 		if (edit) {
 			let wasSelected = false;
+			await loadSelectionToEdit(
+				this.props.orderItemToEdit.originalSelectionFormat
+			);
+
 			wasSelected = this.wasOptionSelected(
 				this.props.option._id,
 				this.props.selection
@@ -105,4 +110,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
 	addModifierSelection,
 	removeModifierSelection,
+	loadSelectionToEdit,
 })(ModifierOptionCheckbox);

@@ -18,7 +18,7 @@ export const validateModifiers = (
 };
 
 export const filterSelectedModifiers = (modifier, modifierItems) => {
-	return pickBy(modifierItems, { modifier: modifier });
+	return pickBy(modifierItems, { modifierName: modifier });
 };
 
 export const removeErrorMessage = (modifier, errorMessages) => {

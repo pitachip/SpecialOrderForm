@@ -2,8 +2,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import each from "lodash/each";
-import findKey from "lodash/findKey";
-import omit from "lodash/omit";
 //ui components
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -35,6 +33,7 @@ import {
 	addItemToOrder,
 	updateOrderItem,
 	updateOrderTotals,
+	resetSelection,
 } from "../../../actions";
 //css
 import "../menu-css/menuItemDetail.css";
@@ -42,7 +41,9 @@ import "../menu-css/menuItemDetail.css";
 class MenuItemDetail extends React.Component {
 	/**
 	 * TODO:
-	 * 3. add new selection function to the radio file
+	 * 4. remove state variables
+	 * 5. add validation error logic to redux (or maybe not honestly)
+	 * 6. go through an reset selections where needed
 	 */
 	state = {
 		selection: {},
@@ -61,57 +62,21 @@ class MenuItemDetail extends React.Component {
 		}
 	}
 
-	/**
-	 * creating this method to handle when radio button selections are made
-	 * because the validation above doesn't handle that case
-	 */
-	radioModifierOptionSelected = async (option) => {
-		const name = option.target.getAttribute("data-modifier-name");
-		const id = option.target.id;
-		const modifier = option.target.getAttribute("data-modifier");
-		const modifierId = option.target.getAttribute("data-modifier-id");
-		const checked = option.target.checked;
-
-		//remove any previously selected options
-		const objectToRemove = findKey(this.state.selection, {
-			modifier: option.target.getAttribute("data-modifier"),
-		});
-		await this.setState({
-			selection: omit(this.state.selection, objectToRemove),
-		});
-		await this.setState({
-			selection: {
-				...this.state.selection,
-				[id]: {
-					name,
-					id,
-					modifier,
-					modifierId,
-					checked,
-				},
-			},
-		});
-	};
-
 	quantityUpdated = (quantity) => {
 		this.setState({ quantity });
-	};
-
-	modalClosed = () => {
-		this.setState({ selection: {}, validationErrors: [] });
-		this.props.close();
 	};
 
 	formSubmitted = async (e) => {
 		e.preventDefault();
 		const { modifiers } = this.props.menuItem[0];
+		const { selection } = this.props;
 		let groupedErrorMessages = this.state.validationErrors;
 
 		each(modifiers, (modifier) => {
 			//filter the items in that modifier group so that we can validate them
 			const filteredModifierItems = filterSelectedModifiers(
 				modifier.name,
-				this.state.selection
+				selection
 			);
 			//validate the filtered modifier items based on the min and max provided in each section
 			validateModifiers(
@@ -181,12 +146,12 @@ class MenuItemDetail extends React.Component {
 			this.props.addItemToOrder(
 				formatSelectionForCheckout(
 					this.props.menuItem,
-					this.state.selection,
+					this.props.selection,
 					this.state.quantity,
 					this.state.specialInstructions
 				)
 			);
-			this.setState({ selection: {}, validationErrors: [] });
+			this.setState({ validationErrors: [] });
 			this.props.close();
 		} else if (
 			this.state.validationErrors.length === 0 &&
@@ -195,7 +160,7 @@ class MenuItemDetail extends React.Component {
 			this.props.updateOrderItem(
 				formatSelectionForCheckout(
 					this.props.menuItem,
-					this.state.selection,
+					this.props.selection,
 					this.state.quantity,
 					this.state.specialInstructions,
 					this.props.editOrderItem,
@@ -242,6 +207,7 @@ class MenuItemDetail extends React.Component {
 					modifierName={modifierName}
 					modifierId={modifierId}
 					edit={this.props.editOrderItem}
+					orderItemToEdit={this.props.orderItemToEdit}
 				/>
 			);
 		} else {
@@ -253,6 +219,7 @@ class MenuItemDetail extends React.Component {
 							modifierId={modifierId}
 							option={option}
 							edit={this.props.editOrderItem}
+							orderItemToEdit={this.props.orderItemToEdit}
 						/>
 					</Col>
 				);
@@ -352,6 +319,7 @@ const mapStateToProps = (state) => {
 		menuConfig: state.menu.menuConfig,
 		orderDetails: state.order.orderDetails,
 		selection: state.menu.selection,
+		validationErrors: state.menu.validationErrors,
 	};
 };
 
@@ -359,4 +327,5 @@ export default connect(mapStateToProps, {
 	addItemToOrder,
 	updateOrderItem,
 	updateOrderTotals,
+	resetSelection,
 })(MenuItemDetail);

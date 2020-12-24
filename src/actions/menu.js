@@ -51,3 +51,14 @@ export const removeModifierSelection = (objectToRemove, selection) => (
 	const updatedSelection = omit(selection, objectToRemove);
 	dispatch({ type: "REMOVE_MODIFIER_SELECTION", payload: updatedSelection });
 };
+
+export const resetSelection = () => (dispatch) => {
+	dispatch({
+		type: "RESET_SELECTION",
+		payload: { selection: {}, validationErrors: [] },
+	});
+};
+
+export const loadSelectionToEdit = (selection) => async (dispatch) => {
+	await dispatch({ type: "LOAD_SELECTION", payload: selection });
+};
