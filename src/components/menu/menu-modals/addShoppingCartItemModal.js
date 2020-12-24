@@ -37,8 +37,6 @@ class AddShoppingCartItemModal extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		menuItem: state.menu.selectedMenuItem,
-		selection: state.menu.selection,
-		validationErrors: state.menu.validationErrors,
 	};
 };
 

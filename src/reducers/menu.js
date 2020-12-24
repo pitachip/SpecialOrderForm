@@ -10,7 +10,6 @@ const INITIAL_STATE = {
 		},
 	},
 	selection: {},
-	validationErrors: [],
 	quantity: 0,
 	specialInsructions: "",
 };
@@ -40,6 +39,7 @@ export default (state = INITIAL_STATE, action) => {
 						modifierName: action.payload.modifierName,
 						modifierId: action.payload.modifierId,
 						checked: action.payload.checked,
+						price: action.payload.price,
 					},
 				},
 			};
@@ -52,7 +52,6 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				selection: action.payload.selection,
-				validationErrors: action.payload.validationErrors,
 			};
 		case "LOAD_SELECTION":
 			return {

@@ -41,12 +41,9 @@ import "../menu-css/menuItemDetail.css";
 class MenuItemDetail extends React.Component {
 	/**
 	 * TODO:
-	 * 4. remove state variables
-	 * 5. add validation error logic to redux (or maybe not honestly)
-	 * 6. go through an reset selections where needed
+	 * 7. refactor quantity a bit
 	 */
 	state = {
-		selection: {},
 		validationErrors: [],
 		quantity: 0,
 		specialInStructions: "",
@@ -55,7 +52,6 @@ class MenuItemDetail extends React.Component {
 	componentDidMount() {
 		if (this.props.editOrderItem) {
 			this.setState({
-				selection: this.props.orderItemToEdit.originalSelectionFormat,
 				specialInstructions: this.props.orderItemToEdit.specialInstructions,
 			});
 			this.quantityUpdated(this.props.orderItemToEdit.quantity);
@@ -174,7 +170,7 @@ class MenuItemDetail extends React.Component {
 				this.props.orderDetails.shippingMethod
 			);
 			this.props.updateOrderTotals(calculatedAmounts);
-			this.setState({ selection: {}, validationErrors: [] });
+			this.setState({ validationErrors: [] });
 			this.props.close();
 		}
 	};

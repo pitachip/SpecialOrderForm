@@ -35,6 +35,7 @@ export const formatSelectionForCheckout = (
 				modifierChoiceArray.push({
 					name: modifierChoice.name,
 					modifierChoiceId: modifierChoice.id,
+					price: modifierChoice.price,
 				});
 			});
 
@@ -68,7 +69,15 @@ export const calculateTotals = (
 	};
 
 	each(orderItems, (item) => {
-		totals.subTotal = totals.subTotal + item.quantity * (item.basePrice / 100);
+		let modifierTotal = 0;
+		each(item.modifiers, (modifier) => {
+			each(modifier.modifierChoices, (modifierChoice) => {
+				modifierTotal = modifierTotal + modifierChoice.price;
+			});
+		});
+		totals.subTotal =
+			totals.subTotal +
+			item.quantity * ((item.basePrice + modifierTotal) / 100);
 		totals.tax = totals.subTotal * menuConfigSettings.taxRate;
 		totals.total = totals.subTotal + totals.tax + totals.delivery;
 	});

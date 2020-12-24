@@ -41,9 +41,16 @@ class ModifierOptionRadio extends React.Component {
 			} = this.props;
 			each(modifierOptions, (option) => {
 				if (option.default) {
-					const { _id, name } = option;
+					const { _id, name, price } = option;
 					this.setState({ value: option._id });
-					addModifierSelection(name, _id, modifierName, modifierId, true);
+					addModifierSelection(
+						name,
+						_id,
+						modifierName,
+						modifierId,
+						true,
+						price
+					);
 				}
 			});
 		}
@@ -61,7 +68,14 @@ class ModifierOptionRadio extends React.Component {
 		return wasSelected;
 	};
 
-	modifierOptionSelected = (name, id, modifierName, modifierId, checked) => {
+	modifierOptionSelected = (
+		name,
+		id,
+		modifierName,
+		modifierId,
+		checked,
+		price
+	) => {
 		const {
 			addModifierSelection,
 			removeModifierSelection,
@@ -76,7 +90,7 @@ class ModifierOptionRadio extends React.Component {
 		removeModifierSelection(modifierToRemove, selection);
 
 		//add the new one that was clicked
-		addModifierSelection(name, id, modifierName, modifierId, checked);
+		addModifierSelection(name, id, modifierName, modifierId, checked, price);
 	};
 
 	render() {
@@ -99,7 +113,8 @@ class ModifierOptionRadio extends React.Component {
 								option._id,
 								modifierName,
 								modifierId,
-								true
+								true,
+								option.price
 							);
 							this.setState({ value: e.target.value });
 						}}

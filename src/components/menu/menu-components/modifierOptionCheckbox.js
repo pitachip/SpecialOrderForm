@@ -2,8 +2,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import findKey from "lodash/findKey";
+import NumberFormat from "react-number-format";
 //ui components
 import Form from "react-bootstrap/Form";
+import { Label } from "semantic-ui-react";
 //actions
 import {
 	addModifierSelection,
@@ -43,13 +45,21 @@ class ModifierOptionCheckbox extends React.Component {
 					option._id,
 					modifierName,
 					modifierId,
-					true
+					true,
+					option.price
 				);
 				this.setState({ checked: true });
 			}
 		}
 	}
-	modifierOptionSelected = (name, id, modifierName, modifierId, checked) => {
+	modifierOptionSelected = (
+		name,
+		id,
+		modifierName,
+		modifierId,
+		checked,
+		price
+	) => {
 		const {
 			addModifierSelection,
 			removeModifierSelection,
@@ -62,7 +72,7 @@ class ModifierOptionCheckbox extends React.Component {
 			});
 			removeModifierSelection(modifierToRemove, selection);
 		} else {
-			addModifierSelection(name, id, modifierName, modifierId, checked);
+			addModifierSelection(name, id, modifierName, modifierId, checked, price);
 		}
 	};
 	//TODO: put this in the utils once it works
@@ -90,12 +100,26 @@ class ModifierOptionCheckbox extends React.Component {
 							option._id,
 							modifierName,
 							modifierId,
-							e.target.checked
+							e.target.checked,
+							option.price
 						);
 						this.setState({ checked: e.target.checked });
 					}}
 					checked={this.state.checked}
 				/>
+				{option.price > 0 ? (
+					<Label size="mini">
+						+
+						<NumberFormat
+							value={option.price / 100}
+							displayType={"text"}
+							thousandSeparator={true}
+							prefix={"$"}
+							decimalScale={2}
+						/>{" "}
+						per person
+					</Label>
+				) : null}
 			</div>
 		);
 	}

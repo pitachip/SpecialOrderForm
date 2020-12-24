@@ -22,7 +22,7 @@ class ItemQuantity extends React.Component {
 			<div>
 				<Row md={2}>
 					<Col className="quantityText">
-						<p>Quantity</p>
+						<p>Number of Guests</p>
 					</Col>
 					<Col className="quantityToggles">
 						<div onClick={() => this.decreaseCount()}>

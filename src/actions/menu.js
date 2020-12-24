@@ -37,11 +37,12 @@ export const addModifierSelection = (
 	id,
 	modifierName,
 	modifierId,
-	checked
+	checked,
+	price
 ) => (dispatch) => {
 	dispatch({
 		type: "ADD_MODIFIER_SELECTION",
-		payload: { name, id, modifierName, modifierId, checked },
+		payload: { name, id, modifierName, modifierId, checked, price },
 	});
 };
 
@@ -55,7 +56,7 @@ export const removeModifierSelection = (objectToRemove, selection) => (
 export const resetSelection = () => (dispatch) => {
 	dispatch({
 		type: "RESET_SELECTION",
-		payload: { selection: {}, validationErrors: [] },
+		payload: { selection: {} },
 	});
 };
 
