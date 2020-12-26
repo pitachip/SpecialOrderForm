@@ -63,8 +63,14 @@ export const createErrorMessage = (
 	return errorMessage;
 };
 
-export const validateQuantity = (quantity) => {
-	return quantity <= 0 ? "Quantity must be greater than 0" : null;
+export const validateQuantity = (quantity, itemMinimum) => {
+	if (itemMinimum > 0) {
+		return quantity < itemMinimum
+			? `Number of guests must be greater than ${itemMinimum}`
+			: null;
+	} else {
+		return quantity <= 0 ? "Number of guests must be greater than 0" : null;
+	}
 };
 
 export const createQuantityErrorMessage = (errorMessageArray, message) => {

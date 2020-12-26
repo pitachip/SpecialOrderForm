@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import NumberFormat from "react-number-format";
 //ui components
 import Modal from "react-bootstrap/Modal";
 //app components
@@ -14,7 +15,12 @@ class AddShoppingCartItemModal extends React.Component {
 		this.props.close();
 	};
 	render() {
-		const { name, description } = this.props.menuItem[0];
+		const {
+			name,
+			description,
+			basePrice,
+			itemMinimum,
+		} = this.props.menuItem[0];
 		return (
 			<Modal size="lg" show={this.props.show} onHide={this.modalClosed}>
 				<Modal.Header closeButton>
@@ -22,6 +28,20 @@ class AddShoppingCartItemModal extends React.Component {
 						{name}
 						<br />
 						<h6 className="text-muted">{description}</h6>
+						<h6 className="text-muted">
+							<NumberFormat
+								className="nospace"
+								value={basePrice / 100}
+								displayType={"text"}
+								thousandSeparator={true}
+								prefix={"$"}
+								decimalScale={2}
+								fixedDecimalScale="true"
+							/>
+							{` per person ${
+								itemMinimum > 0 ? `| ${itemMinimum} person minimum` : ""
+							}`}
+						</h6>
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>

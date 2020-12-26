@@ -64,7 +64,7 @@ class MenuItemDetail extends React.Component {
 
 	formSubmitted = async (e) => {
 		e.preventDefault();
-		const { modifiers } = this.props.menuItem[0];
+		const { modifiers, itemMinimum } = this.props.menuItem[0];
 		const { selection } = this.props;
 		let groupedErrorMessages = this.state.validationErrors;
 
@@ -111,20 +111,22 @@ class MenuItemDetail extends React.Component {
 		});
 
 		//Validating Quantity TODO: Lots of refactoring needed here
-		const quantityValidationError = validateQuantity(this.state.quantity);
+		const quantityValidationError = validateQuantity(
+			this.state.quantity,
+			itemMinimum
+		);
 		if (quantityValidationError) {
 			const quantityErrorMessage = createQuantityErrorMessage(
 				this.state.validationErrors,
-				"Quantity"
+				"Number of guests"
 			);
-			console.log(quantityErrorMessage);
 			if (quantityErrorMessage < 0 || quantityErrorMessage === 0) {
 				groupedErrorMessages.push(quantityValidationError);
 			}
 		} else {
 			//remove the error message if its already in there
 			const removedQuantityValidationMessage = removeErrorMessage(
-				"Quantity",
+				"Number of guests",
 				this.state.validationErrors
 			);
 			if (removedQuantityValidationMessage) {
@@ -228,7 +230,11 @@ class MenuItemDetail extends React.Component {
 			return (
 				<Card fluid color="red" key={modifier.name}>
 					<Card.Content>
-						<Card.Header>{modifier.name}</Card.Header>
+						<Card.Header
+							className={`${modifier.min_number_options > 0 ? "required" : ""}`}
+						>
+							{modifier.name}
+						</Card.Header>
 						{modifier.min_number_options > 0 ? (
 							<Card.Meta>Choose up to {modifier.max_number_options}</Card.Meta>
 						) : null}
@@ -249,6 +255,11 @@ class MenuItemDetail extends React.Component {
 	renderForm = (menuItemName, modifiers, submitLabel, submitIcon) => {
 		return (
 			<div>
+				<div style={{ marginBottom: "10px" }}>
+					<p>
+						<span style={{ color: "red" }}>*</span> = Required
+					</p>
+				</div>
 				<Form onSubmit={(e) => this.formSubmitted(e)}>
 					{modifiers ? this.renderModifierSections(modifiers) : null}
 					<Card fluid color="red">
