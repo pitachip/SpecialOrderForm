@@ -27,7 +27,6 @@ export const paymentInputField = ({
 	errorMessagePrefix,
 	css,
 }) => {
-	console.log("Css: ", css);
 	return (
 		<>
 			<Form.Field>

@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 //app componenets
 import Disclaimer from "./disclaimer";
 import MenuCategories from "./menuCategories";
-import MenuItems from "./menuItems";
+import MenuItems from "./menu/menu-components/menuItems";
 import OrderDetails from "./orderDetails";
 import { getSpecialOrders, getStoreInformation } from "../actions";
 

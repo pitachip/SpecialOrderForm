@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 //ui components
 import { Table, Button, Icon, Accordion } from "semantic-ui-react";
 //app components
-import UpdateShoppingCartItemModal from "./modals/updateShoppingCartItemModal";
-import DeleteShoppingCartItemModal from "./modals/deleteShoppingCartItemModal";
+import UpdateShoppingCartItemModal from "./menu/menu-modals/updateShoppingCartItemModal";
+import DeleteShoppingCartItemModal from "./menu/menu-modals/deleteShoppingCartItemModal";
 //css
 import "../css/shoppingCartItem.css";
 

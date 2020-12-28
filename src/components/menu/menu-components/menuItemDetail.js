@@ -2,8 +2,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import each from "lodash/each";
-import findKey from "lodash/findKey";
-import omit from "lodash/omit";
 //ui components
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -13,8 +11,11 @@ import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { MdAdd, MdCreate } from "react-icons/md";
 import { Card } from "semantic-ui-react";
+//app components
+import ModifierOptionRadio from "./modifierOptionRadio";
+import ModifierOptionCheckbox from "./modifierOptionCheckbox";
 //utils
-import ItemQuantity from "../utils/itemQuantity";
+import ItemQuantity from "../../../utils/itemQuantity";
 import {
 	validateModifiers,
 	filterSelectedModifiers,
@@ -22,63 +23,27 @@ import {
 	createErrorMessage,
 	validateQuantity,
 	createQuantityErrorMessage,
-} from "../utils/menuItemValidation";
+} from "../../../utils/menuItemValidation";
 import {
 	formatSelectionForCheckout,
 	calculateTotals,
-} from "../utils/orderCheckoutUtils";
+} from "../../../utils/orderCheckoutUtils";
 //actions
-import { addItemToOrder, updateOrderItem, updateOrderTotals } from "../actions";
+import {
+	addItemToOrder,
+	updateOrderItem,
+	updateOrderTotals,
+	resetSelection,
+} from "../../../actions";
 //css
-import "../css/menuItemDetail.css";
-
-class ModifierOptionCheckbox extends React.Component {
-	state = { checked: false };
-
-	componentDidMount() {
-		if (this.props.selection) {
-			let wasSelected = false;
-			wasSelected = this.wasOptionSelected(
-				this.props.option._id,
-				this.props.selection
-			);
-			if (wasSelected) {
-				this.setState({ checked: wasSelected });
-			}
-		}
-	}
-	//TODO: put this in the utils once it works
-	wasOptionSelected = (optionId, selection) => {
-		let wasSelected = false;
-		wasSelected = findKey(selection, { id: optionId });
-		return wasSelected ? true : false;
-	};
-	render() {
-		const { modifierName, modifierId, option } = this.props;
-		return (
-			<div>
-				<Form.Check
-					inline
-					type="checkbox"
-					data-modifier={modifierName}
-					data-modifier-id={modifierId}
-					label={option.name}
-					name={option.name}
-					id={option._id}
-					onChange={(e) => {
-						this.props.checkboxSelected(e);
-						this.setState({ checked: e.target.checked });
-					}}
-					checked={this.state.checked}
-				/>
-			</div>
-		);
-	}
-}
+import "../menu-css/menuItemDetail.css";
 
 class MenuItemDetail extends React.Component {
+	/**
+	 * TODO:
+	 * 7. refactor quantity a bit
+	 */
 	state = {
-		selection: {},
 		validationErrors: [],
 		quantity: 0,
 		specialInStructions: "",
@@ -87,65 +52,27 @@ class MenuItemDetail extends React.Component {
 	componentDidMount() {
 		if (this.props.editOrderItem) {
 			this.setState({
-				selection: this.props.orderItemToEdit.originalSelectionFormat,
 				specialInstructions: this.props.orderItemToEdit.specialInstructions,
 			});
 			this.quantityUpdated(this.props.orderItemToEdit.quantity);
 		}
 	}
 
-	modiferOptionSelected = async (option) => {
-		const name = option.target.name;
-		const id = option.target.id;
-		const modifier = option.target.getAttribute("data-modifier");
-		const modifierId = option.target.getAttribute("data-modifier-id");
-		const checked = option.target.checked;
-
-		/**Check to see if object needs to be removed
-		 * from the state because it has been unchecked
-		 */
-		if (!option.target.checked) {
-			const objectToRemove = findKey(this.state.selection, {
-				name: option.target.name,
-			});
-			await this.setState({
-				selection: omit(this.state.selection, objectToRemove),
-			});
-		} else {
-			await this.setState({
-				selection: {
-					...this.state.selection,
-					[id]: {
-						name,
-						id,
-						modifier,
-						modifierId,
-						checked,
-					},
-				},
-			});
-		}
-	};
-
 	quantityUpdated = (quantity) => {
 		this.setState({ quantity });
 	};
 
-	modalClosed = () => {
-		this.setState({ selection: {}, validationErrors: [] });
-		this.props.close();
-	};
-
 	formSubmitted = async (e) => {
 		e.preventDefault();
-		const { modifiers } = this.props.menuItem[0];
+		const { modifiers, itemMinimum } = this.props.menuItem[0];
+		const { selection } = this.props;
 		let groupedErrorMessages = this.state.validationErrors;
 
 		each(modifiers, (modifier) => {
 			//filter the items in that modifier group so that we can validate them
 			const filteredModifierItems = filterSelectedModifiers(
 				modifier.name,
-				this.state.selection
+				selection
 			);
 			//validate the filtered modifier items based on the min and max provided in each section
 			validateModifiers(
@@ -184,20 +111,22 @@ class MenuItemDetail extends React.Component {
 		});
 
 		//Validating Quantity TODO: Lots of refactoring needed here
-		const quantityValidationError = validateQuantity(this.state.quantity);
+		const quantityValidationError = validateQuantity(
+			this.state.quantity,
+			itemMinimum
+		);
 		if (quantityValidationError) {
 			const quantityErrorMessage = createQuantityErrorMessage(
 				this.state.validationErrors,
-				"Quantity"
+				"Number of guests"
 			);
-			console.log(quantityErrorMessage);
 			if (quantityErrorMessage < 0 || quantityErrorMessage === 0) {
 				groupedErrorMessages.push(quantityValidationError);
 			}
 		} else {
 			//remove the error message if its already in there
 			const removedQuantityValidationMessage = removeErrorMessage(
-				"Quantity",
+				"Number of guests",
 				this.state.validationErrors
 			);
 			if (removedQuantityValidationMessage) {
@@ -215,12 +144,12 @@ class MenuItemDetail extends React.Component {
 			this.props.addItemToOrder(
 				formatSelectionForCheckout(
 					this.props.menuItem,
-					this.state.selection,
+					this.props.selection,
 					this.state.quantity,
 					this.state.specialInstructions
 				)
 			);
-			this.setState({ selection: {}, validationErrors: [] });
+			this.setState({ validationErrors: [] });
 			this.props.close();
 		} else if (
 			this.state.validationErrors.length === 0 &&
@@ -229,7 +158,7 @@ class MenuItemDetail extends React.Component {
 			this.props.updateOrderItem(
 				formatSelectionForCheckout(
 					this.props.menuItem,
-					this.state.selection,
+					this.props.selection,
 					this.state.quantity,
 					this.state.specialInstructions,
 					this.props.editOrderItem,
@@ -243,7 +172,7 @@ class MenuItemDetail extends React.Component {
 				this.props.orderDetails.shippingMethod
 			);
 			this.props.updateOrderTotals(calculatedAmounts);
-			this.setState({ selection: {}, validationErrors: [] });
+			this.setState({ validationErrors: [] });
 			this.props.close();
 		}
 	};
@@ -266,25 +195,34 @@ class MenuItemDetail extends React.Component {
 		modifierOptions,
 		modifierName,
 		modifierId,
-		maxSelectionAmount
+		maxOptions
 	) => {
-		return modifierOptions.map((option) => {
+		if (maxOptions === 1) {
+			//Need to render them all together to manage their state.
 			return (
-				<Col xs={6} key={option._id}>
-					<ModifierOptionCheckbox
-						modifierName={modifierName}
-						modifierId={modifierId}
-						option={option}
-						checkboxSelected={this.modiferOptionSelected}
-						selection={
-							this.props.editOrderItem
-								? this.props.orderItemToEdit.originalSelectionFormat
-								: null
-						}
-					/>
-				</Col>
+				<ModifierOptionRadio
+					modifierOptions={modifierOptions}
+					modifierName={modifierName}
+					modifierId={modifierId}
+					edit={this.props.editOrderItem}
+					orderItemToEdit={this.props.orderItemToEdit}
+				/>
 			);
-		});
+		} else {
+			return modifierOptions.map((option) => {
+				return (
+					<Col xs={6} key={option._id}>
+						<ModifierOptionCheckbox
+							modifierName={modifierName}
+							modifierId={modifierId}
+							option={option}
+							edit={this.props.editOrderItem}
+							orderItemToEdit={this.props.orderItemToEdit}
+						/>
+					</Col>
+				);
+			});
+		}
 	};
 
 	renderModifierSections = (modifiers) => {
@@ -292,7 +230,11 @@ class MenuItemDetail extends React.Component {
 			return (
 				<Card fluid color="red" key={modifier.name}>
 					<Card.Content>
-						<Card.Header>{modifier.name}</Card.Header>
+						<Card.Header
+							className={`${modifier.min_number_options > 0 ? "required" : ""}`}
+						>
+							{modifier.name}
+						</Card.Header>
 						{modifier.min_number_options > 0 ? (
 							<Card.Meta>Choose up to {modifier.max_number_options}</Card.Meta>
 						) : null}
@@ -313,6 +255,11 @@ class MenuItemDetail extends React.Component {
 	renderForm = (menuItemName, modifiers, submitLabel, submitIcon) => {
 		return (
 			<div>
+				<div style={{ marginBottom: "10px" }}>
+					<p>
+						<span style={{ color: "red" }}>*</span> = Required
+					</p>
+				</div>
 				<Form onSubmit={(e) => this.formSubmitted(e)}>
 					{modifiers ? this.renderModifierSections(modifiers) : null}
 					<Card fluid color="red">
@@ -378,6 +325,8 @@ const mapStateToProps = (state) => {
 		orderItems: state.order.orderItems,
 		menuConfig: state.menu.menuConfig,
 		orderDetails: state.order.orderDetails,
+		selection: state.menu.selection,
+		validationErrors: state.menu.validationErrors,
 	};
 };
 
@@ -385,4 +334,5 @@ export default connect(mapStateToProps, {
 	addItemToOrder,
 	updateOrderItem,
 	updateOrderTotals,
+	resetSelection,
 })(MenuItemDetail);

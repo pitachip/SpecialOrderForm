@@ -30,3 +30,16 @@
 .specialInstructions {
 	margin-bottom: 15px;
 }
+
+.required:after {
+	content: " *";
+	color: red;
+}
+
+.nospace {
+	margin: 0 !important;
+}
+
+.itemMargin {
+	margin-bottom: 15px;
+}

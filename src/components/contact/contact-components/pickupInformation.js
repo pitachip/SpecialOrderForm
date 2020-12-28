@@ -39,7 +39,7 @@ class PickUpInformation extends React.Component {
 							<Form.TextArea
 								value={pickupInformation.pickupInstructions}
 								rows={5}
-								label="Pickup Notes"
+								label="Pick-Up Notes"
 								placeholder="Let us know about any specific instructions for when you pickup your order"
 								onChange={(e, data) =>
 									this.props.updatePickupInstructions(data.value)

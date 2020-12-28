@@ -126,7 +126,7 @@ class ShoppingCartDetails extends React.Component {
 		} else {
 			return (
 				<Button block type="submit">
-					Order Now
+					Proceed to Checkout
 					<MdChevronRight />
 				</Button>
 			);
@@ -145,9 +145,12 @@ class ShoppingCartDetails extends React.Component {
 				<DatePicker
 					selected={new Date(this.props.orderDetails.orderDate)}
 					onChange={(date) => this.props.updateOrderDate(date)}
-					timeInputLabel="Time:"
 					dateFormat="MM/dd/yyyy h:mm aa"
-					showTimeInput
+					showTimeSelect
+					showDisabledMonthNavigation
+					popperPlacement="top-left"
+					minDate={new Date()}
+					timeIntervals={15}
 					className="form-control"
 				/>
 			</div>
@@ -163,6 +166,7 @@ class ShoppingCartDetails extends React.Component {
 					value="delivery"
 					checked={this.props.orderDetails.shippingMethod === "delivery"}
 					label="Delivery"
+					id="shippingOptionDelivery"
 					onChange={(e) => this.shippingMethodChanged(e)}
 				/>
 				<Form.Check
@@ -170,6 +174,7 @@ class ShoppingCartDetails extends React.Component {
 					value="pickup"
 					checked={this.props.orderDetails.shippingMethod === "pickup"}
 					label="Pick-Up"
+					id="shippingOptionPickup"
 					onChange={(e) => this.shippingMethodChanged(e)}
 				/>
 			</Form.Group>

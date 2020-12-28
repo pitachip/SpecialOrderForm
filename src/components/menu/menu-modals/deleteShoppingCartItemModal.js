@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 //actions
-import { deleteOrderItem } from "../../actions";
+import { deleteOrderItem } from "../../../actions";
 
 class DeleteShoppingCartItemModal extends React.Component {
 	deleteItemFromShoppingCart = () => {

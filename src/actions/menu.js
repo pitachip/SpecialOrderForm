@@ -1,5 +1,6 @@
 import pitachip from "../apis/pitachip";
 import filter from "lodash/filter";
+import omit from "lodash/omit";
 
 export const getMenu = () => async (dispatch) => {
 	const response = await pitachip.get("/menu");
@@ -29,4 +30,36 @@ export const setMenuItem = (menuItemId, menuCategoryId, menuCategories) => (
 	const menuItem = filter(menuItems, { _id: menuItemId });
 
 	dispatch({ type: "SET_MENU_ITEM", payload: { menuItemId, menuItem } });
+};
+
+export const addModifierSelection = (
+	name,
+	id,
+	modifierName,
+	modifierId,
+	checked,
+	price
+) => (dispatch) => {
+	dispatch({
+		type: "ADD_MODIFIER_SELECTION",
+		payload: { name, id, modifierName, modifierId, checked, price },
+	});
+};
+
+export const removeModifierSelection = (objectToRemove, selection) => (
+	dispatch
+) => {
+	const updatedSelection = omit(selection, objectToRemove);
+	dispatch({ type: "REMOVE_MODIFIER_SELECTION", payload: updatedSelection });
+};
+
+export const resetSelection = () => (dispatch) => {
+	dispatch({
+		type: "RESET_SELECTION",
+		payload: { selection: {} },
+	});
+};
+
+export const loadSelectionToEdit = (selection) => async (dispatch) => {
+	await dispatch({ type: "LOAD_SELECTION", payload: selection });
 };
