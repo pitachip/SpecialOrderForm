@@ -171,7 +171,7 @@ class CheckForm extends React.Component {
 					/>
 					<CheckoutNavigation
 						backNav="/checkout/details"
-						backText="Contact"
+						backText="Back to Contact"
 						forwardText="Submit Order"
 						forwardButtonClicked={(e) => this.submitOrderClicked(e)}
 						disableForwardButton={

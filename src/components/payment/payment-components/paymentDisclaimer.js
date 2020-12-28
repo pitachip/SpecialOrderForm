@@ -12,7 +12,7 @@ class PaymentDisclaimer extends React.Component {
 				<Message icon="money" header="Please choose a form of payment" />
 				<CheckoutNavigation
 					backNav="/checkout/details"
-					backText="Contact"
+					backText="Back to Contact"
 					forwardText="Submit Order"
 					forwardButtonClicked={() => null}
 					disableForwardButton={true}

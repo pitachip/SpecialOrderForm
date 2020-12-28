@@ -164,7 +164,7 @@ class UnivForm extends React.Component {
 					) : null}
 					<CheckoutNavigation
 						backNav="/checkout/details"
-						backText="Contact"
+						backText="Back to Contact"
 						forwardText="Submit Order"
 						forwardButtonClicked={() => null}
 						disableForwardButton={
