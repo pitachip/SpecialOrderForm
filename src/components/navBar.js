@@ -2,6 +2,7 @@
 import React from "react";
 import { auth } from "../apis/firebase";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 //ui components
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -60,8 +61,8 @@ class NavBar extends React.Component {
 					className="ml-auto"
 					alignRight
 				>
-					<NavDropdown.Item eventKey="4.1" disabled>
-						My Orders (Under Construction)
+					<NavDropdown.Item as={Link} to="/myorders">
+						My Orders
 					</NavDropdown.Item>
 					<NavDropdown.Item eventKey="4.2" disabled>
 						Profile (Under Construction)
