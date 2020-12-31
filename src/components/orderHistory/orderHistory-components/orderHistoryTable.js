@@ -1,47 +1,48 @@
 //libs
 import React from "react";
 //ui components
-import { Icon, Label, Menu, Table } from "semantic-ui-react";
+import { Icon, Menu, Table } from "semantic-ui-react";
+//app components
+import OrderStatusButton from "./orderStatusButton";
+import OrderActions from "./orderActions";
 
 class OrderHistoryTable extends React.Component {
-	componentDidMount() {
-		console.log("Table did mount");
-	}
 	render() {
-		console.log(this.props);
 		return (
 			<Table celled>
 				<Table.Header>
 					<Table.Row>
-						<Table.HeaderCell>Header</Table.HeaderCell>
-						<Table.HeaderCell>Header</Table.HeaderCell>
-						<Table.HeaderCell>Header</Table.HeaderCell>
+						<Table.HeaderCell>Order Number</Table.HeaderCell>
+						<Table.HeaderCell>Status</Table.HeaderCell>
+						<Table.HeaderCell>Total</Table.HeaderCell>
+						<Table.HeaderCell>Payment Type</Table.HeaderCell>
+						<Table.HeaderCell>Payment Status</Table.HeaderCell>
+						<Table.HeaderCell>Placed On</Table.HeaderCell>
+						<Table.HeaderCell>Actions</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
 
 				<Table.Body>
 					<Table.Row>
+						<Table.Cell>#1001</Table.Cell>
 						<Table.Cell>
-							<Label ribbon>First</Label>
+							<OrderStatusButton color="blue" content="Submitted" />
 						</Table.Cell>
-						<Table.Cell>Cell</Table.Cell>
-						<Table.Cell>Cell</Table.Cell>
-					</Table.Row>
-					<Table.Row>
-						<Table.Cell>Cell</Table.Cell>
-						<Table.Cell>Cell</Table.Cell>
-						<Table.Cell>Cell</Table.Cell>
-					</Table.Row>
-					<Table.Row>
-						<Table.Cell>Cell</Table.Cell>
-						<Table.Cell>Cell</Table.Cell>
-						<Table.Cell>Cell</Table.Cell>
+						<Table.Cell>$130.00</Table.Cell>
+						<Table.Cell>Purchase Order</Table.Cell>
+						<Table.Cell>
+							<OrderStatusButton color="red" content="Pending" />
+						</Table.Cell>
+						<Table.Cell>12/31/2020</Table.Cell>
+						<Table.Cell textAlign="center">
+							<OrderActions />
+						</Table.Cell>
 					</Table.Row>
 				</Table.Body>
 
 				<Table.Footer>
 					<Table.Row>
-						<Table.HeaderCell colSpan="3">
+						<Table.HeaderCell colSpan="7">
 							<Menu floated="right" pagination>
 								<Menu.Item as="a" icon>
 									<Icon name="chevron left" />
