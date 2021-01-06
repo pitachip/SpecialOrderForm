@@ -5,8 +5,25 @@ import { Button } from "semantic-ui-react";
 
 class OrderStatusButton extends React.Component {
 	render() {
-		const { color, content } = this.props;
-		return <Button basic color={color} content={content} compact size="tiny" />;
+		const { content } = this.props;
+		let buttonColor = "";
+		switch (content) {
+			case "Submitted":
+				buttonColor = "blue";
+				break;
+			case "Paid":
+				buttonColor = "green";
+				break;
+			case "Pending":
+				buttonColor = "red";
+				break;
+			default:
+				buttonColor = "grey";
+				break;
+		}
+		return (
+			<Button basic color={buttonColor} content={content} compact size="tiny" />
+		);
 	}
 }
 

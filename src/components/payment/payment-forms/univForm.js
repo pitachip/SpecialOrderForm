@@ -71,7 +71,8 @@ class UnivForm extends React.Component {
 					contactInformation,
 					paymentInformation,
 					newInvoice.data,
-					""
+					"",
+					"Pending"
 				);
 				//save order to the db
 				const newSpecialOrder = await createSpecialOrder(formattedOrder);

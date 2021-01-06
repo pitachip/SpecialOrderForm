@@ -90,7 +90,8 @@ export const formatOrderForDb = (
 	customerInformation,
 	paymentInformation,
 	invoicePaymentDetails,
-	creditCardPaymentDetails
+	creditCardPaymentDetails,
+	paymentStatus
 ) => {
 	/**
 	 * TODO
@@ -100,12 +101,15 @@ export const formatOrderForDb = (
 	 */
 	let orderItemsArray = [];
 	each(order.orderItems, (orderItem) => {
+		console.log("Order Item: ", orderItem);
 		orderItemsArray.push({
 			menuItem: orderItem.menuItem,
 			basePrice: orderItem.basePrice,
 			modifiers: orderItem.modifiers,
 			quantity: orderItem.quantity,
 			specialInstructions: orderItem.specialInstructions,
+			originalMenuItem: orderItem.originalMenuItem,
+			orignalSelectionFormat: orderItem.originalSelectionFormat,
 		});
 	});
 	let formattedOrder = {
@@ -144,6 +148,7 @@ export const formatOrderForDb = (
 		},
 		paymentInformation: {
 			paymentType: paymentInformation.paymentType,
+			paymentStatus: paymentStatus,
 			taxExempt: paymentInformation.taxExempt,
 			taxExemptId: paymentInformation.taxExemptId
 				? paymentInformation.taxExemptId

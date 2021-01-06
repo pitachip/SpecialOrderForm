@@ -6,7 +6,14 @@ import { Button, Icon } from "semantic-ui-react";
 import "../orderHistory-css/orderActions.css";
 
 class OrderStatusButton extends React.Component {
+	repeatOrderClicked = (orderDetails) => {
+		console.log("Repeat order clicked", orderDetails);
+		//Need to set all the data in Redux
+		//Push user to the /order page
+	};
+
 	render() {
+		const { orderDetails } = this.props;
 		return (
 			<div>
 				<Button.Group vertical compact>
@@ -25,7 +32,7 @@ class OrderStatusButton extends React.Component {
 						<Icon name="file alternate outline" />
 						View Invoice/Reciept
 					</Button>
-					<Button>
+					<Button onClick={() => this.repeatOrderClicked(orderDetails)}>
 						<Icon name="repeat" />
 						Repeat Order
 					</Button>

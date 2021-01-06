@@ -68,7 +68,8 @@ class CheckForm extends React.Component {
 				contactInformation,
 				paymentInformation,
 				newInvoice.data,
-				""
+				"",
+				"Pending"
 			);
 
 			//save order to the db

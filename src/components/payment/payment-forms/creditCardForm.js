@@ -154,7 +154,8 @@ class CreditCardForm extends React.Component {
 					contactInformation,
 					paymentInformation,
 					null,
-					paymentIntent.data
+					paymentIntent.data,
+					"Paid"
 				);
 
 				const newSpecialOrder = await createSpecialOrder(formattedOrder);
