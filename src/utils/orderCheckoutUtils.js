@@ -101,7 +101,6 @@ export const formatOrderForDb = (
 	 */
 	let orderItemsArray = [];
 	each(order.orderItems, (orderItem) => {
-		console.log("Order Item: ", orderItem);
 		orderItemsArray.push({
 			menuItem: orderItem.menuItem,
 			basePrice: orderItem.basePrice,
@@ -109,7 +108,7 @@ export const formatOrderForDb = (
 			quantity: orderItem.quantity,
 			specialInstructions: orderItem.specialInstructions,
 			originalMenuItem: orderItem.originalMenuItem,
-			orignalSelectionFormat: orderItem.originalSelectionFormat,
+			originalSelectionFormat: orderItem.originalSelectionFormat,
 		});
 	});
 	let formattedOrder = {
@@ -181,4 +180,51 @@ export const formatOrderForDb = (
 	};
 
 	return formattedOrder;
+};
+
+export const formatForRepeatOrder = (
+	menuItem,
+	selections,
+	quantity,
+	specialInstructions
+) => {
+	let formattedSelection = {};
+
+	formattedSelection = {
+		menuItem: menuItem.menuItem,
+		basePrice: menuItem.basePrice,
+		quantity,
+		specialInstructions,
+		modifiers: [],
+		uniqueId: uuidv4(),
+		originalSelectionFormat: selections,
+		originalMenuItem: menuItem,
+	};
+
+	each(menuItem.modifiers, (modifier) => {
+		const modifierChoices = pickBy(selections, {
+			modifierId: modifier.modifierId,
+		});
+		console.log("Modifier Choice: ", modifierChoices);
+
+		if (!isEmpty(modifierChoices)) {
+			let modifierChoiceArray = [];
+
+			map(modifierChoices, (modifierChoice) => {
+				modifierChoiceArray.push({
+					name: modifierChoice.name,
+					modifierChoiceId: modifierChoice.id,
+					price: modifierChoice.price,
+				});
+			});
+
+			formattedSelection.modifiers.push({
+				modifierId: modifier.modifierId,
+				modifierName: modifier.modifierName,
+				modifierChoices: modifierChoiceArray,
+			});
+		}
+	});
+
+	return formattedSelection;
 };
