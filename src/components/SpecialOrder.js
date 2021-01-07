@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 //app componenets
 import Disclaimer from "./disclaimer";
-import MenuCategories from "./menuCategories";
+import MenuCategories from "./menu/menu-components/menuCategories";
 import MenuItems from "./menu/menu-components/menuItems";
 import OrderDetails from "./orderDetails";
 import { getSpecialOrders, getStoreInformation } from "../actions";

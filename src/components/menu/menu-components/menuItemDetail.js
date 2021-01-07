@@ -64,7 +64,7 @@ class MenuItemDetail extends React.Component {
 
 	formSubmitted = async (e) => {
 		e.preventDefault();
-		const { modifiers, itemMinimum } = this.props.menuItem[0];
+		const { modifiers, itemMinimum } = this.props.menuItem;
 		const { selection } = this.props;
 		let groupedErrorMessages = this.state.validationErrors;
 
@@ -252,7 +252,7 @@ class MenuItemDetail extends React.Component {
 		});
 	};
 
-	renderForm = (menuItemName, modifiers, submitLabel, submitIcon) => {
+	renderForm = (modifiers, submitLabel, submitIcon) => {
 		return (
 			<div>
 				<div style={{ marginBottom: "10px" }}>
@@ -298,12 +298,12 @@ class MenuItemDetail extends React.Component {
 	};
 
 	renderAddItem = () => {
-		const { name, modifiers } = this.props.menuItem[0];
-		return this.renderForm(name, modifiers, "Add to Order", <MdAdd />);
+		const { modifiers } = this.props.menuItem;
+		return this.renderForm(modifiers, "Add to Order", <MdAdd />);
 	};
 	renderEditItem = () => {
-		const { name, modifiers } = this.props.orderItemToEdit.originalMenuItem;
-		return this.renderForm(name, modifiers, "Update Item", <MdCreate />);
+		const { modifiers } = this.props.orderItemToEdit.originalMenuItem;
+		return this.renderForm(modifiers, "Update Item", <MdCreate />);
 	};
 	/**
 	 * Determine if we are adding a new item or editing one

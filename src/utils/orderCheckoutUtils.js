@@ -15,17 +15,17 @@ export const formatSelectionForCheckout = (
 	let formattedSelection = {};
 
 	formattedSelection = {
-		menuItem: menuItem[0].name,
-		basePrice: menuItem[0].basePrice,
+		menuItem: menuItem.name,
+		basePrice: menuItem.basePrice,
 		quantity,
 		specialInstructions,
 		modifiers: [],
 		uniqueId: editOrderItem ? uniqueId : uuidv4(),
 		originalSelectionFormat: selections,
-		originalMenuItem: menuItem[0],
+		originalMenuItem: menuItem,
 	};
 
-	each(menuItem[0].modifiers, (modifier) => {
+	each(menuItem.modifiers, (modifier) => {
 		const modifierChoices = pickBy(selections, { modifierId: modifier._id });
 
 		if (!isEmpty(modifierChoices)) {

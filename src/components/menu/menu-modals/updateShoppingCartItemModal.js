@@ -14,7 +14,7 @@ class UpdateShoppingCartItemModal extends React.Component {
 		this.props.close();
 	};
 	render() {
-		const { name, description } = this.props.menuItem[0];
+		const { name, description } = this.props.menuItem;
 		return (
 			<Modal size="lg" show={this.props.show} onHide={this.modalClosed}>
 				<Modal.Header closeButton>

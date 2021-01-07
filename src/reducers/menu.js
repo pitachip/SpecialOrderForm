@@ -2,7 +2,6 @@ const INITIAL_STATE = {
 	menu: [],
 	menuItems: [],
 	menuCategoryId: null,
-	menuItemId: null,
 	selectedMenuItem: null,
 	menuConfig: {
 		settings: {
@@ -25,7 +24,6 @@ export default (state = INITIAL_STATE, action) => {
 		case "SET_MENU_ITEM":
 			return {
 				...state,
-				menuItemId: action.payload.menuItemId,
 				selectedMenuItem: action.payload.menuItem,
 			};
 		case "ADD_MODIFIER_SELECTION":
