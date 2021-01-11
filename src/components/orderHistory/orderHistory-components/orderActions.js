@@ -5,29 +5,62 @@ import each from "lodash/each";
 //ui components
 import { Button, Icon } from "semantic-ui-react";
 //actions
-import { addItemToOrder } from "../../../actions";
+import {
+	addItemToOrder,
+	updateShippingMethod,
+	updateOrderTotals,
+	deleteAllOrderItems,
+} from "../../../actions";
 //utils
-import { formatForRepeatOrder } from "../../../utils/orderCheckoutUtils";
+import {
+	formatSelectionForCheckout,
+	calculateTotals,
+} from "../../../utils/orderCheckoutUtils";
+import { history } from "../../../utils/history";
 //css
 import "../orderHistory-css/orderActions.css";
 
 class OrderStatusButton extends React.Component {
-	repeatOrderClicked = (orderDetails) => {
-		console.log("Repeat order clicked", orderDetails);
+	repeatOrderClicked = (order) => {
+		const {
+			addItemToOrder,
+			updateShippingMethod,
+			updateOrderTotals,
+			deleteAllOrderItems,
+		} = this.props;
+		/**
+		 * TODO
+		 * 3. need to set the shipping location
+		 * 4. need to make sure this works for invoices too
+		 */
+		console.log("Repeat order clicked", order);
 		//Need to set all the data in Redux
-		const { orderItems } = orderDetails;
+		deleteAllOrderItems();
+		const { orderItems, orderDetails } = order;
 		each(orderItems, (item) => {
-			this.props.addItemToOrder(
-				formatForRepeatOrder(
-					item,
+			addItemToOrder(
+				formatSelectionForCheckout(
+					item.originalMenuItem,
 					item.originalSelectionFormat,
 					item.quantity,
-					item.specialInstructions
+					item.specialInstructions,
+					false,
+					null
 				)
 			);
 		});
 
-		//Push user to the /order page
+		const calculatedAmounts = calculateTotals(
+			orderItems,
+			this.props.menuConfig.settings,
+			orderDetails.shippingMethod
+		);
+		updateOrderTotals(calculatedAmounts);
+
+		updateShippingMethod(orderDetails.shippingMethod);
+		//if it's pickup, add the location
+
+		history.push("/order");
 	};
 
 	render() {
@@ -61,7 +94,15 @@ class OrderStatusButton extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { order: state.order };
+	return {
+		menuConfig: state.menu.menuConfig,
+		orderItems: state.order.orderItems,
+	};
 };
 
-export default connect(mapStateToProps, { addItemToOrder })(OrderStatusButton);
+export default connect(mapStateToProps, {
+	addItemToOrder,
+	updateShippingMethod,
+	updateOrderTotals,
+	deleteAllOrderItems,
+})(OrderStatusButton);

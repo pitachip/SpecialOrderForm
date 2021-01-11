@@ -289,7 +289,7 @@ class OrderSummary extends React.Component {
 					<Row>
 						<Col md={8}>
 							<p>
-								{orderItem.quantity}x {orderItem.menuItem}
+								{orderItem.quantity}x {orderItem.name}
 							</p>
 						</Col>
 						<Col md={4} className="shoppingCartItemPrice">

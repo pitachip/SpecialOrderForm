@@ -36,7 +36,7 @@ class MenuItems extends React.Component {
 	};
 
 	renderMenuItems = () => {
-		const { menuCategories, menuCategoryId, menuItemId } = this.props;
+		const { menuCategories, menuCategoryId, selectedMenuItem } = this.props;
 
 		//show the menu items by filtering on the selected menu category
 		const menuCategory = find(menuCategories, { _id: menuCategoryId });
@@ -46,7 +46,7 @@ class MenuItems extends React.Component {
 		return (
 			<div>
 				<MenuItemsHeader />
-				{menuItemId ? (
+				{selectedMenuItem ? (
 					<AddShoppingCartItemModal
 						show={this.state.showModal}
 						close={this.handleMenuItemDetailModalClose}
@@ -109,7 +109,6 @@ const mapStateToProps = (state) => {
 	return {
 		menuCategoryId: state.menu.menuCategoryId,
 		menuCategories: state.menu.menu.categories,
-		menuItemId: state.menu.menuItemId,
 		selectedMenuItem: state.menu.selectedMenuItem,
 	};
 };

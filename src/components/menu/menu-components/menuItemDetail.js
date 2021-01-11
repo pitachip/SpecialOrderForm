@@ -64,7 +64,15 @@ class MenuItemDetail extends React.Component {
 
 	formSubmitted = async (e) => {
 		e.preventDefault();
-		const { modifiers, itemMinimum } = this.props.menuItem;
+		let modifiers = {};
+		let itemMinimum = 0;
+		if (this.props.editOrderItem) {
+			modifiers = this.props.orderItemToEdit.originalMenuItem.modifiers;
+			itemMinimum = this.props.orderItemToEdit.originalMenuItem.itemMinimum;
+		} else {
+			modifiers = this.props.menuItem.modifiers;
+			itemMinimum = this.props.menuItem.itemMinimum;
+		}
 		const { selection } = this.props;
 		let groupedErrorMessages = this.state.validationErrors;
 
@@ -157,7 +165,7 @@ class MenuItemDetail extends React.Component {
 		) {
 			this.props.updateOrderItem(
 				formatSelectionForCheckout(
-					this.props.menuItem,
+					this.props.orderItemToEdit.originalMenuItem,
 					this.props.selection,
 					this.state.quantity,
 					this.state.specialInstructions,

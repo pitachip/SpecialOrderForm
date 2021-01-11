@@ -15,7 +15,7 @@ export const formatSelectionForCheckout = (
 	let formattedSelection = {};
 
 	formattedSelection = {
-		menuItem: menuItem.name,
+		name: menuItem.name,
 		basePrice: menuItem.basePrice,
 		quantity,
 		specialInstructions,
@@ -102,7 +102,7 @@ export const formatOrderForDb = (
 	let orderItemsArray = [];
 	each(order.orderItems, (orderItem) => {
 		orderItemsArray.push({
-			menuItem: orderItem.menuItem,
+			name: orderItem.name,
 			basePrice: orderItem.basePrice,
 			modifiers: orderItem.modifiers,
 			quantity: orderItem.quantity,
@@ -181,6 +181,8 @@ export const formatOrderForDb = (
 
 	return formattedOrder;
 };
+
+//TODO: Delete this funtion
 
 export const formatForRepeatOrder = (
 	menuItem,

@@ -9,16 +9,12 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { MdHelp } from "react-icons/md";
 //app components
-import { updateOrderTotals, getMenuConfig } from "../actions";
+import { updateOrderTotals } from "../actions";
 import { calculateTotals } from "../utils/orderCheckoutUtils";
 
 import "../css/shoppingCartTotal.css";
 
 class ShoppingCartTotal extends React.Component {
-	async componentDidMount() {
-		await this.props.getMenuConfig();
-	}
-
 	componentDidUpdate(prevProps, prevState) {
 		/**
 		 * Only update the price when a new order item has been added
@@ -158,6 +154,6 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { updateOrderTotals, getMenuConfig })(
+export default connect(mapStateToProps, { updateOrderTotals })(
 	ShoppingCartTotal
 );

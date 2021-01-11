@@ -1,6 +1,5 @@
 import pitachip from "../apis/pitachip";
 import filter from "lodash/filter";
-import find from "lodash/find";
 import omit from "lodash/omit";
 
 export const getMenu = () => async (dispatch) => {
@@ -19,15 +18,6 @@ export const setMenuCategory = (categoryId) => (dispatch) => {
 };
 
 export const setMenuItem = (menuItem) => (dispatch) => {
-	/*
-	//filter the right category
-	const menuCategory = find(menuCategories, { _id: menuCategoryId });
-	const menuItems = menuCategory.items;
-
-	//filter the right item
-	const menuItem = find(menuItems, { _id: menuItemId });
-	*/
-
 	dispatch({ type: "SET_MENU_ITEM", payload: { menuItem } });
 };
 

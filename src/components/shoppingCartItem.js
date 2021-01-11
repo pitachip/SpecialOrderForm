@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import each from "lodash/each";
 //ui components
 import { Table, Button, Icon, Accordion } from "semantic-ui-react";
 //app components
@@ -92,7 +93,13 @@ class ShoppingCartItem extends React.Component {
 	};
 
 	renderCalculatedPrice = (orderItem) => {
-		return (orderItem.basePrice / 100) * orderItem.quantity;
+		let modifierTotal = 0;
+		each(orderItem.modifiers, (modifier) => {
+			each(modifier.modifierChoices, (modifierChoice) => {
+				modifierTotal = modifierTotal + modifierChoice.price;
+			});
+		});
+		return ((orderItem.basePrice + modifierTotal) / 100) * orderItem.quantity;
 	};
 
 	render() {
@@ -101,7 +108,7 @@ class ShoppingCartItem extends React.Component {
 			<>
 				<Table.Row>
 					<Table.Cell verticalAlign="middle">
-						{orderItem.quantity}x {orderItem.menuItem}
+						{orderItem.quantity}x {orderItem.name}
 						{this.renderOrderModifiers(
 							orderItem.modifiers,
 							index,
