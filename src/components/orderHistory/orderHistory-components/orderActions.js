@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import { change } from "redux-form";
 import each from "lodash/each";
 //ui components
 import { Button, Icon } from "semantic-ui-react";
@@ -10,6 +11,10 @@ import {
 	updateShippingMethod,
 	updateOrderTotals,
 	deleteAllOrderItems,
+	updatePickupLocation,
+	updateSpecialInstructions,
+	updateOrderDate,
+	updatePickupInstructions,
 } from "../../../actions";
 //utils
 import {
@@ -27,16 +32,27 @@ class OrderStatusButton extends React.Component {
 			updateShippingMethod,
 			updateOrderTotals,
 			deleteAllOrderItems,
+			updatePickupLocation,
+			updateSpecialInstructions,
+			updateOrderDate,
+			storeInformation,
+			change,
+			updatePickupInstructions,
 		} = this.props;
 		/**
 		 * TODO
-		 * 3. need to set the shipping location
-		 * 4. need to make sure this works for invoices too
+		 * - need to make sure this works for invoices too
 		 */
 		console.log("Repeat order clicked", order);
-		//Need to set all the data in Redux
+
 		deleteAllOrderItems();
-		const { orderItems, orderDetails } = order;
+		const {
+			orderItems,
+			orderDetails,
+			customerInformation,
+			pickupInformation,
+			deliveryInformation,
+		} = order;
 		each(orderItems, (item) => {
 			addItemToOrder(
 				formatSelectionForCheckout(
@@ -50,6 +66,8 @@ class OrderStatusButton extends React.Component {
 			);
 		});
 
+		updateSpecialInstructions(orderDetails.specialInstructions);
+
 		const calculatedAmounts = calculateTotals(
 			orderItems,
 			this.props.menuConfig.settings,
@@ -58,7 +76,53 @@ class OrderStatusButton extends React.Component {
 		updateOrderTotals(calculatedAmounts);
 
 		updateShippingMethod(orderDetails.shippingMethod);
-		//if it's pickup, add the location
+		if (orderDetails.shippingMethod === "pickup") {
+			updatePickupLocation(orderDetails.location, storeInformation);
+			updatePickupInstructions(pickupInformation.pickupInstructions);
+		} else {
+			//Set Delivery Information Fields
+			change("checkoutContactForm", "address1", deliveryInformation.address1);
+			change("checkoutContactForm", "address2", deliveryInformation.address2);
+			change("checkoutContactForm", "city", deliveryInformation.city);
+			change("checkoutContactForm", "state", deliveryInformation.state);
+			change("checkoutContactForm", "zip", deliveryInformation.zip);
+			change(
+				"checkoutContactForm",
+				"deliveryInstructions",
+				deliveryInformation.deliveryInstructions
+			);
+
+			change(
+				"checkoutContactForm",
+				"firstNameDelivery",
+				deliveryInformation.firstName
+			);
+			change(
+				"checkoutContactForm",
+				"lastNameDelivery",
+				deliveryInformation.lastName
+			);
+			change("checkoutContactForm", "emailDelivery", deliveryInformation.email);
+			change(
+				"checkoutContactForm",
+				"phoneNumberDelivery",
+				deliveryInformation.phoneNumber
+			);
+		}
+
+		var tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		updateOrderDate(tomorrow);
+
+		//Set Customer Information Fields
+		change("checkoutContactForm", "firstName", customerInformation.firstName);
+		change("checkoutContactForm", "lastName", customerInformation.lastName);
+		change("checkoutContactForm", "email", customerInformation.email);
+		change(
+			"checkoutContactForm",
+			"phoneNumber",
+			customerInformation.phoneNumber
+		);
 
 		history.push("/order");
 	};
@@ -96,6 +160,7 @@ class OrderStatusButton extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		menuConfig: state.menu.menuConfig,
+		storeInformation: state.storeInformation.storeInformation,
 		orderItems: state.order.orderItems,
 	};
 };
@@ -105,4 +170,9 @@ export default connect(mapStateToProps, {
 	updateShippingMethod,
 	updateOrderTotals,
 	deleteAllOrderItems,
+	updatePickupLocation,
+	updateSpecialInstructions,
+	updateOrderDate,
+	change,
+	updatePickupInstructions,
 })(OrderStatusButton);

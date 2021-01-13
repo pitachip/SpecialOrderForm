@@ -4,6 +4,7 @@ import { getUserToken } from "../utils/authUtils";
 export const createNewInvoice = (
 	contactInformation,
 	orderItems,
+	deliveryAndTax,
 	paymentInformation
 ) => async (dispatch) => {
 	try {
@@ -13,6 +14,7 @@ export const createNewInvoice = (
 			{
 				contactInformation,
 				orderItems,
+				deliveryAndTax,
 				paymentInformation,
 			},
 			{

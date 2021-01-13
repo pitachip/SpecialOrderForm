@@ -30,6 +30,8 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, orderItems: action.payload };
 		case "DELETE_ALL_ORDER_ITEMS":
 			return { ...state, orderItems: [] };
+		case "SET_ORDER_ITEMS":
+			return { ...state, orderItems: action.payload };
 		case "UPDATE_ORDER_TOTALS":
 			return { ...state, totals: action.payload };
 		case "UPDATE_SHIPPING_METHOD":
