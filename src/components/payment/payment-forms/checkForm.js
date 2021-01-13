@@ -2,7 +2,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field, getFormValues } from "redux-form";
-import remove from "lodash/remove";
 //ui components
 import { Form } from "semantic-ui-react";
 //app components
@@ -44,24 +43,26 @@ class CheckForm extends React.Component {
 
 		try {
 			//Adding tax and delivery as line items to the invoice
-			orderItems.push(
+			const deliveryAndTax = [
 				{
 					basePrice: orderTotals.delivery * 100,
 					quantity: 1,
-					menuItem: "Delivery",
+					name: "Delivery",
 				},
 				{
 					basePrice: orderTotals.tax * 100,
 					quantity: 1,
-					menuItem: "Tax",
-				}
-			);
+					name: "Tax",
+				},
+			];
 			//create the invoice
 			const newInvoice = await createNewInvoice(
 				contactInformation,
 				orderItems,
+				deliveryAndTax,
 				paymentInformation
 			);
+
 			//format order for db
 			const formattedOrder = formatOrderForDb(
 				order,
@@ -74,17 +75,6 @@ class CheckForm extends React.Component {
 
 			//save order to the db
 			const newSpecialOrder = await createSpecialOrder(formattedOrder);
-
-			//remove delivery and tax from the object so that it renders properly on the confirmation page
-			const removeDeliveryAndTax = remove(
-				newSpecialOrder.data.orderItems,
-				(orderItem) => {
-					return (
-						orderItem.menuItem !== "Delivery" && orderItem.menuItem !== "Tax"
-					);
-				}
-			);
-			newSpecialOrder.data.orderItems = removeDeliveryAndTax;
 
 			history.push("/checkout/confirmation", {
 				orderConfirmation: newSpecialOrder,

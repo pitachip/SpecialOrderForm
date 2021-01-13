@@ -1,33 +1,130 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import { change } from "redux-form";
 import each from "lodash/each";
 //ui components
 import { Button, Icon } from "semantic-ui-react";
 //actions
-import { addItemToOrder } from "../../../actions";
+import {
+	addItemToOrder,
+	updateShippingMethod,
+	updateOrderTotals,
+	deleteAllOrderItems,
+	updatePickupLocation,
+	updateSpecialInstructions,
+	updateOrderDate,
+	updatePickupInstructions,
+} from "../../../actions";
 //utils
-import { formatForRepeatOrder } from "../../../utils/orderCheckoutUtils";
+import {
+	formatSelectionForCheckout,
+	calculateTotals,
+} from "../../../utils/orderCheckoutUtils";
+import { history } from "../../../utils/history";
 //css
 import "../orderHistory-css/orderActions.css";
 
 class OrderStatusButton extends React.Component {
-	repeatOrderClicked = (orderDetails) => {
-		console.log("Repeat order clicked", orderDetails);
-		//Need to set all the data in Redux
-		const { orderItems } = orderDetails;
+	repeatOrderClicked = (order) => {
+		const {
+			addItemToOrder,
+			updateShippingMethod,
+			updateOrderTotals,
+			deleteAllOrderItems,
+			updatePickupLocation,
+			updateSpecialInstructions,
+			updateOrderDate,
+			storeInformation,
+			change,
+			updatePickupInstructions,
+		} = this.props;
+		/**
+		 * TODO
+		 * - need to make sure this works for invoices too
+		 */
+		console.log("Repeat order clicked", order);
+
+		deleteAllOrderItems();
+		const {
+			orderItems,
+			orderDetails,
+			customerInformation,
+			pickupInformation,
+			deliveryInformation,
+		} = order;
 		each(orderItems, (item) => {
-			this.props.addItemToOrder(
-				formatForRepeatOrder(
-					item,
+			addItemToOrder(
+				formatSelectionForCheckout(
+					item.originalMenuItem,
 					item.originalSelectionFormat,
 					item.quantity,
-					item.specialInstructions
+					item.specialInstructions,
+					false,
+					null
 				)
 			);
 		});
 
-		//Push user to the /order page
+		updateSpecialInstructions(orderDetails.specialInstructions);
+
+		const calculatedAmounts = calculateTotals(
+			orderItems,
+			this.props.menuConfig.settings,
+			orderDetails.shippingMethod
+		);
+		updateOrderTotals(calculatedAmounts);
+
+		updateShippingMethod(orderDetails.shippingMethod);
+		if (orderDetails.shippingMethod === "pickup") {
+			updatePickupLocation(orderDetails.location, storeInformation);
+			updatePickupInstructions(pickupInformation.pickupInstructions);
+		} else {
+			//Set Delivery Information Fields
+			change("checkoutContactForm", "address1", deliveryInformation.address1);
+			change("checkoutContactForm", "address2", deliveryInformation.address2);
+			change("checkoutContactForm", "city", deliveryInformation.city);
+			change("checkoutContactForm", "state", deliveryInformation.state);
+			change("checkoutContactForm", "zip", deliveryInformation.zip);
+			change(
+				"checkoutContactForm",
+				"deliveryInstructions",
+				deliveryInformation.deliveryInstructions
+			);
+
+			change(
+				"checkoutContactForm",
+				"firstNameDelivery",
+				deliveryInformation.firstName
+			);
+			change(
+				"checkoutContactForm",
+				"lastNameDelivery",
+				deliveryInformation.lastName
+			);
+			change("checkoutContactForm", "emailDelivery", deliveryInformation.email);
+			change(
+				"checkoutContactForm",
+				"phoneNumberDelivery",
+				deliveryInformation.phoneNumber
+			);
+		}
+
+		var tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		updateOrderDate(tomorrow);
+
+		//Set Customer Information Fields
+		change("checkoutContactForm", "firstName", customerInformation.firstName);
+		change("checkoutContactForm", "lastName", customerInformation.lastName);
+		change("checkoutContactForm", "email", customerInformation.email);
+		change(
+			"checkoutContactForm",
+			"phoneNumber",
+			customerInformation.phoneNumber
+		);
+
+		history.push("/order");
 	};
 
 	render() {
@@ -61,7 +158,21 @@ class OrderStatusButton extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { order: state.order };
+	return {
+		menuConfig: state.menu.menuConfig,
+		storeInformation: state.storeInformation.storeInformation,
+		orderItems: state.order.orderItems,
+	};
 };
 
-export default connect(mapStateToProps, { addItemToOrder })(OrderStatusButton);
+export default connect(mapStateToProps, {
+	addItemToOrder,
+	updateShippingMethod,
+	updateOrderTotals,
+	deleteAllOrderItems,
+	updatePickupLocation,
+	updateSpecialInstructions,
+	updateOrderDate,
+	change,
+	updatePickupInstructions,
+})(OrderStatusButton);

@@ -53,7 +53,7 @@ class ConfirmationOrderDetails extends React.Component {
 			return (
 				<Table.Row>
 					<Table.Cell>
-						{orderItem.quantity}x &nbsp; {orderItem.menuItem}
+						{orderItem.quantity}x &nbsp; {orderItem.name}
 						{this.renderOrderModifiers(orderItem.modifiers, index)}
 					</Table.Cell>
 					<Table.Cell>{orderItem.specialInstructions}</Table.Cell>

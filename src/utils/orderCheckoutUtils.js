@@ -15,17 +15,17 @@ export const formatSelectionForCheckout = (
 	let formattedSelection = {};
 
 	formattedSelection = {
-		menuItem: menuItem[0].name,
-		basePrice: menuItem[0].basePrice,
+		name: menuItem.name,
+		basePrice: menuItem.basePrice,
 		quantity,
 		specialInstructions,
 		modifiers: [],
 		uniqueId: editOrderItem ? uniqueId : uuidv4(),
 		originalSelectionFormat: selections,
-		originalMenuItem: menuItem[0],
+		originalMenuItem: menuItem,
 	};
 
-	each(menuItem[0].modifiers, (modifier) => {
+	each(menuItem.modifiers, (modifier) => {
 		const modifierChoices = pickBy(selections, { modifierId: modifier._id });
 
 		if (!isEmpty(modifierChoices)) {
@@ -102,7 +102,7 @@ export const formatOrderForDb = (
 	let orderItemsArray = [];
 	each(order.orderItems, (orderItem) => {
 		orderItemsArray.push({
-			menuItem: orderItem.menuItem,
+			name: orderItem.name,
 			basePrice: orderItem.basePrice,
 			modifiers: orderItem.modifiers,
 			quantity: orderItem.quantity,
@@ -181,6 +181,8 @@ export const formatOrderForDb = (
 
 	return formattedOrder;
 };
+
+//TODO: Delete this funtion
 
 export const formatForRepeatOrder = (
 	menuItem,

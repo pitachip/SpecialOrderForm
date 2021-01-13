@@ -1,16 +1,17 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
-import filter from "lodash/filter";
+import find from "lodash/find";
 import NumberFormat from "react-number-format";
 //ui components
 import Card from "react-bootstrap/Card";
 import { Item } from "semantic-ui-react";
 //app components
-import { setMenuItem } from "../../../actions";
 import MenuItemsHeader from "./menuItemsHeader";
 import AddShoppingCartItemModal from "../menu-modals/addShoppingCartItemModal";
-
+//actions
+import { setMenuItem } from "../../../actions";
+//css
 import "../menu-css/menuItems.scss";
 import "../menu-css/menuItemDetail.css";
 
@@ -26,40 +27,38 @@ class MenuItems extends React.Component {
 	};
 
 	//put selected menu item in redux
-	menuItemSelected = async (item) => {
-		await this.props.setMenuItem(
-			item,
-			this.props.menuCategoryId,
-			this.props.menuCategories
-		);
+	menuItemSelected = async (menuItem) => {
+		const { setMenuItem } = this.props;
+
+		await setMenuItem(menuItem);
+
 		this.handleMenuItemDetailModalOpen();
 	};
 
 	renderMenuItems = () => {
-		const menuCategory = filter(this.props.menuCategories, {
-			_id: this.props.menuCategoryId,
-		});
-		const menuItems = menuCategory[0].items;
+		const { menuCategories, menuCategoryId, selectedMenuItem } = this.props;
+
+		//show the menu items by filtering on the selected menu category
+		const menuCategory = find(menuCategories, { _id: menuCategoryId });
+
+		const menuItems = menuCategory.items;
 
 		return (
 			<div>
 				<MenuItemsHeader />
-				{this.props.menuItemId ? (
+				{selectedMenuItem ? (
 					<AddShoppingCartItemModal
 						show={this.state.showModal}
 						close={this.handleMenuItemDetailModalClose}
 						editOrderItem={false}
 					/>
 				) : null}
-				{this.props.menuCategoryId
+				{menuCategoryId
 					? menuItems.map((item) => {
 							return (
 								<div
 									key={item.name}
-									data-div_id={item._id}
-									onClick={(e) =>
-										this.menuItemSelected(e.currentTarget.dataset.div_id)
-									}
+									onClick={(e) => this.menuItemSelected(item)}
 									className="itemMargin"
 								>
 									<Card className="menuItem">
@@ -110,7 +109,7 @@ const mapStateToProps = (state) => {
 	return {
 		menuCategoryId: state.menu.menuCategoryId,
 		menuCategories: state.menu.menu.categories,
-		menuItemId: state.menu.menuItemId,
+		selectedMenuItem: state.menu.selectedMenuItem,
 	};
 };
 

@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 import { auth } from "./apis/firebase";
 //utils
 import { history } from "./utils/history";
@@ -13,6 +14,8 @@ import CheckoutContact from "./components/checkout-components/checkoutContact";
 import CheckoutPayment from "./components/checkout-components/checkoutPayment";
 import ConfirmationDetails from "./components/checkout-components/checkoutConfirmation";
 import MyOrders from "./components/orderHistory/orderHistory-components/myOrders";
+//actions
+import { getStoreInformation, getMenuConfig } from "./actions";
 //css
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
@@ -22,7 +25,7 @@ class App extends React.Component {
 		isAuthenticated: false,
 		isLoading: true,
 	};
-	componentDidMount() {
+	async componentDidMount() {
 		auth.onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({ isLoading: false, isAuthenticated: true });
@@ -30,6 +33,8 @@ class App extends React.Component {
 				this.setState({ isLoading: false, isAuthenticated: false });
 			}
 		});
+		await this.props.getStoreInformation();
+		await this.props.getMenuConfig();
 	}
 	render() {
 		return (
@@ -60,5 +65,4 @@ class App extends React.Component {
 		);
 	}
 }
-
-export default App;
+export default connect(null, { getStoreInformation, getMenuConfig })(App);

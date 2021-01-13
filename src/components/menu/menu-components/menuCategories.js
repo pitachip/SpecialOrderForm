@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 //import "../css/menuCategories.css";
 import Nav from "react-bootstrap/Nav";
-import { getMenu, setMenuCategory } from "../actions";
+import { getMenu, setMenuCategory } from "../../../actions";
 
 class MenuCategories extends React.Component {
 	async componentDidMount() {

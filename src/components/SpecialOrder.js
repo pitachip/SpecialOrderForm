@@ -6,16 +6,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 //app componenets
 import Disclaimer from "./disclaimer";
-import MenuCategories from "./menuCategories";
+import MenuCategories from "./menu/menu-components/menuCategories";
 import MenuItems from "./menu/menu-components/menuItems";
 import OrderDetails from "./orderDetails";
-import { getSpecialOrders, getStoreInformation } from "../actions";
+import { getSpecialOrders } from "../actions";
 
 //TODO: Get rid of getSpecialOrders and its resources
 class SpecialOrder extends React.Component {
 	async componentDidMount() {
 		window.scrollTo(0, 0);
-		await this.props.getStoreInformation();
 	}
 	render() {
 		return (
@@ -47,5 +46,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
 	getSpecialOrders,
-	getStoreInformation,
 })(SpecialOrder);

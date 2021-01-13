@@ -27,6 +27,14 @@ export const deleteOrderItem = (orderItem, orderItems) => (dispatch) => {
 	dispatch({ type: "DELETE_ORDER_ITEM", payload: newOrderItemsArray });
 };
 
+export const deleteAllOrderItems = () => (dispatch) => {
+	dispatch({ type: "DELETE_ALL_ORDER_ITEMS" });
+};
+
+export const setOrderItems = (orderItems) => (dispatch) => {
+	dispatch({ type: "SET_ORDER_ITEMS", payload: orderItems });
+};
+
 export const updateOrderTotals = (totals) => (dispatch) => {
 	dispatch({ type: "UPDATE_ORDER_TOTALS", payload: totals });
 };
