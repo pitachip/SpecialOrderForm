@@ -14,6 +14,7 @@ import CheckoutContact from "./components/checkout-components/checkoutContact";
 import CheckoutPayment from "./components/checkout-components/checkoutPayment";
 import ConfirmationDetails from "./components/checkout-components/checkoutConfirmation";
 import MyOrders from "./components/orderHistory/orderHistory-components/myOrders";
+import withModifyOrder from "./hoc/withModifyOrder";
 //actions
 import { getStoreInformation, getMenuConfig } from "./actions";
 //css
@@ -44,9 +45,13 @@ class App extends React.Component {
 					<Switch>
 						<Route path="/order" exact component={SpecialOrder} />
 						<Route path="/checkout/details" exact component={CheckoutContact} />
-						<Route path="/checkout/payment" exact component={CheckoutPayment} />
 						<Route
-							path="/checkout/confirmation"
+							path="/order/checkout/payment"
+							exact
+							component={CheckoutPayment}
+						/>
+						<Route
+							path="/order/checkout/confirmation"
 							exact
 							component={ConfirmationDetails}
 						/>
@@ -54,6 +59,12 @@ class App extends React.Component {
 							component={MyOrders}
 							path="/myorders"
 							exact
+							isLoading={this.state.isLoading}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
+						<PrivateRoute
+							component={withModifyOrder(SpecialOrder)}
+							path="/modify/:id"
 							isLoading={this.state.isLoading}
 							isAuthenticated={this.state.isAuthenticated}
 						/>

@@ -1,5 +1,6 @@
 //libs
 import React from "react";
+import { withRouter } from "react-router-dom";
 //ui components
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -7,15 +8,11 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import { Icon } from "semantic-ui-react";
 //utils
-import { history } from "../../utils/history";
+//import { history } from "../../utils/history";
 //css
 import "./checkout-css/checkoutDetails.css";
 
 class CheckoutNavigation extends React.Component {
-	backButtonClicked = () => {
-		history.push(this.props.backNav);
-	};
-
 	render() {
 		const {
 			forwardText,
@@ -24,15 +21,15 @@ class CheckoutNavigation extends React.Component {
 			disableBackButton,
 			forwardButtonClicked,
 			submitting,
+			history,
 		} = this.props;
+
+		console.log("Checkout navigation props: ", this.props);
 		return (
 			<div className="checkoutNavigationBottomMargin">
 				<Row>
 					<Col>
-						<Button
-							onClick={this.backButtonClicked}
-							disabled={disableBackButton}
-						>
+						<Button onClick={history.goBack} disabled={disableBackButton}>
 							<Icon name="chevron left" />
 							{backText}
 						</Button>
@@ -67,4 +64,4 @@ class CheckoutNavigation extends React.Component {
 	}
 }
 
-export default CheckoutNavigation;
+export default withRouter(CheckoutNavigation);

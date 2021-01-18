@@ -88,7 +88,7 @@ class UnivForm extends React.Component {
 				);
 				newSpecialOrder.data.orderItems = removeDeliveryAndTax;
 
-				history.push("/checkout/confirmation", {
+				history.push(history.location.pathname + "/checkout/confirmation", {
 					orderConfirmation: newSpecialOrder,
 				});
 			} catch (error) {

@@ -160,7 +160,7 @@ class CreditCardForm extends React.Component {
 
 				const newSpecialOrder = await createSpecialOrder(formattedOrder);
 
-				history.push("/checkout/confirmation", {
+				history.push(history.location.pathname + "/checkout/confirmation", {
 					orderConfirmation: newSpecialOrder,
 				});
 			} else {

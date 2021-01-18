@@ -76,7 +76,7 @@ class CheckForm extends React.Component {
 			//save order to the db
 			const newSpecialOrder = await createSpecialOrder(formattedOrder);
 
-			history.push("/checkout/confirmation", {
+			history.push(history.location.pathname + "/checkout/confirmation", {
 				orderConfirmation: newSpecialOrder,
 			});
 		} catch (error) {

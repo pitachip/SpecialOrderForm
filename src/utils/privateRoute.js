@@ -1,15 +1,21 @@
 //libs
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
-const PrivateRoute = ({ component: Component, isAuthenticated, isLoading }) => {
+const PrivateRoute = ({
+	component: Component,
+	isAuthenticated,
+	isLoading,
+	...props
+}) => {
+	console.log(props);
 	if (isLoading && !isAuthenticated) {
 		return <div>Loading...</div>;
 	} else if (!isLoading && !isAuthenticated) {
 		return <Redirect to="/order" />;
 	} else if (!isLoading && isAuthenticated) {
-		return <Component />;
+		return <Component {...props} />;
 	}
 };
 
-export default PrivateRoute;
+export default withRouter(PrivateRoute);

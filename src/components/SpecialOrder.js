@@ -13,7 +13,7 @@ import { getSpecialOrders } from "../actions";
 
 //TODO: Get rid of getSpecialOrders and its resources
 class SpecialOrder extends React.Component {
-	async componentDidMount() {
+	componentDidMount() {
 		window.scrollTo(0, 0);
 	}
 	render() {

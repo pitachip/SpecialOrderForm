@@ -12,3 +12,15 @@ export const getMyOrders = () => async (dispatch) => {
 		console.log(error);
 	}
 };
+
+export const getOrder = (orderID) => async (dispatch) => {
+	try {
+		const userToken = await getUserToken();
+		const order = await pitachip.get(`/specialorder/${orderID}`, {
+			headers: { Authorization: `Bearer ${userToken.token}` },
+		});
+		return order.data;
+	} catch (error) {
+		throw error;
+	}
+};
