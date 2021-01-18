@@ -24,7 +24,6 @@ class CheckoutNavigation extends React.Component {
 			history,
 		} = this.props;
 
-		console.log("Checkout navigation props: ", this.props);
 		return (
 			<div className="checkoutNavigationBottomMargin">
 				<Row>

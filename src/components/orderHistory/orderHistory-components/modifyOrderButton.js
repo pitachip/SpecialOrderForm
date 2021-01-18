@@ -2,7 +2,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import each from "lodash/each";
 //ui components
 import { Button, Icon } from "semantic-ui-react";
 //actions
@@ -15,115 +14,17 @@ import {
 	updateSpecialInstructions,
 	updateOrderDate,
 	updatePickupInstructions,
+	setRootUrl,
 } from "../../../actions";
 //utils
-import {
-	formatSelectionForCheckout,
-	calculateTotals,
-} from "../../../utils/orderCheckoutUtils";
 import { history } from "../../../utils/history";
 //css
 import "../orderHistory-css/orderActions.css";
 
 class ModifyOrderButton extends React.Component {
 	modifyOrderClicked = (order) => {
-		console.log("modify order clicked: ", order);
+		this.props.setRootUrl(`/modify/${order._id}/`);
 		history.push(`/modify/${order._id}`);
-		/* 
-		const {
-			addItemToOrder,
-			updateShippingMethod,
-			updateOrderTotals,
-			deleteAllOrderItems,
-			updatePickupLocation,
-			updateSpecialInstructions,
-			updateOrderDate,
-			storeInformation,
-			change,
-			updatePickupInstructions,
-		} = this.props;
-
-		deleteAllOrderItems();
-		const {
-			orderItems,
-			orderDetails,
-			customerInformation,
-			pickupInformation,
-			deliveryInformation,
-		} = order;
-		each(orderItems, (item) => {
-			addItemToOrder(
-				formatSelectionForCheckout(
-					item.originalMenuItem,
-					item.originalSelectionFormat,
-					item.quantity,
-					item.specialInstructions,
-					false,
-					null
-				)
-			);
-		});
-
-		updateSpecialInstructions(orderDetails.specialInstructions);
-
-		const calculatedAmounts = calculateTotals(
-			orderItems,
-			this.props.menuConfig.settings,
-			orderDetails.shippingMethod
-		);
-		updateOrderTotals(calculatedAmounts);
-
-		updateShippingMethod(orderDetails.shippingMethod);
-		if (orderDetails.shippingMethod === "pickup") {
-			updatePickupLocation(orderDetails.location, storeInformation);
-			updatePickupInstructions(pickupInformation.pickupInstructions);
-		} else {
-			//Set Delivery Information Fields
-			change("checkoutContactForm", "address1", deliveryInformation.address1);
-			change("checkoutContactForm", "address2", deliveryInformation.address2);
-			change("checkoutContactForm", "city", deliveryInformation.city);
-			change("checkoutContactForm", "state", deliveryInformation.state);
-			change("checkoutContactForm", "zip", deliveryInformation.zip);
-			change(
-				"checkoutContactForm",
-				"deliveryInstructions",
-				deliveryInformation.deliveryInstructions
-			);
-
-			change(
-				"checkoutContactForm",
-				"firstNameDelivery",
-				deliveryInformation.firstName
-			);
-			change(
-				"checkoutContactForm",
-				"lastNameDelivery",
-				deliveryInformation.lastName
-			);
-			change("checkoutContactForm", "emailDelivery", deliveryInformation.email);
-			change(
-				"checkoutContactForm",
-				"phoneNumberDelivery",
-				deliveryInformation.phoneNumber
-			);
-		}
-
-		var tomorrow = new Date();
-		tomorrow.setDate(tomorrow.getDate() + 1);
-		updateOrderDate(tomorrow);
-
-		//Set Customer Information Fields
-		change("checkoutContactForm", "firstName", customerInformation.firstName);
-		change("checkoutContactForm", "lastName", customerInformation.lastName);
-		change("checkoutContactForm", "email", customerInformation.email);
-		change(
-			"checkoutContactForm",
-			"phoneNumber",
-			customerInformation.phoneNumber
-		);
-
-        history.push("/order");
-        */
 	};
 
 	render() {
@@ -157,4 +58,5 @@ export default connect(mapStateToProps, {
 	updateOrderDate,
 	change,
 	updatePickupInstructions,
+	setRootUrl,
 })(ModifyOrderButton);

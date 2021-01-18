@@ -16,6 +16,7 @@ import {
 	updateSpecialInstructions,
 	updateOrderDate,
 	updatePickupInstructions,
+	setRetrieveOrder,
 } from "../actions";
 //utils
 import {
@@ -28,14 +29,20 @@ const withModifyOrder = (SpecialOrder) => {
 		state = { isLoading: true, didError: false };
 
 		async componentDidMount() {
-			try {
-				const order = await this.props.getOrder(
-					this.props.computedMatch.params.id
-				);
+			const { navigation, setRetrieveOrder } = this.props;
+			if (navigation.retrieveOrder) {
+				try {
+					const order = await this.props.getOrder(
+						this.props.computedMatch.params.id
+					);
+					this.setState({ isLoading: false });
+					setRetrieveOrder(false);
+					this.setOrderData(order);
+				} catch (error) {
+					this.setState({ didError: true, isLoading: false });
+				}
+			} else {
 				this.setState({ isLoading: false });
-				this.setOrderData(order);
-			} catch (error) {
-				this.setState({ didError: true, isLoading: false });
 			}
 		}
 
@@ -114,9 +121,15 @@ const withModifyOrder = (SpecialOrder) => {
 	return WithModifyOrderComponent;
 };
 
+const mapStateToProps = (state) => {
+	return {
+		navigation: state.navigation,
+	};
+};
+
 //created in order to wrap the connect function with the HOC
 const composedModifyOrder = compose(
-	connect(null, {
+	connect(mapStateToProps, {
 		getOrder,
 		addItemToOrder,
 		updateShippingMethod,
@@ -126,6 +139,7 @@ const composedModifyOrder = compose(
 		updateSpecialInstructions,
 		updateOrderDate,
 		updatePickupInstructions,
+		setRetrieveOrder,
 	}),
 	withModifyOrder
 );

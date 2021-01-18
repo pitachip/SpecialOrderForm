@@ -36,6 +36,7 @@ class CheckForm extends React.Component {
 			orderItems,
 			orderTotals,
 			order,
+			navigation,
 			//methods
 			createSpecialOrder,
 			createNewInvoice,
@@ -76,7 +77,7 @@ class CheckForm extends React.Component {
 			//save order to the db
 			const newSpecialOrder = await createSpecialOrder(formattedOrder);
 
-			history.push(history.location.pathname + "/checkout/confirmation", {
+			history.push(`${navigation.rootUrl}checkout/confirmation`, {
 				orderConfirmation: newSpecialOrder,
 			});
 		} catch (error) {
@@ -183,6 +184,7 @@ const mapStateToProps = (state) => {
 		orderTotals: state.order.totals,
 		orderItems: state.order.orderItems,
 		menuConfig: state.menu.menuConfig,
+		navigation: state.navigation,
 		paymentInformation: getFormValues("paymentInformationForm")(state),
 		contactInformation: getFormValues("checkoutContactForm")(state),
 	};

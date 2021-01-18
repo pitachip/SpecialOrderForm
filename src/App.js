@@ -44,14 +44,10 @@ class App extends React.Component {
 					<NavBar />
 					<Switch>
 						<Route path="/order" exact component={SpecialOrder} />
-						<Route path="/checkout/details" exact component={CheckoutContact} />
+						<Route path="/checkout/details" component={CheckoutContact} />
+						<Route path="/checkout/payment" exact component={CheckoutPayment} />
 						<Route
-							path="/order/checkout/payment"
-							exact
-							component={CheckoutPayment}
-						/>
-						<Route
-							path="/order/checkout/confirmation"
+							path="/checkout/confirmation"
 							exact
 							component={ConfirmationDetails}
 						/>
@@ -59,6 +55,19 @@ class App extends React.Component {
 							component={MyOrders}
 							path="/myorders"
 							exact
+							isLoading={this.state.isLoading}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
+						{/**Modify Routes*/}
+						<PrivateRoute
+							component={CheckoutPayment}
+							path="/modify/:id/checkout/payment"
+							isLoading={this.state.isLoading}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
+						<PrivateRoute
+							component={CheckoutContact}
+							path="/modify/:id/checkout/details"
 							isLoading={this.state.isLoading}
 							isAuthenticated={this.state.isAuthenticated}
 						/>

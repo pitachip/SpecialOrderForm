@@ -49,13 +49,14 @@ class ShoppingCartDetails extends React.Component {
 			this.props.setAuthFormToOpen("signinForm");
 			this.setState({ showAuthModal: true });
 		} else {
-			history.push("/checkout/details");
+			console.log(this.props.navigation.rootUrl);
+			history.push(`${this.props.navigation.rootUrl}checkout/details`);
 		}
 	};
 
 	handleAuthModalSuccess = () => {
 		this.setState({ showAuthModal: false });
-		history.push("/checkout/details");
+		history.push(`${this.props.navigation.rootUrl}checkout/details`);
 	};
 
 	toggleSpecialInstructionsTextArea = () => {
@@ -293,6 +294,7 @@ const mapStateToProps = (state) => {
 		menuConfig: state.menu.menuConfig,
 		orderItems: state.order.orderItems,
 		auth: state.auth,
+		navigation: state.navigation,
 	};
 };
 

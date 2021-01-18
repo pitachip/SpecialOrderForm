@@ -6,6 +6,7 @@ import orderDetailsReducer from "./orderDetails";
 import storeInformation from "./storeInformation";
 import authReducer from "./auth";
 import orderHistoryReducer from "./orderHistory";
+import navigationReducer from "./navigation";
 
 export default combineReducers({
 	specialOrder: specialOrderReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
 	storeInformation: storeInformation,
 	auth: authReducer,
 	orderHistory: orderHistoryReducer,
+	navigation: navigationReducer,
 	form: reduxFormReducer,
 });

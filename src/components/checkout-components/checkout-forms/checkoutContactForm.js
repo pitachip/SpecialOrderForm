@@ -22,7 +22,8 @@ class CheckoutContactForm extends React.Component {
 
 	handleForwardClick = () => {
 		if (this.props.valid) {
-			history.push("/checkout/payment");
+			console.log(this.props.navigation);
+			history.push(`${this.props.navigation.rootUrl}checkout/payment`);
 		}
 	};
 	renderDeliveryComponents = () => {
@@ -77,6 +78,7 @@ const mapStateToProps = (state) => {
 		locationInformation: state.storeInformation,
 		deliveryInformation: state.order.orderDetails.deliveryInformation,
 		contactInformation: getFormValues("checkoutContactForm")(state),
+		navigation: state.navigation,
 	};
 };
 

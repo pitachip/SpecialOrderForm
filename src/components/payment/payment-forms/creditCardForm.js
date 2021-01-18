@@ -130,6 +130,7 @@ class CreditCardForm extends React.Component {
 			order,
 			contactInformation,
 			paymentInformation,
+			navigation,
 			//actions
 			completePayment,
 			getPaymentIntent,
@@ -160,7 +161,7 @@ class CreditCardForm extends React.Component {
 
 				const newSpecialOrder = await createSpecialOrder(formattedOrder);
 
-				history.push(history.location.pathname + "/checkout/confirmation", {
+				history.push(`${navigation.rootUrl}checkout/confirmation`, {
 					orderConfirmation: newSpecialOrder,
 				});
 			} else {
@@ -232,6 +233,7 @@ const mapStateToProps = (state) => {
 		order: state.order,
 		orderTotals: state.order.totals,
 		menuConfig: state.menu.menuConfig,
+		navigation: state.navigation,
 		paymentInformation: getFormValues("paymentInformationForm")(state),
 		contactInformation: getFormValues("checkoutContactForm")(state),
 	};
