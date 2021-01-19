@@ -2,6 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { change } from "redux-form";
 import each from "lodash/each";
 //ui components
 import { Dimmer, Loader, Message } from "semantic-ui-react";
@@ -17,6 +18,7 @@ import {
 	updateOrderDate,
 	updatePickupInstructions,
 	setRetrieveOrder,
+	setSpecialInstructionsToggle,
 } from "../actions";
 //utils
 import {
@@ -92,6 +94,7 @@ const withModifyOrder = (SpecialOrder) => {
 				storeInformation,
 				change,
 				updatePickupInstructions,
+				setSpecialInstructionsToggle,
 			} = this.props;
 
 			deleteAllOrderItems();
@@ -115,7 +118,47 @@ const withModifyOrder = (SpecialOrder) => {
 				);
 			});
 
+			setSpecialInstructionsToggle(true);
 			updateSpecialInstructions(orderDetails.specialInstructions);
+
+			updateShippingMethod(orderDetails.shippingMethod);
+			if (orderDetails.shippingMethod === "pickup") {
+				updatePickupLocation(orderDetails.location, storeInformation);
+				updatePickupInstructions(pickupInformation.pickupInstructions);
+			} else {
+				//Set Delivery Information Fields
+				change("checkoutContactForm", "address1", deliveryInformation.address1);
+				change("checkoutContactForm", "address2", deliveryInformation.address2);
+				change("checkoutContactForm", "city", deliveryInformation.city);
+				change("checkoutContactForm", "state", deliveryInformation.state);
+				change("checkoutContactForm", "zip", deliveryInformation.zip);
+				change(
+					"checkoutContactForm",
+					"deliveryInstructions",
+					deliveryInformation.deliveryInstructions
+				);
+
+				change(
+					"checkoutContactForm",
+					"firstNameDelivery",
+					deliveryInformation.firstName
+				);
+				change(
+					"checkoutContactForm",
+					"lastNameDelivery",
+					deliveryInformation.lastName
+				);
+				change(
+					"checkoutContactForm",
+					"emailDelivery",
+					deliveryInformation.email
+				);
+				change(
+					"checkoutContactForm",
+					"phoneNumberDelivery",
+					deliveryInformation.phoneNumber
+				);
+			}
 		};
 	}
 	return WithModifyOrderComponent;
@@ -140,6 +183,8 @@ const composedModifyOrder = compose(
 		updateOrderDate,
 		updatePickupInstructions,
 		setRetrieveOrder,
+		setSpecialInstructionsToggle,
+		change,
 	}),
 	withModifyOrder
 );

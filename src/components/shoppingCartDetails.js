@@ -19,6 +19,7 @@ import {
 	updatePickupLocation,
 	updateSpecialInstructions,
 	updateOrderDate,
+	setSpecialInstructionsToggle,
 } from "../actions";
 //utils
 import { calculateTotals } from "../utils/orderCheckoutUtils";
@@ -34,8 +35,6 @@ class ShoppingCartDetails extends React.Component {
 	 * Also need to componetize this file a little better. Too much logic in one place
 	 */
 	state = {
-		showTextArea:
-			this.props.orderDetails.specialInstructions === "" ? false : true,
 		validated: false,
 		showAuthModal: false,
 	};
@@ -49,7 +48,6 @@ class ShoppingCartDetails extends React.Component {
 			this.props.setAuthFormToOpen("signinForm");
 			this.setState({ showAuthModal: true });
 		} else {
-			console.log(this.props.navigation.rootUrl);
 			history.push(`${this.props.navigation.rootUrl}checkout/details`);
 		}
 	};
@@ -60,16 +58,24 @@ class ShoppingCartDetails extends React.Component {
 	};
 
 	toggleSpecialInstructionsTextArea = () => {
+		//TODO refactor this to use redux
+		const {
+			setSpecialInstructionsToggle,
+			orderDetails,
+			showSpecialInstructionsTextArea,
+		} = this.props;
 		if (
-			this.props.orderDetails.specialInstructions === "" &&
-			this.state.showTextArea
+			orderDetails.specialInstructions === "" &&
+			showSpecialInstructionsTextArea
 		) {
-			this.setState({ showTextArea: false });
+			//this.setState({ showTextArea: false });
+			setSpecialInstructionsToggle(false);
 		} else if (
-			this.props.orderDetails.specialInstructions === "" &&
-			!this.state.showTextArea
+			orderDetails.specialInstructions === "" &&
+			!showSpecialInstructionsTextArea
 		) {
-			this.setState({ showTextArea: true });
+			//this.setState({ showTextArea: true });
+			setSpecialInstructionsToggle(true);
 		}
 	};
 
@@ -255,7 +261,7 @@ class ShoppingCartDetails extends React.Component {
 	};
 
 	render() {
-		const { orderDetails } = this.props;
+		const { orderDetails, showSpecialInstructionsTextArea } = this.props;
 		return (
 			<div>
 				<Form
@@ -263,7 +269,7 @@ class ShoppingCartDetails extends React.Component {
 					validated={this.state.validated}
 					onSubmit={this.orderSubmitted}
 				>
-					{this.state.showTextArea
+					{showSpecialInstructionsTextArea
 						? this.renderTextArea()
 						: this.renderTextAreaPlaceholder()}
 					<hr />
@@ -292,6 +298,7 @@ const mapStateToProps = (state) => {
 		totals: state.order.totals,
 		orderDetails: state.order.orderDetails,
 		menuConfig: state.menu.menuConfig,
+		showSpecialInstructionsTextArea: state.menu.showSpecialInstructionsTextArea,
 		orderItems: state.order.orderItems,
 		auth: state.auth,
 		navigation: state.navigation,
@@ -306,4 +313,5 @@ export default connect(mapStateToProps, {
 	updatePickupLocation,
 	updateSpecialInstructions,
 	updateOrderDate,
+	setSpecialInstructionsToggle,
 })(ShoppingCartDetails);

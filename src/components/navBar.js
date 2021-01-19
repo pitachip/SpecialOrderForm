@@ -9,21 +9,11 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 //app components
-import { setAuthFormToOpen, authStateChanged } from "../actions";
+import { setAuthFormToOpen } from "../actions";
 import AuthModal from "./auth-components/auth-modals/authModal";
 
 class NavBar extends React.Component {
 	state = { showModal: false };
-
-	componentDidMount() {
-		auth.onIdTokenChanged((user) => {
-			if (user) {
-				this.props.authStateChanged(user, false);
-			} else {
-				this.props.authStateChanged(null, false);
-			}
-		});
-	}
 
 	handleAuthModalClose = () => {
 		this.setState({ showModal: false });
@@ -125,5 +115,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
 	setAuthFormToOpen,
-	authStateChanged,
 })(NavBar);

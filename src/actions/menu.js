@@ -52,3 +52,7 @@ export const resetSelection = () => (dispatch) => {
 export const loadSelectionToEdit = (selection) => async (dispatch) => {
 	await dispatch({ type: "LOAD_SELECTION", payload: selection });
 };
+
+export const setSpecialInstructionsToggle = (toggle) => (dispatch) => {
+	dispatch({ type: "SET_SPECIAL_INSTRUCTIONS_TOGGLE", payload: toggle });
+};

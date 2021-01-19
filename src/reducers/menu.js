@@ -11,6 +11,7 @@ const INITIAL_STATE = {
 	selection: {},
 	quantity: 0,
 	specialInsructions: "",
+	showSpecialInstructionsTextArea: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -55,6 +56,11 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				selection: action.payload,
+			};
+		case "SET_SPECIAL_INSTRUCTIONS_TOGGLE":
+			return {
+				...state,
+				showSpecialInstructionsTextArea: action.payload,
 			};
 		default:
 			return state;

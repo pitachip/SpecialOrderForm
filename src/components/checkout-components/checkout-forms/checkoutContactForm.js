@@ -1,7 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
-import { reduxForm, getFormValues } from "redux-form";
+import { reduxForm, change, getFormValues } from "redux-form";
 //ui components
 import Form from "react-bootstrap/Form";
 //app components
@@ -69,24 +69,20 @@ class CheckoutContactForm extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		initialValues: {
-			firstName: state.auth.metaData ? state.auth.metaData.firstName : "",
-			lastName: state.auth.metaData ? state.auth.metaData.lastName : "",
-			email: state.auth.metaData ? state.auth.metaData.email : "",
-		},
 		orderDetails: state.order.orderDetails,
 		locationInformation: state.storeInformation,
 		deliveryInformation: state.order.orderDetails.deliveryInformation,
-		contactInformation: getFormValues("checkoutContactForm")(state),
 		navigation: state.navigation,
+		userMetaData: state.auth.metaData,
+		formValues: getFormValues("checkoutContactForm")(state),
 	};
 };
 
-export default connect(mapStateToProps, { updateDeliveryDetails })(
+export default connect(mapStateToProps, { updateDeliveryDetails, change })(
 	reduxForm({
 		form: "checkoutContactForm",
 		destroyOnUnmount: false,
-		enableReinitialize: true,
+		enableReinitialize: false,
 		keepDirtyOnReinitialize: true,
 	})(CheckoutContactForm)
 );

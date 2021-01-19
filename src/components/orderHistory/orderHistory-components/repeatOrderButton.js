@@ -15,6 +15,7 @@ import {
 	updateSpecialInstructions,
 	updateOrderDate,
 	updatePickupInstructions,
+	setSpecialInstructionsToggle,
 } from "../../../actions";
 //utils
 import {
@@ -38,6 +39,7 @@ class RepeatOrderButton extends React.Component {
 			storeInformation,
 			change,
 			updatePickupInstructions,
+			setSpecialInstructionsToggle,
 		} = this.props;
 
 		deleteAllOrderItems();
@@ -61,6 +63,7 @@ class RepeatOrderButton extends React.Component {
 			);
 		});
 
+		setSpecialInstructionsToggle(true);
 		updateSpecialInstructions(orderDetails.specialInstructions);
 
 		const calculatedAmounts = calculateTotals(
@@ -151,4 +154,5 @@ export default connect(mapStateToProps, {
 	updateOrderDate,
 	change,
 	updatePickupInstructions,
+	setSpecialInstructionsToggle,
 })(RepeatOrderButton);

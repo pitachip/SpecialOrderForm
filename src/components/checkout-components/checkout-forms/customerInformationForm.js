@@ -1,6 +1,7 @@
 //libs
-import React from "react";
-import { Field } from "redux-form";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Field, change, isDirty } from "redux-form";
 //ui components
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -66,7 +67,14 @@ const customerInformationInput = ({
 	);
 };
 
-const CustomerInformationForm = () => {
+const CustomerInformationForm = ({ dirty, change, userMetaData }) => {
+	useEffect(() => {
+		if (!dirty) {
+			change("checkoutContactForm", "firstName", userMetaData.firstName);
+			change("checkoutContactForm", "lastName", userMetaData.lastName);
+			change("checkoutContactForm", "email", userMetaData.email);
+		}
+	});
 	return (
 		<div>
 			<Form.Row>
@@ -125,4 +133,11 @@ const CustomerInformationForm = () => {
 	);
 };
 
-export default CustomerInformationForm;
+const mapStateToProps = (state) => {
+	return {
+		dirty: isDirty("checkoutContactForm")(state),
+		userMetaData: state.auth.metaData,
+	};
+};
+
+export default connect(mapStateToProps, { change })(CustomerInformationForm);

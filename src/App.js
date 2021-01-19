@@ -16,7 +16,11 @@ import ConfirmationDetails from "./components/checkout-components/checkoutConfir
 import MyOrders from "./components/orderHistory/orderHistory-components/myOrders";
 import withModifyOrder from "./hoc/withModifyOrder";
 //actions
-import { getStoreInformation, getMenuConfig } from "./actions";
+import {
+	getStoreInformation,
+	getMenuConfig,
+	authStateChanged,
+} from "./actions";
 //css
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
@@ -30,8 +34,10 @@ class App extends React.Component {
 		auth.onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({ isLoading: false, isAuthenticated: true });
+				this.props.authStateChanged(user, false);
 			} else {
 				this.setState({ isLoading: false, isAuthenticated: false });
+				this.props.authStateChanged(null, false);
 			}
 		});
 		await this.props.getStoreInformation();
@@ -85,4 +91,8 @@ class App extends React.Component {
 		);
 	}
 }
-export default connect(null, { getStoreInformation, getMenuConfig })(App);
+export default connect(null, {
+	getStoreInformation,
+	getMenuConfig,
+	authStateChanged,
+})(App);
