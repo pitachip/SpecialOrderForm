@@ -11,7 +11,6 @@ import {
 	getOrder,
 	addItemToOrder,
 	updateShippingMethod,
-	updateOrderTotals,
 	deleteAllOrderItems,
 	updatePickupLocation,
 	updateSpecialInstructions,
@@ -21,10 +20,7 @@ import {
 	setSpecialInstructionsToggle,
 } from "../actions";
 //utils
-import {
-	formatSelectionForCheckout,
-	calculateTotals,
-} from "../utils/orderCheckoutUtils";
+import { formatSelectionForCheckout } from "../utils/orderCheckoutUtils";
 
 const withModifyOrder = (SpecialOrder) => {
 	class WithModifyOrderComponent extends React.Component {
@@ -41,6 +37,7 @@ const withModifyOrder = (SpecialOrder) => {
 					setRetrieveOrder(false);
 					this.setOrderData(order);
 				} catch (error) {
+					console.log(error);
 					this.setState({ didError: true, isLoading: false });
 				}
 			} else {
@@ -86,7 +83,6 @@ const withModifyOrder = (SpecialOrder) => {
 			const {
 				addItemToOrder,
 				updateShippingMethod,
-				updateOrderTotals,
 				deleteAllOrderItems,
 				updatePickupLocation,
 				updateSpecialInstructions,
@@ -104,6 +100,7 @@ const withModifyOrder = (SpecialOrder) => {
 				customerInformation,
 				pickupInformation,
 				deliveryInformation,
+				paymentInformation,
 			} = order;
 			each(orderItems, (item) => {
 				addItemToOrder(
@@ -120,6 +117,8 @@ const withModifyOrder = (SpecialOrder) => {
 
 			setSpecialInstructionsToggle(true);
 			updateSpecialInstructions(orderDetails.specialInstructions);
+
+			updateOrderDate(orderDetails.orderDate);
 
 			updateShippingMethod(orderDetails.shippingMethod);
 			if (orderDetails.shippingMethod === "pickup") {
@@ -159,6 +158,48 @@ const withModifyOrder = (SpecialOrder) => {
 					deliveryInformation.phoneNumber
 				);
 			}
+
+			//Set Customer Information Fields
+			change("checkoutContactForm", "firstName", customerInformation.firstName);
+			change("checkoutContactForm", "lastName", customerInformation.lastName);
+			change("checkoutContactForm", "email", customerInformation.email);
+			change(
+				"checkoutContactForm",
+				"phoneNumber",
+				customerInformation.phoneNumber
+			);
+
+			//Set Payment Fields
+			change(
+				"paymentInformationForm",
+				"paymentType",
+				paymentInformation.paymentType
+			);
+			change(
+				"paymentInformationForm",
+				"purchaseOrder",
+				paymentInformation.purchaseOrder
+			);
+			change(
+				"paymentInformationForm",
+				"purchaseOrderNumber",
+				paymentInformation.purchaseOrderNumber
+			);
+			change(
+				"paymentInformationForm",
+				"taxExempt",
+				paymentInformation.taxExempt
+			);
+			change(
+				"paymentInformationForm",
+				"taxExemptId",
+				paymentInformation.taxExemptId
+			);
+			change(
+				"paymentInformationForm",
+				"universityMoneyAccount",
+				paymentInformation.universityMoneyAccount
+			);
 		};
 	}
 	return WithModifyOrderComponent;
@@ -167,6 +208,7 @@ const withModifyOrder = (SpecialOrder) => {
 const mapStateToProps = (state) => {
 	return {
 		navigation: state.navigation,
+		storeInformation: state.storeInformation.storeInformation,
 	};
 };
 
@@ -176,7 +218,6 @@ const composedModifyOrder = compose(
 		getOrder,
 		addItemToOrder,
 		updateShippingMethod,
-		updateOrderTotals,
 		deleteAllOrderItems,
 		updatePickupLocation,
 		updateSpecialInstructions,

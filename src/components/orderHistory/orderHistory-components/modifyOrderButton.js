@@ -23,6 +23,7 @@ import "../orderHistory-css/orderActions.css";
 
 class ModifyOrderButton extends React.Component {
 	modifyOrderClicked = (order) => {
+		//TODO: set the navigation retrieve order to false so it retrieves the new order that was clicked
 		this.props.setRootUrl(`/modify/${order._id}/`);
 		history.push(`/modify/${order._id}`);
 	};

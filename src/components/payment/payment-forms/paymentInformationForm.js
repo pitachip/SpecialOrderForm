@@ -18,7 +18,10 @@ class PaymentInformationForm extends React.Component {
 	}
 
 	componentDidMount() {
+		const { initialize, paymentInformation } = this.props;
 		window.scrollTo(0, 0);
+		paymentInformation === undefined &&
+			initialize({ paymentType: "", taxExempt: false });
 	}
 
 	renderPaymentForm = (paymentType) => {
@@ -56,7 +59,7 @@ class PaymentInformationForm extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		initialValues: { paymentType: "", taxExempt: false },
+		//initialValues: { paymentType: "", taxExempt: false },
 		paymentInformation: getFormValues("paymentInformationForm")(state),
 		contactInformation: getFormValues("checkoutContactForm")(state),
 		orderItems: state.order.orderItems,

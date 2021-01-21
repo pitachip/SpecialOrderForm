@@ -19,6 +19,7 @@ export const getOrder = (orderID) => async (dispatch) => {
 		const order = await pitachip.get(`/specialorder/${orderID}`, {
 			headers: { Authorization: `Bearer ${userToken.token}` },
 		});
+		dispatch({ type: "SET_ORDER_TO_MODIFY", payload: order.data });
 		return order.data;
 	} catch (error) {
 		throw error;

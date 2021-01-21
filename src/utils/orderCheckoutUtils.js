@@ -58,9 +58,12 @@ export const formatSelectionForCheckout = (
 export const calculateTotals = (
 	orderItems,
 	menuConfigSettings,
-	shippingMethod
+	shippingMethod,
+	paymentInformation
 ) => {
 	const deliveryFee = menuConfigSettings.cateringDeliveryFee;
+	const taxExempt = paymentInformation ? paymentInformation.taxExempt : null;
+
 	let totals = {
 		subTotal: 0,
 		tax: 0,
@@ -78,9 +81,16 @@ export const calculateTotals = (
 		totals.subTotal =
 			totals.subTotal +
 			item.quantity * ((item.basePrice + modifierTotal) / 100);
+	});
+	if (taxExempt) {
+		totals.total = totals.subTotal - totals.tax + totals.delivery;
+		totals.tax = 0;
+	} else {
 		totals.tax = totals.subTotal * menuConfigSettings.taxRate;
 		totals.total = totals.subTotal + totals.tax + totals.delivery;
-	});
+	}
+
+	console.log("Totals: ", totals);
 
 	return totals;
 };
@@ -180,53 +190,4 @@ export const formatOrderForDb = (
 	};
 
 	return formattedOrder;
-};
-
-//TODO: Delete this funtion
-
-export const formatForRepeatOrder = (
-	menuItem,
-	selections,
-	quantity,
-	specialInstructions
-) => {
-	let formattedSelection = {};
-
-	formattedSelection = {
-		menuItem: menuItem.menuItem,
-		basePrice: menuItem.basePrice,
-		quantity,
-		specialInstructions,
-		modifiers: [],
-		uniqueId: uuidv4(),
-		originalSelectionFormat: selections,
-		originalMenuItem: menuItem,
-	};
-
-	each(menuItem.modifiers, (modifier) => {
-		const modifierChoices = pickBy(selections, {
-			modifierId: modifier.modifierId,
-		});
-		console.log("Modifier Choice: ", modifierChoices);
-
-		if (!isEmpty(modifierChoices)) {
-			let modifierChoiceArray = [];
-
-			map(modifierChoices, (modifierChoice) => {
-				modifierChoiceArray.push({
-					name: modifierChoice.name,
-					modifierChoiceId: modifierChoice.id,
-					price: modifierChoice.price,
-				});
-			});
-
-			formattedSelection.modifiers.push({
-				modifierId: modifier.modifierId,
-				modifierName: modifier.modifierName,
-				modifierChoices: modifierChoiceArray,
-			});
-		}
-	});
-
-	return formattedSelection;
 };

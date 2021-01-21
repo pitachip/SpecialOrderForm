@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import { getFormValues } from "redux-form";
 import DatePicker from "react-datepicker";
 //ui components
 import Form from "react-bootstrap/Form";
@@ -84,7 +85,8 @@ class ShoppingCartDetails extends React.Component {
 		const calculatedAmounts = calculateTotals(
 			this.props.orderItems,
 			this.props.menuConfig.settings,
-			e.target.value
+			e.target.value,
+			this.props.paymentInformation
 		);
 		this.props.updateOrderTotals(calculatedAmounts);
 	};
@@ -302,6 +304,7 @@ const mapStateToProps = (state) => {
 		orderItems: state.order.orderItems,
 		auth: state.auth,
 		navigation: state.navigation,
+		paymentInformation: getFormValues("paymentInformationForm")(state),
 	};
 };
 

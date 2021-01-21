@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
 	orders: [],
+	orderToModify: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -8,6 +9,11 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				orders: action.payload,
+			};
+		case "SET_ORDER_TO_MODIFY":
+			return {
+				...state,
+				orderToModify: action.payload,
 			};
 		case "persist/PURGE":
 			return INITIAL_STATE;

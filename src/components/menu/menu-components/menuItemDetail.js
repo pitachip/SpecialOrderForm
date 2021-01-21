@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import { getFormValues } from "redux-form";
 import each from "lodash/each";
 //ui components
 import Form from "react-bootstrap/Form";
@@ -177,7 +178,8 @@ class MenuItemDetail extends React.Component {
 			const calculatedAmounts = calculateTotals(
 				this.props.orderItems,
 				this.props.menuConfig.settings,
-				this.props.orderDetails.shippingMethod
+				this.props.orderDetails.shippingMethod,
+				this.props.paymentInformation
 			);
 			this.props.updateOrderTotals(calculatedAmounts);
 			this.setState({ validationErrors: [] });
@@ -335,6 +337,7 @@ const mapStateToProps = (state) => {
 		orderDetails: state.order.orderDetails,
 		selection: state.menu.selection,
 		validationErrors: state.menu.validationErrors,
+		paymentInformation: getFormValues("paymentInformationForm")(state),
 	};
 };
 

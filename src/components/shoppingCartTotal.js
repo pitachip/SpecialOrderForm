@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import { getFormValues } from "redux-form";
 import NumberFormat from "react-number-format";
 //ui componenets
 import Row from "react-bootstrap/Row";
@@ -24,7 +25,8 @@ class ShoppingCartTotal extends React.Component {
 			const calculatedAmounts = calculateTotals(
 				this.props.orderItems,
 				this.props.menuConfig.settings,
-				this.props.orderDetails.shippingMethod
+				this.props.orderDetails.shippingMethod,
+				this.props.paymentInformation
 			);
 			this.props.updateOrderTotals(calculatedAmounts);
 		}
@@ -151,6 +153,7 @@ const mapStateToProps = (state) => {
 		totals: state.order.totals,
 		menuConfig: state.menu.menuConfig,
 		orderDetails: state.order.orderDetails,
+		paymentInformation: getFormValues("paymentInformationForm")(state),
 	};
 };
 

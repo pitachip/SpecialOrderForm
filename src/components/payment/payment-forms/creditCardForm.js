@@ -122,7 +122,35 @@ class CreditCardForm extends React.Component {
 			});
 		}
 	};
+
+	modifyPurchase = async (previousOrder) => {
+		switch (previousOrder.paymentInformation.paymentType) {
+			case "cc":
+				console.log("Refund credit card");
+				break;
+			case "check":
+				console.log("Cancel invoice");
+				break;
+			case "univ":
+				console.log("Cancel invoice ");
+				break;
+			default:
+				break;
+		}
+		/**
+		 * TODO
+		 * find out what the previous payment type was with a switch statement
+		 * refund that payment or cancel the invoice with an action
+		 */
+	};
+
 	submitOrderClicked = async (e) => {
+		if (this.props.navigation.rootUrl === "/") {
+			console.log("This is a new purchase");
+		} else {
+			this.modifyPurchase(this.props.orderToModify);
+		}
+		/*
 		const {
 			//data
 			stripe,
@@ -178,7 +206,9 @@ class CreditCardForm extends React.Component {
 			console.log("Error caught in Order Submission: ", error);
 			this.setState({ submitting: false });
 		}
+			*/
 	};
+
 	render() {
 		const { submissionError } = this.state;
 		const { taxExempt } = this.props.paymentInformation;
@@ -236,6 +266,7 @@ const mapStateToProps = (state) => {
 		navigation: state.navigation,
 		paymentInformation: getFormValues("paymentInformationForm")(state),
 		contactInformation: getFormValues("checkoutContactForm")(state),
+		orderToModify: state.orderHistory.orderToModify,
 	};
 };
 

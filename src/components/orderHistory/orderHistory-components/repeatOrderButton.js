@@ -28,6 +28,7 @@ import "../orderHistory-css/orderActions.css";
 
 class RepeatOrderButton extends React.Component {
 	repeatOrderClicked = (order) => {
+		console.log("Order: ", order);
 		const {
 			addItemToOrder,
 			updateShippingMethod,
@@ -49,6 +50,7 @@ class RepeatOrderButton extends React.Component {
 			customerInformation,
 			pickupInformation,
 			deliveryInformation,
+			paymentInformation,
 		} = order;
 		each(orderItems, (item) => {
 			addItemToOrder(
@@ -65,13 +67,6 @@ class RepeatOrderButton extends React.Component {
 
 		setSpecialInstructionsToggle(true);
 		updateSpecialInstructions(orderDetails.specialInstructions);
-
-		const calculatedAmounts = calculateTotals(
-			orderItems,
-			this.props.menuConfig.settings,
-			orderDetails.shippingMethod
-		);
-		updateOrderTotals(calculatedAmounts);
 
 		updateShippingMethod(orderDetails.shippingMethod);
 		if (orderDetails.shippingMethod === "pickup") {
@@ -122,6 +117,43 @@ class RepeatOrderButton extends React.Component {
 			customerInformation.phoneNumber
 		);
 
+		//Set Payment Fields
+		change(
+			"paymentInformationForm",
+			"paymentType",
+			paymentInformation.paymentType
+		);
+		change(
+			"paymentInformationForm",
+			"purchaseOrder",
+			paymentInformation.purchaseOrder
+		);
+		change(
+			"paymentInformationForm",
+			"purchaseOrderNumber",
+			paymentInformation.purchaseOrderNumber
+		);
+		change("paymentInformationForm", "taxExempt", paymentInformation.taxExempt);
+		change(
+			"paymentInformationForm",
+			"taxExemptId",
+			paymentInformation.taxExemptId
+		);
+		change(
+			"paymentInformationForm",
+			"universityMoneyAccount",
+			paymentInformation.universityMoneyAccount
+		);
+
+		//calculate the totals and taxes
+		let calculatedAmounts = calculateTotals(
+			orderItems,
+			this.props.menuConfig.settings,
+			orderDetails.shippingMethod,
+			paymentInformation
+		);
+		updateOrderTotals(calculatedAmounts);
+
 		history.push("/order");
 	};
 
@@ -140,7 +172,6 @@ const mapStateToProps = (state) => {
 	return {
 		menuConfig: state.menu.menuConfig,
 		storeInformation: state.storeInformation.storeInformation,
-		orderItems: state.order.orderItems,
 	};
 };
 
