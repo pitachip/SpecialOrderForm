@@ -18,9 +18,13 @@ import {
 	updatePickupInstructions,
 	setRetrieveOrder,
 	setSpecialInstructionsToggle,
+	updateOrderTotals,
 } from "../actions";
 //utils
-import { formatSelectionForCheckout } from "../utils/orderCheckoutUtils";
+import {
+	formatSelectionForCheckout,
+	calculateTotals,
+} from "../utils/orderCheckoutUtils";
 
 const withModifyOrder = (SpecialOrder) => {
 	class WithModifyOrderComponent extends React.Component {
@@ -91,6 +95,7 @@ const withModifyOrder = (SpecialOrder) => {
 				change,
 				updatePickupInstructions,
 				setSpecialInstructionsToggle,
+				updateOrderTotals,
 			} = this.props;
 
 			deleteAllOrderItems();
@@ -200,6 +205,15 @@ const withModifyOrder = (SpecialOrder) => {
 				"universityMoneyAccount",
 				paymentInformation.universityMoneyAccount
 			);
+
+			//calculate the totals and taxes
+			let calculatedAmounts = calculateTotals(
+				orderItems,
+				this.props.menuConfig.settings,
+				orderDetails.shippingMethod,
+				paymentInformation
+			);
+			updateOrderTotals(calculatedAmounts);
 		};
 	}
 	return WithModifyOrderComponent;
@@ -209,6 +223,7 @@ const mapStateToProps = (state) => {
 	return {
 		navigation: state.navigation,
 		storeInformation: state.storeInformation.storeInformation,
+		menuConfig: state.menu.menuConfig,
 	};
 };
 
@@ -226,6 +241,7 @@ const composedModifyOrder = compose(
 		setRetrieveOrder,
 		setSpecialInstructionsToggle,
 		change,
+		updateOrderTotals,
 	}),
 	withModifyOrder
 );

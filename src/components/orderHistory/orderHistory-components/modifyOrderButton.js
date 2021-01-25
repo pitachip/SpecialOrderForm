@@ -15,6 +15,7 @@ import {
 	updateOrderDate,
 	updatePickupInstructions,
 	setRootUrl,
+	setRetrieveOrder,
 } from "../../../actions";
 //utils
 import { history } from "../../../utils/history";
@@ -24,6 +25,7 @@ import "../orderHistory-css/orderActions.css";
 class ModifyOrderButton extends React.Component {
 	modifyOrderClicked = (order) => {
 		//TODO: set the navigation retrieve order to false so it retrieves the new order that was clicked
+		this.props.setRetrieveOrder(true);
 		this.props.setRootUrl(`/modify/${order._id}/`);
 		history.push(`/modify/${order._id}`);
 	};
@@ -60,4 +62,5 @@ export default connect(mapStateToProps, {
 	change,
 	updatePickupInstructions,
 	setRootUrl,
+	setRetrieveOrder,
 })(ModifyOrderButton);

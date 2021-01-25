@@ -48,22 +48,23 @@ class UnivForm extends React.Component {
 
 			try {
 				//Adding tax and delivery as line items to the invoice
-				orderItems.push(
+				const deliveryAndTax = [
 					{
 						basePrice: orderTotals.delivery * 100,
 						quantity: 1,
-						menuItem: "Delivery",
+						name: "Delivery",
 					},
 					{
 						basePrice: orderTotals.tax * 100,
 						quantity: 1,
-						menuItem: "Tax",
-					}
-				);
+						name: "Tax",
+					},
+				];
 				//create the invoice
 				const newInvoice = await createNewInvoice(
 					contactInformation,
 					orderItems,
+					deliveryAndTax,
 					paymentInformation
 				);
 				//format order for db

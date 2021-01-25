@@ -19,6 +19,9 @@ import {
 	completePayment,
 	getPaymentIntent,
 	createSpecialOrder,
+	refundCreditCard,
+	voidInvoice,
+	updateSpecialOrder,
 } from "../../../actions";
 //css
 import "../payment-css/creditCardForm.css";
@@ -102,7 +105,7 @@ class CreditCardForm extends React.Component {
 		}
 	};
 
-	handleChange = async (e) => {
+	handleChange = (e) => {
 		this.setState({ disableSubmitButton: e.empty });
 		if (e.error) {
 			this.setState({
@@ -124,33 +127,44 @@ class CreditCardForm extends React.Component {
 	};
 
 	modifyPurchase = async (previousOrder) => {
+		let refundedPayment;
 		switch (previousOrder.paymentInformation.paymentType) {
 			case "cc":
-				console.log("Refund credit card");
+				refundedPayment = await this.props.refundCreditCard(
+					previousOrder.paymentInformation.creditCardPaymentDetails.id,
+					previousOrder.paymentInformation.creditCardPaymentDetails.amount
+				);
 				break;
 			case "check":
-				console.log("Cancel invoice");
+				refundedPayment = await this.props.voidInvoice(
+					previousOrder.paymentInformation.invoicePaymentDetails.id
+				);
 				break;
 			case "univ":
-				console.log("Cancel invoice ");
+				refundedPayment = await this.props.voidInvoice(
+					previousOrder.paymentInformation.invoicePaymentDetails.id
+				);
 				break;
 			default:
 				break;
 		}
+		return refundedPayment;
 		/**
 		 * TODO
-		 * find out what the previous payment type was with a switch statement
-		 * refund that payment or cancel the invoice with an action
+		 * need to handle if people pay for invoice via credit card for some reason (probably webhooks for notification)
 		 */
 	};
 
 	submitOrderClicked = async (e) => {
+		e.preventDefault();
+		this.setState({ submitting: true });
+
 		if (this.props.navigation.rootUrl === "/") {
 			console.log("This is a new purchase");
 		} else {
-			this.modifyPurchase(this.props.orderToModify);
+			await this.modifyPurchase(this.props.orderToModify);
 		}
-		/*
+
 		const {
 			//data
 			stripe,
@@ -159,13 +173,13 @@ class CreditCardForm extends React.Component {
 			contactInformation,
 			paymentInformation,
 			navigation,
+			orderToModify,
 			//actions
 			completePayment,
 			getPaymentIntent,
 			createSpecialOrder,
+			updateSpecialOrder,
 		} = this.props;
-		e.preventDefault();
-		this.setState({ submitting: true });
 
 		try {
 			const payment = await completePayment(
@@ -187,11 +201,22 @@ class CreditCardForm extends React.Component {
 					"Paid"
 				);
 
-				const newSpecialOrder = await createSpecialOrder(formattedOrder);
+				if (this.props.navigation.rootUrl === "/") {
+					const newSpecialOrder = await createSpecialOrder(formattedOrder);
 
-				history.push(`${navigation.rootUrl}checkout/confirmation`, {
-					orderConfirmation: newSpecialOrder,
-				});
+					history.push(`${navigation.rootUrl}checkout/confirmation`, {
+						orderConfirmation: newSpecialOrder,
+					});
+				} else {
+					const modifiedSpecialOrder = await updateSpecialOrder(
+						formattedOrder,
+						orderToModify._id
+					);
+
+					history.push(`${navigation.rootUrl}checkout/confirmation`, {
+						orderConfirmation: modifiedSpecialOrder,
+					});
+				}
 			} else {
 				this.setState({
 					submissionError: {
@@ -206,7 +231,6 @@ class CreditCardForm extends React.Component {
 			console.log("Error caught in Order Submission: ", error);
 			this.setState({ submitting: false });
 		}
-			*/
 	};
 
 	render() {
@@ -276,6 +300,9 @@ export default connect(mapStateToProps, {
 	completePayment,
 	getPaymentIntent,
 	createSpecialOrder,
+	refundCreditCard,
+	voidInvoice,
+	updateSpecialOrder,
 })(
 	reduxForm({
 		form: "paymentInformationForm",
