@@ -66,6 +66,12 @@ class App extends React.Component {
 						/>
 						{/**Modify Routes*/}
 						<PrivateRoute
+							component={ConfirmationDetails}
+							path="/modify/:id/checkout/confirmation"
+							isLoading={this.state.isLoading}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
+						<PrivateRoute
 							component={CheckoutPayment}
 							path="/modify/:id/checkout/payment"
 							isLoading={this.state.isLoading}

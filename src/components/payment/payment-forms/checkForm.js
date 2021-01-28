@@ -14,6 +14,9 @@ import {
 	updateOrderTotals,
 	createNewInvoice,
 	createSpecialOrder,
+	refundCreditCard,
+	voidInvoice,
+	updateSpecialOrder,
 } from "../../../actions";
 //utils
 import { formatOrderForDb } from "../../../utils/orderCheckoutUtils";
@@ -26,9 +29,45 @@ class CheckForm extends React.Component {
 		submissionError: { header: "", message: "", hidden: true },
 	};
 
+	modifyPurchase = async (previousOrder) => {
+		let refundedPayment;
+		switch (previousOrder.paymentInformation.paymentType) {
+			case "cc":
+				refundedPayment = await this.props.refundCreditCard(
+					previousOrder.paymentInformation.creditCardPaymentDetails.id,
+					previousOrder.paymentInformation.creditCardPaymentDetails.amount
+				);
+				break;
+			case "check":
+				refundedPayment = await this.props.voidInvoice(
+					previousOrder.paymentInformation.invoicePaymentDetails.id
+				);
+				break;
+			case "univ":
+				refundedPayment = await this.props.voidInvoice(
+					previousOrder.paymentInformation.invoicePaymentDetails.id
+				);
+				break;
+			default:
+				break;
+		}
+		return refundedPayment;
+		/**
+		 * TODO
+		 * need to handle if people pay for invoice via credit card for some reason (probably webhooks for notification)
+		 */
+	};
+
 	submitOrderClicked = async (e) => {
 		e.preventDefault();
 		this.setState({ submitting: true });
+
+		if (this.props.navigation.rootUrl === "/") {
+			console.log("This is a new purchase");
+		} else {
+			await this.modifyPurchase(this.props.orderToModify);
+		}
+
 		const {
 			//data
 			contactInformation,
@@ -37,9 +76,11 @@ class CheckForm extends React.Component {
 			orderTotals,
 			order,
 			navigation,
+			orderToModify,
 			//methods
 			createSpecialOrder,
 			createNewInvoice,
+			updateSpecialOrder,
 		} = this.props;
 
 		try {
@@ -74,12 +115,23 @@ class CheckForm extends React.Component {
 				"Pending"
 			);
 
-			//save order to the db
-			const newSpecialOrder = await createSpecialOrder(formattedOrder);
+			if (this.props.navigation.rootUrl === "/") {
+				//save order to the db
+				const newSpecialOrder = await createSpecialOrder(formattedOrder);
 
-			history.push(`${navigation.rootUrl}checkout/confirmation`, {
-				orderConfirmation: newSpecialOrder,
-			});
+				history.push(`${navigation.rootUrl}checkout/confirmation`, {
+					orderConfirmation: newSpecialOrder,
+				});
+			} else {
+				const modifiedSpecialOrder = await updateSpecialOrder(
+					formattedOrder,
+					orderToModify._id
+				);
+
+				history.push(`${navigation.rootUrl}checkout/confirmation`, {
+					orderConfirmation: modifiedSpecialOrder,
+				});
+			}
 		} catch (error) {
 			console.log("Error caught in Order Submission: ", error);
 			this.setState({
@@ -187,6 +239,7 @@ const mapStateToProps = (state) => {
 		navigation: state.navigation,
 		paymentInformation: getFormValues("paymentInformationForm")(state),
 		contactInformation: getFormValues("checkoutContactForm")(state),
+		orderToModify: state.orderHistory.orderToModify,
 	};
 };
 
@@ -194,6 +247,9 @@ export default connect(mapStateToProps, {
 	updateOrderTotals,
 	createNewInvoice,
 	createSpecialOrder,
+	refundCreditCard,
+	voidInvoice,
+	updateSpecialOrder,
 })(
 	reduxForm({
 		form: "paymentInformationForm",
