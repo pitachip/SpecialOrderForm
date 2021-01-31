@@ -2,7 +2,6 @@
 import React from "react";
 import { connect } from "react-redux";
 //ui components
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 //app components
@@ -49,7 +48,7 @@ class CheckoutDetails extends React.Component {
 			},
 		];
 		return (
-			<Container className="checkoutDetailsContainer">
+			<div className="container-fluid checkoutDetailsContainer">
 				<div className="checkoutSteps">
 					<CheckoutProgressBar progressBarData={progressBar} />
 				</div>
@@ -61,7 +60,7 @@ class CheckoutDetails extends React.Component {
 						<OrderSummary />
 					</Col>
 				</Row>
-			</Container>
+			</div>
 		);
 	}
 }

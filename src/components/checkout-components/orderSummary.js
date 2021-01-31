@@ -293,7 +293,16 @@ class OrderSummary extends React.Component {
 							</p>
 						</Col>
 						<Col md={4} className="shoppingCartItemPrice">
-							<p>${this.renderCalculatedPrice(orderItem)}</p>
+							<p>
+								<NumberFormat
+									value={this.renderCalculatedPrice(orderItem)}
+									displayType={"text"}
+									thousandSeparator={true}
+									prefix={"$"}
+									decimalScale={2}
+									fixedDecimalScale="true"
+								/>
+							</p>
 						</Col>
 					</Row>
 				</>
@@ -323,7 +332,7 @@ class OrderSummary extends React.Component {
 								basic
 								color="blue"
 								className="changeButton"
-								onClick={() => history.push("/order")}
+								onClick={() => history.push(`${this.props.navigation.rootUrl}`)}
 							>
 								Need to make a change?
 							</Button>
@@ -351,6 +360,7 @@ const mapStateToProps = (state) => {
 		orderDetails: state.order.orderDetails,
 		locationInformation: state.storeInformation,
 		contactInformation: getFormValues("checkoutContactForm")(state),
+		navigation: state.navigation,
 	};
 };
 

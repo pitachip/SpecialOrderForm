@@ -66,7 +66,7 @@ export const createErrorMessage = (
 export const validateQuantity = (quantity, itemMinimum) => {
 	if (itemMinimum > 0) {
 		return quantity < itemMinimum
-			? `Number of guests must be greater than ${itemMinimum}`
+			? `Number of guests must be at least ${itemMinimum}`
 			: null;
 	} else {
 		return quantity <= 0 ? "Number of guests must be greater than 0" : null;

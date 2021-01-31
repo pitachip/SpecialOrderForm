@@ -15,6 +15,7 @@ import CheckoutPayment from "./components/checkout-components/checkoutPayment";
 import ConfirmationDetails from "./components/checkout-components/checkoutConfirmation";
 import MyOrders from "./components/orderHistory/orderHistory-components/myOrders";
 import withModifyOrder from "./hoc/withModifyOrder";
+import withNewOrder from "./hoc/withNewOrder";
 //actions
 import {
 	getStoreInformation,
@@ -45,11 +46,11 @@ class App extends React.Component {
 	}
 	render() {
 		return (
-			<div>
+			<div className="appContainer">
 				<Router history={history}>
 					<NavBar />
 					<Switch>
-						<Route path="/order" exact component={SpecialOrder} />
+						<Route path="/order" exact component={withNewOrder(SpecialOrder)} />
 						<Route path="/checkout/details" component={CheckoutContact} />
 						<Route path="/checkout/payment" exact component={CheckoutPayment} />
 						<Route

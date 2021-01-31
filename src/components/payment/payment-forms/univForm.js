@@ -2,7 +2,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field, getFormValues } from "redux-form";
-import remove from "lodash/remove";
 //ui components
 import { Form } from "semantic-ui-react";
 //app components
@@ -67,7 +66,6 @@ class UnivForm extends React.Component {
 			this.setState({ submitting: true });
 
 			if (this.props.navigation.rootUrl === "/") {
-				console.log("This is a new purchase");
 			} else {
 				await this.modifyPurchase(this.props.orderToModify);
 			}

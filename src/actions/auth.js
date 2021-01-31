@@ -62,7 +62,6 @@ export const signInGuestUser = () => async (dispatch) => {
 				headers: { Authorization: `Bearer ${userToken.token}` },
 			}
 		);
-		console.log("Save Guest User: ", saveGuestUser);
 		dispatch({
 			type: "SET_USER",
 			payload: {

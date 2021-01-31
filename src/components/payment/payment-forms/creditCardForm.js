@@ -160,7 +160,6 @@ class CreditCardForm extends React.Component {
 		this.setState({ submitting: true });
 
 		if (this.props.navigation.rootUrl === "/") {
-			console.log("This is a new purchase");
 		} else {
 			await this.modifyPurchase(this.props.orderToModify);
 		}

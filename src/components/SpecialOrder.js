@@ -10,6 +10,8 @@ import MenuCategories from "./menu/menu-components/menuCategories";
 import MenuItems from "./menu/menu-components/menuItems";
 import OrderDetails from "./orderDetails";
 import { getSpecialOrders } from "../actions";
+//css
+import "../App.css";
 
 //TODO: Get rid of getSpecialOrders and its resources
 class SpecialOrder extends React.Component {
@@ -18,7 +20,7 @@ class SpecialOrder extends React.Component {
 	}
 	render() {
 		return (
-			<div>
+			<div className="specialOrderContainer">
 				<Disclaimer />
 				<div className="container-fluid">
 					<Row>

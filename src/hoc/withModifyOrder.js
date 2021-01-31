@@ -83,7 +83,6 @@ const withModifyOrder = (SpecialOrder) => {
 		}
 
 		setOrderData = (order) => {
-			console.log(order);
 			const {
 				addItemToOrder,
 				updateShippingMethod,

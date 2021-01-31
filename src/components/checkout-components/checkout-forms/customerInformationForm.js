@@ -14,7 +14,6 @@ const validateEmail = (value) =>
 		: undefined;
 
 const normalizePhone = (value) => {
-	console.log("normalize phone called");
 	if (!value) {
 		return value;
 	}

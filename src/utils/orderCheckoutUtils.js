@@ -90,8 +90,6 @@ export const calculateTotals = (
 		totals.total = totals.subTotal + totals.tax + totals.delivery;
 	}
 
-	console.log("Totals: ", totals);
-
 	return totals;
 };
 

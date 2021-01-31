@@ -22,7 +22,6 @@ class CheckoutContactForm extends React.Component {
 
 	handleForwardClick = () => {
 		if (this.props.valid) {
-			console.log(this.props.navigation);
 			history.push(`${this.props.navigation.rootUrl}checkout/payment`);
 		}
 	};

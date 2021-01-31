@@ -28,7 +28,6 @@ import "../orderHistory-css/orderActions.css";
 
 class RepeatOrderButton extends React.Component {
 	repeatOrderClicked = (order) => {
-		console.log("Order: ", order);
 		const {
 			addItemToOrder,
 			updateShippingMethod,

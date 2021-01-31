@@ -40,7 +40,7 @@ class PickUpInformation extends React.Component {
 								value={pickupInformation.pickupInstructions}
 								rows={5}
 								label="Pick-Up Notes"
-								placeholder="Let us know about any specific instructions for when you pickup your order"
+								placeholder="Let us know about any specific instructions for when you pick up your order"
 								onChange={(e, data) =>
 									this.props.updatePickupInstructions(data.value)
 								}
