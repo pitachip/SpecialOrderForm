@@ -37,7 +37,7 @@ class OrderHistoryTable extends React.Component {
 			case "check":
 				return "Check";
 			case "univ":
-				return "Univ Money Account";
+				return "University Money Account";
 			default:
 				return "N/A";
 		}
