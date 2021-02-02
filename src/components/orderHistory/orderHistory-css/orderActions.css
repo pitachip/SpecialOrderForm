@@ -9,3 +9,8 @@
 	border-bottom-left-radius: calc(0.3rem - 1px);
 	display: block;
 }
+
+.ui.vertical.buttons.block {
+	display: block;
+	flex-direction: column;
+}

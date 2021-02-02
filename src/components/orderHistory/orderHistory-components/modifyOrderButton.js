@@ -1,22 +1,10 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
-import { change } from "redux-form";
 //ui components
 import { Button, Icon } from "semantic-ui-react";
 //actions
-import {
-	addItemToOrder,
-	updateShippingMethod,
-	updateOrderTotals,
-	deleteAllOrderItems,
-	updatePickupLocation,
-	updateSpecialInstructions,
-	updateOrderDate,
-	updatePickupInstructions,
-	setRootUrl,
-	setRetrieveOrder,
-} from "../../../actions";
+import { setRootUrl, setRetrieveOrder } from "../../../actions";
 //utils
 import { history } from "../../../utils/history";
 //css
@@ -43,23 +31,10 @@ class ModifyOrderButton extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return {
-		menuConfig: state.menu.menuConfig,
-		storeInformation: state.storeInformation.storeInformation,
-		orderItems: state.order.orderItems,
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, {
-	addItemToOrder,
-	updateShippingMethod,
-	updateOrderTotals,
-	deleteAllOrderItems,
-	updatePickupLocation,
-	updateSpecialInstructions,
-	updateOrderDate,
-	change,
-	updatePickupInstructions,
 	setRootUrl,
 	setRetrieveOrder,
 })(ModifyOrderButton);

@@ -14,6 +14,7 @@ import CheckoutContact from "./components/checkout-components/checkoutContact";
 import CheckoutPayment from "./components/checkout-components/checkoutPayment";
 import ConfirmationDetails from "./components/checkout-components/checkoutConfirmation";
 import MyOrders from "./components/orderHistory/orderHistory-components/myOrders";
+import ViewOrder from "./components/view/view-components/viewOrder";
 import withModifyOrder from "./hoc/withModifyOrder";
 import withNewOrder from "./hoc/withNewOrder";
 //actions
@@ -62,6 +63,13 @@ class App extends React.Component {
 							component={MyOrders}
 							path="/myorders"
 							exact
+							isLoading={this.state.isLoading}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
+						{/**View Route*/}
+						<PrivateRoute
+							component={ViewOrder}
+							path="/view/:id"
 							isLoading={this.state.isLoading}
 							isAuthenticated={this.state.isAuthenticated}
 						/>

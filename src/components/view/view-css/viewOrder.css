@@ -1,0 +1,73 @@
+.row {
+	padding-top: 0.2rem !important;
+	padding-bottom: 0.2rem !important;
+}
+
+.emailConfirmation {
+	font-weight: 100;
+	font-size: 0.8em;
+	font-style: italic;
+}
+
+.confirmationDeliveryDetailsRow {
+	margin-left: 0px !important;
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+}
+
+.confirmationOrderDetailsRow {
+	margin-left: 0px !important;
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+}
+
+.deliveryDetails p {
+	margin: 0.1rem !important;
+}
+
+.orderDetails p {
+	margin-left: 15px !important;
+}
+
+.confirmationCard {
+	width: 75% !important;
+}
+
+.orderConfirmationDot {
+	background: url("/assets/dot.png") repeat-x bottom;
+}
+.orderConfirmationTotalField {
+	background-color: #ffffff;
+}
+.orderConfirmationDotRepeater {
+	display: inline-block;
+}
+
+.orderConfirmationTotalColumnPadding {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.nextSteps h5:first-child {
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px solid #000;
+	line-height: 0.1em;
+	margin: 10px 0 20px;
+}
+
+.nextSteps h5 span {
+	background: #fff;
+	padding: 0 10px;
+}
+
+.viewOrderContainer {
+	margin-top: 20px;
+	margin-bottom: 50px;
+	padding-bottom: 5rem;
+	width: 100%;
+	padding-right: 25px;
+	padding-left: 25px;
+	margin-right: auto;
+	margin-left: auto;
+}
