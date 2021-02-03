@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
 	orders: [],
 	orderToModify: null,
+	pagination: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -8,7 +9,8 @@ export default (state = INITIAL_STATE, action) => {
 		case "SET_ORDER_HISTORY":
 			return {
 				...state,
-				orders: action.payload,
+				orders: action.payload.orders,
+				pagination: action.payload.pagination,
 			};
 		case "SET_ORDER_TO_MODIFY":
 			return {

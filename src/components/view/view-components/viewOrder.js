@@ -12,6 +12,11 @@ import {
 } from "semantic-ui-react";
 //app components
 import ViewOrderHeader from "./viewOrderHeader";
+import ViewPickupDetails from "./viewPickupDetails";
+import ViewDeliveryDetails from "./viewDeliveryDetails";
+import ViewOrderDetails from "./viewOrderDetails";
+import ViewOrderTotals from "./viewOrderTotals";
+import ViewPaymentDetails from "./viewPaymentDetails";
 //actions
 import { getOrder } from "../../../actions";
 //css
@@ -80,6 +85,25 @@ class ViewOrder extends React.Component {
 							/>
 						</Card.Header>
 						<Divider />
+						{orderDetails.shippingMethod === "delivery" ? (
+							<ViewDeliveryDetails
+								deliveryInformation={deliveryInformation}
+								orderDate={orderDetails.orderDate}
+							/>
+						) : (
+							<ViewPickupDetails
+								pickupInformation={pickupInformation}
+								orderDetails={orderDetails}
+							/>
+						)}
+						<Divider />
+						<ViewOrderDetails
+							orderItems={orderItems}
+							specialInstructions={orderDetails.specialInstructions}
+						/>
+						<ViewOrderTotals orderTotals={orderTotals} />
+						<Divider />
+						<ViewPaymentDetails paymentInformation={paymentInformation} />
 					</Card.Content>
 				</Card>
 			</Container>

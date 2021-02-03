@@ -1,13 +1,23 @@
 import pitachip from "../apis/pitachip";
 import { getUserToken } from "../utils/authUtils";
 
-export const getMyOrders = () => async (dispatch) => {
+export const getMyOrders = (page) => async (dispatch) => {
+	console.log("Page: ", page);
 	try {
 		const userToken = await getUserToken();
-		const orderHistory = await pitachip.get("/specialorder?sort=-createdAt", {
-			headers: { Authorization: `Bearer ${userToken.token}` },
+		const orderHistory = await pitachip.get(
+			`/specialorder?sort=-createdAt&page=${page}`,
+			{
+				headers: { Authorization: `Bearer ${userToken.token}` },
+			}
+		);
+		dispatch({
+			type: "SET_ORDER_HISTORY",
+			payload: {
+				orders: orderHistory.data,
+				pagination: orderHistory.pagination,
+			},
 		});
-		dispatch({ type: "SET_ORDER_HISTORY", payload: orderHistory.data });
 	} catch (error) {
 		console.log(error);
 	}
