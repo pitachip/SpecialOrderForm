@@ -16,7 +16,7 @@ import withLoading from "../../../hoc/withLoading";
 class OrderHistoryTable extends React.Component {
 	state = { testState: "testing" };
 	async componentDidMount() {
-		await this.props.getMyOrders();
+		//await this.props.getMyOrders();
 	}
 
 	renderOrderDate = (orderDate) => {

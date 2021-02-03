@@ -1,28 +1,65 @@
 //libs
 import React from "react";
+import { connect } from "react-redux";
 //ui components
 import { Tab, Pagination } from "semantic-ui-react";
 //app components
 import OrderHistoryTable from "./orderHistoryTable";
+//actions
+import { getMyOrders } from "../../../actions";
+//utils
+import { createFilterString } from "../../../utils/orderHistoryUtils";
 //hoc
 import withLoading from "../../../hoc/withLoading";
-const OrderHistoryTableWithLoading = withLoading(OrderHistoryTable, "test");
+const OrderHistoryTableWithLoading = withLoading(OrderHistoryTable);
 
 class OrderHistoryTabs extends React.Component {
-	/**TODO
-	 * I think that I need to route the withLoading HOC
-	 * from here so I can pass the loading indicator and call the api
-	 * from here.
-	 * Might be able to get the handle on pagination requests this way (see All)
-	 */
+	state = {
+		loadingOrders: false,
+		loadingText: "Loading all orders...",
+		filterString: "",
+	};
+
+	componentDidMount = async () => {
+		this.setState({ loadingOrders: true });
+		await this.props.getMyOrders(1);
+		this.setState({ loadingOrders: false });
+	};
+
+	tabChanged = async (tab, panes) => {
+		const filterString = createFilterString(panes[tab].menuItem);
+		this.setState({
+			filterString: filterString,
+			loadingOrders: true,
+			loadingText: "Loading...",
+		});
+		await this.props.getMyOrders(1, filterString);
+		this.setState({ loadingOrders: false });
+	};
+
+	pageChanged = async (page) => {
+		this.setState({ loadingOrders: true, loadingText: "Loading..." });
+		await this.props.getMyOrders(page, this.state.filterString);
+		this.setState({ loadingOrders: false });
+	};
+
 	render() {
+		const { pagination } = this.props;
+		const { loadingOrders } = this.state;
 		const panes = [
 			{
 				menuItem: "All",
 				render: () => (
 					<Tab.Pane attached={false}>
-						<OrderHistoryTableWithLoading loading={true} />
-						<Pagination defaultActivePage={1} totalPages={1} />
+						<OrderHistoryTableWithLoading
+							loading={loadingOrders}
+							loadingText={"Loading all orders"}
+						/>
+						<Pagination
+							defaultActivePage={1}
+							totalPages={pagination.totalPages}
+							onPageChange={(e, data) => this.pageChanged(data.activePage)}
+						/>
 					</Tab.Pane>
 				),
 			},
@@ -30,7 +67,15 @@ class OrderHistoryTabs extends React.Component {
 				menuItem: "In Progress",
 				render: () => (
 					<Tab.Pane attached={false}>
-						<OrderHistoryTable />
+						<OrderHistoryTableWithLoading
+							loading={loadingOrders}
+							loadingText={"Loading in progress orders..."}
+						/>
+						<Pagination
+							defaultActivePage={1}
+							totalPages={pagination.totalPages}
+							onPageChange={(e, data) => this.pageChanged(data.activePage)}
+						/>
 					</Tab.Pane>
 				),
 			},
@@ -38,7 +83,15 @@ class OrderHistoryTabs extends React.Component {
 				menuItem: "Completed",
 				render: () => (
 					<Tab.Pane attached={false}>
-						<OrderHistoryTable filter="completed" />
+						<OrderHistoryTableWithLoading
+							loading={loadingOrders}
+							loadingText={"Loading completed orders..."}
+						/>
+						<Pagination
+							defaultActivePage={1}
+							totalPages={pagination.totalPages}
+							onPageChange={(e, data) => this.pageChanged(data.activePage)}
+						/>
 					</Tab.Pane>
 				),
 			},
@@ -46,13 +99,35 @@ class OrderHistoryTabs extends React.Component {
 				menuItem: "Cancelled",
 				render: () => (
 					<Tab.Pane attached={false}>
-						<OrderHistoryTable filter="canceled" />
+						<OrderHistoryTableWithLoading
+							loading={loadingOrders}
+							loadingText={"Loading cancelled orders..."}
+						/>
+						<Pagination
+							defaultActivePage={1}
+							totalPages={pagination.totalPages}
+							onPageChange={(e, data) => this.pageChanged(data.activePage)}
+						/>
 					</Tab.Pane>
 				),
 			},
 		];
-		return <Tab menu={{ secondary: true, pointing: true }} panes={panes} />;
+		return (
+			<Tab
+				className="paginationAlign"
+				menu={{ secondary: true, pointing: true }}
+				panes={panes}
+				onTabChange={(e, data) => this.tabChanged(data.activeIndex, data.panes)}
+			/>
+		);
 	}
 }
 
-export default OrderHistoryTabs;
+const mapStateToProps = (state) => {
+	return {
+		orders: state.orderHistory.orders,
+		pagination: state.orderHistory.pagination,
+	};
+};
+
+export default connect(mapStateToProps, { getMyOrders })(OrderHistoryTabs);
