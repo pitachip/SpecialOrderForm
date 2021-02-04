@@ -39,3 +39,7 @@ export const getOrder = (orderID) => async (dispatch) => {
 		throw error;
 	}
 };
+
+export const setActiveTab = (tabIndex) => (dispatch) => {
+	dispatch({ type: "SET_ACTIVE_TAB", payload: tabIndex });
+};

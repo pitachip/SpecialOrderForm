@@ -4,12 +4,13 @@ import { connect } from "react-redux";
 //ui components
 import { Input, Button } from "semantic-ui-react";
 //actions
-import { getMyOrders } from "../../../actions";
+import { getMyOrders, setActiveTab } from "../../../actions";
 
 class SearchOrders extends React.Component {
 	state = { orderNumber: "", searching: false };
 	searchClicked = async () => {
 		this.setState({ searching: true });
+		this.props.setActiveTab(0);
 		await this.props.getMyOrders(
 			1,
 			this.state.orderNumber !== ""
@@ -22,6 +23,7 @@ class SearchOrders extends React.Component {
 	enterKeyClicked = async (event) => {
 		if (event === "Enter") {
 			this.setState({ searching: true });
+			this.props.setActiveTab(0);
 			await this.props.getMyOrders(
 				1,
 				this.state.orderNumber !== ""
@@ -52,4 +54,6 @@ const mapStateToProps = (state) => {
 	return {};
 };
 
-export default connect(mapStateToProps, { getMyOrders })(SearchOrders);
+export default connect(mapStateToProps, { getMyOrders, setActiveTab })(
+	SearchOrders
+);

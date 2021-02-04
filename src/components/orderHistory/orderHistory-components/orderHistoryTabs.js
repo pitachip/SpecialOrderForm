@@ -1,12 +1,14 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import isEmpty from "lodash/isEmpty";
 //ui components
 import { Tab, Pagination } from "semantic-ui-react";
 //app components
 import OrderHistoryTable from "./orderHistoryTable";
+import NoOrdersFound from "./noOrdersFound";
 //actions
-import { getMyOrders } from "../../../actions";
+import { getMyOrders, setActiveTab } from "../../../actions";
 //utils
 import { createFilterString } from "../../../utils/orderHistoryUtils";
 //hoc
@@ -15,13 +17,14 @@ const OrderHistoryTableWithLoading = withLoading(OrderHistoryTable);
 
 class OrderHistoryTabs extends React.Component {
 	state = {
-		loadingOrders: false,
+		loadingOrders: true,
 		loadingText: "Loading all orders...",
 		filterString: "",
 	};
 
 	componentDidMount = async () => {
 		this.setState({ loadingOrders: true });
+		this.props.setActiveTab(0);
 		await this.props.getMyOrders(1);
 		this.setState({ loadingOrders: false });
 	};
@@ -31,8 +34,8 @@ class OrderHistoryTabs extends React.Component {
 		this.setState({
 			filterString: filterString,
 			loadingOrders: true,
-			loadingText: "Loading...",
 		});
+		this.props.setActiveTab(tab);
 		await this.props.getMyOrders(1, filterString);
 		this.setState({ loadingOrders: false });
 	};
@@ -44,7 +47,7 @@ class OrderHistoryTabs extends React.Component {
 	};
 
 	render() {
-		const { pagination } = this.props;
+		const { pagination, activeTab, orders } = this.props;
 		const { loadingOrders } = this.state;
 		const panes = [
 			{
@@ -53,7 +56,7 @@ class OrderHistoryTabs extends React.Component {
 					<Tab.Pane attached={false}>
 						<OrderHistoryTableWithLoading
 							loading={loadingOrders}
-							loadingText={"Loading all orders"}
+							loadingText={"Loading all orders..."}
 						/>
 						<Pagination
 							defaultActivePage={1}
@@ -112,12 +115,15 @@ class OrderHistoryTabs extends React.Component {
 				),
 			},
 		];
-		return (
+		return isEmpty(orders) && !loadingOrders ? (
+			<NoOrdersFound />
+		) : (
 			<Tab
 				className="paginationAlign"
 				menu={{ secondary: true, pointing: true }}
 				panes={panes}
 				onTabChange={(e, data) => this.tabChanged(data.activeIndex, data.panes)}
+				activeIndex={activeTab}
 			/>
 		);
 	}
@@ -127,7 +133,10 @@ const mapStateToProps = (state) => {
 	return {
 		orders: state.orderHistory.orders,
 		pagination: state.orderHistory.pagination,
+		activeTab: state.orderHistory.activeTab,
 	};
 };
 
-export default connect(mapStateToProps, { getMyOrders })(OrderHistoryTabs);
+export default connect(mapStateToProps, { getMyOrders, setActiveTab })(
+	OrderHistoryTabs
+);

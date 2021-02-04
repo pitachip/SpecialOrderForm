@@ -17,6 +17,15 @@ class OrderStatusButton extends React.Component {
 			case "Pending":
 				buttonColor = "red";
 				break;
+			case "Confirmed":
+				buttonColor = "green";
+				break;
+			case "Scheduled For Delivery":
+				buttonColor = "green";
+				break;
+			case "Cancelled":
+				buttonColor = "red";
+				break;
 			default:
 				buttonColor = "grey";
 				break;

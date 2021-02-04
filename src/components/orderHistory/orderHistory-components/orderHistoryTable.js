@@ -1,23 +1,33 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
-import { compose } from "redux";
 import NumberFormat from "react-number-format";
 //ui components
-import { Table, Pagination } from "semantic-ui-react";
+import { Table } from "semantic-ui-react";
 //app components
 import OrderStatusButton from "./orderStatusButton";
 import OrderActions from "./orderActions";
 //actions
 import { getMyOrders } from "../../../actions";
-//hoc
-import withLoading from "../../../hoc/withLoading";
 
 class OrderHistoryTable extends React.Component {
-	state = { testState: "testing" };
-	async componentDidMount() {
-		//await this.props.getMyOrders();
-	}
+	renderDueDate = (paymentInformation) => {
+		if (
+			paymentInformation.paymentType === "check" ||
+			paymentInformation.paymentType === "univ"
+		) {
+			return (
+				<p>
+					Due On: <br />
+					{new Date(
+						paymentInformation.invoicePaymentDetails.due_date * 1000
+					).toDateString()}
+				</p>
+			);
+		} else {
+			return null;
+		}
+	};
 
 	renderOrderDate = (orderDate) => {
 		let formattedDate = "";
@@ -57,7 +67,7 @@ class OrderHistoryTable extends React.Component {
 				createdAt,
 			} = order;
 			return (
-				<Table.Row>
+				<Table.Row key={orderNumber}>
 					<Table.Cell>#{orderNumber}</Table.Cell>
 					<Table.Cell>
 						<OrderStatusButton content={status} />
@@ -77,7 +87,9 @@ class OrderHistoryTable extends React.Component {
 					</Table.Cell>
 					<Table.Cell>
 						<OrderStatusButton content={paymentInformation.paymentStatus} />
-						<p>Due on:</p>
+						{status !== "Cancelled"
+							? this.renderDueDate(paymentInformation)
+							: null}
 					</Table.Cell>
 					<Table.Cell>{this.renderOrderDate(createdAt)}</Table.Cell>
 					<Table.Cell textAlign="center">
@@ -89,12 +101,12 @@ class OrderHistoryTable extends React.Component {
 	};
 
 	render() {
-		const { orders, pagination } = this.props;
+		const { orders } = this.props;
 		return (
 			<Table celled striped>
 				<Table.Header>
 					<Table.Row>
-						<Table.HeaderCell>Order Number</Table.HeaderCell>
+						<Table.HeaderCell>Order #</Table.HeaderCell>
 						<Table.HeaderCell>Status</Table.HeaderCell>
 						<Table.HeaderCell>Total</Table.HeaderCell>
 						<Table.HeaderCell>Payment Method</Table.HeaderCell>
@@ -115,12 +127,5 @@ const mapStateToProps = (state) => {
 		pagination: state.orderHistory.pagination,
 	};
 };
-
-/*
-export default compose(
-	connect(mapStateToProps, { getMyOrders }),
-	withLoading
-)(OrderHistoryTable);
-*/
 
 export default connect(mapStateToProps, { getMyOrders })(OrderHistoryTable);

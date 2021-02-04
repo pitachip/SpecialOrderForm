@@ -2,6 +2,7 @@ const INITIAL_STATE = {
 	orders: [],
 	orderToModify: null,
 	pagination: {},
+	activeTab: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -16,6 +17,11 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				orderToModify: action.payload,
+			};
+		case "SET_ACTIVE_TAB":
+			return {
+				...state,
+				activeTab: action.payload,
 			};
 		case "persist/PURGE":
 			return INITIAL_STATE;
