@@ -54,15 +54,25 @@ class OrderHistoryTabs extends React.Component {
 				menuItem: "All",
 				render: () => (
 					<Tab.Pane attached={false}>
-						<OrderHistoryTableWithLoading
-							loading={loadingOrders}
-							loadingText={"Loading all orders..."}
-						/>
-						<Pagination
-							defaultActivePage={1}
-							totalPages={pagination.totalPages}
-							onPageChange={(e, data) => this.pageChanged(data.activePage)}
-						/>
+						{isEmpty(orders) && !loadingOrders ? (
+							<NoOrdersFound />
+						) : (
+							<>
+								<OrderHistoryTableWithLoading
+									loading={loadingOrders}
+									loadingText={"Loading all orders..."}
+								/>
+								<div className="paginationAlign">
+									<Pagination
+										defaultActivePage={1}
+										totalPages={pagination.totalPages}
+										onPageChange={(e, data) =>
+											this.pageChanged(data.activePage)
+										}
+									/>
+								</div>
+							</>
+						)}
 					</Tab.Pane>
 				),
 			},
@@ -74,11 +84,13 @@ class OrderHistoryTabs extends React.Component {
 							loading={loadingOrders}
 							loadingText={"Loading in progress orders..."}
 						/>
-						<Pagination
-							defaultActivePage={1}
-							totalPages={pagination.totalPages}
-							onPageChange={(e, data) => this.pageChanged(data.activePage)}
-						/>
+						<div className="paginationAlign">
+							<Pagination
+								defaultActivePage={1}
+								totalPages={pagination.totalPages}
+								onPageChange={(e, data) => this.pageChanged(data.activePage)}
+							/>
+						</div>
 					</Tab.Pane>
 				),
 			},
@@ -90,11 +102,13 @@ class OrderHistoryTabs extends React.Component {
 							loading={loadingOrders}
 							loadingText={"Loading completed orders..."}
 						/>
-						<Pagination
-							defaultActivePage={1}
-							totalPages={pagination.totalPages}
-							onPageChange={(e, data) => this.pageChanged(data.activePage)}
-						/>
+						<div className="paginationAlign">
+							<Pagination
+								defaultActivePage={1}
+								totalPages={pagination.totalPages}
+								onPageChange={(e, data) => this.pageChanged(data.activePage)}
+							/>
+						</div>
 					</Tab.Pane>
 				),
 			},
@@ -106,20 +120,19 @@ class OrderHistoryTabs extends React.Component {
 							loading={loadingOrders}
 							loadingText={"Loading cancelled orders..."}
 						/>
-						<Pagination
-							defaultActivePage={1}
-							totalPages={pagination.totalPages}
-							onPageChange={(e, data) => this.pageChanged(data.activePage)}
-						/>
+						<div className="paginationAlign">
+							<Pagination
+								defaultActivePage={1}
+								totalPages={pagination.totalPages}
+								onPageChange={(e, data) => this.pageChanged(data.activePage)}
+							/>
+						</div>
 					</Tab.Pane>
 				),
 			},
 		];
-		return isEmpty(orders) && !loadingOrders ? (
-			<NoOrdersFound />
-		) : (
+		return (
 			<Tab
-				className="paginationAlign"
 				menu={{ secondary: true, pointing: true }}
 				panes={panes}
 				onTabChange={(e, data) => this.tabChanged(data.activeIndex, data.panes)}

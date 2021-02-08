@@ -16,25 +16,16 @@ class CheckDisclaimer extends React.Component {
 				<Message.List>
 					<List ordered>
 						<List.Item>
-							We'll send you a digital invoice upon order confirmation for your
-							records or accounts payable
+							Digital/PDF invoice will be sent upon order confirmation.
 						</List.Item>
-						<List.Item>Make all checks out to INSERT DATA HERE</List.Item>
 						<List.Item>
-							If applicable, enter your purchase order number
-							<span>
-								<OverlayTrigger
-									placement="right"
-									overlay={
-										<Tooltip>
-											If you don't have the PO# yet you will be able to enter it
-											later.
-										</Tooltip>
-									}
-								>
-									<MdHelp />
-								</OverlayTrigger>
-							</span>
+							If paying with check, make all checks out to FALA FILLY INC.
+						</List.Item>
+						<List.Item>
+							If paying with a purchase order, use invoice to obtain a purchase
+							order number from your institution. We are listed as Fala Filly
+							Inc DBA Pita Chip. Reply to the order confirmation email with your
+							purchase order number.
 						</List.Item>
 					</List>
 				</Message.List>

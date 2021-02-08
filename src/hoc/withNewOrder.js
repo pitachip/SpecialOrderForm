@@ -2,6 +2,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
+//app components
+import Disclaimer from "../components/disclaimer";
 //actions
 import { setRootUrl } from "../actions";
 
@@ -12,7 +14,14 @@ const withNewOrder = (SpecialOrder) => {
 		}
 
 		render() {
-			return <SpecialOrder />;
+			return (
+				<>
+					<div className="container-fluid">
+						<Disclaimer />
+					</div>
+					<SpecialOrder />
+				</>
+			);
 		}
 	}
 	return WithNewOrderComponent;

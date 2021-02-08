@@ -20,6 +20,11 @@ class SearchOrders extends React.Component {
 		this.setState({ searching: false });
 	};
 
+	searchTermChanged = (term) => {
+		term = term.replace(/\D/g, "");
+		this.setState({ orderNumber: term });
+	};
+
 	enterKeyClicked = async (event) => {
 		if (event === "Enter") {
 			this.setState({ searching: true });
@@ -43,7 +48,7 @@ class SearchOrders extends React.Component {
 				icon="search"
 				iconPosition="left"
 				placeholder="Search by Order Number"
-				onChange={(e, data) => this.setState({ orderNumber: data.value })}
+				onChange={(e, data) => this.searchTermChanged(data.value)}
 				onKeyDown={(e) => this.enterKeyClicked(e.key)}
 			/>
 		);

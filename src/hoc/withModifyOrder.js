@@ -6,6 +6,8 @@ import { change } from "redux-form";
 import each from "lodash/each";
 //ui components
 import { Dimmer, Loader, Message } from "semantic-ui-react";
+//app components
+import ModifyDisclaimer from "../components/modifyDisclaimer";
 //actions
 import {
 	getOrder,
@@ -31,6 +33,7 @@ const withModifyOrder = (SpecialOrder) => {
 		state = { isLoading: true, didError: false };
 
 		async componentDidMount() {
+			window.scrollTo(0, 0);
 			const { navigation, setRetrieveOrder } = this.props;
 			if (navigation.retrieveOrder) {
 				try {
@@ -78,7 +81,13 @@ const withModifyOrder = (SpecialOrder) => {
 			} else if (!isLoading && didError) {
 				return this.renderErrorMessage();
 			} else if (!isLoading && !didError) {
-				return <SpecialOrder />;
+				//return <SpecialOrder />;
+				return (
+					<>
+						<ModifyDisclaimer />
+						<SpecialOrder />
+					</>
+				);
 			}
 		}
 

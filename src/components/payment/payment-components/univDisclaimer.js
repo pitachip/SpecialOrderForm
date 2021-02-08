@@ -17,11 +17,12 @@ class CheckDisclaimer extends React.Component {
 				<Message.List>
 					<List ordered>
 						<List.Item>
-							We'll send you a digital invoice upon order confirmation for your
-							records or accounts payable
+							Digital/PDF invoice will be sent upon order confirmation for your
+							records.
 						</List.Item>
 						<List.Item>
-							We currently accept Diamond Dollars (Temple) and Dragon Dollars
+							We will charge the account number that you fill in below. We
+							currently accept Diamond Dollars (Temple) and Dragon Dollars
 							(Drexel)
 						</List.Item>
 					</List>
