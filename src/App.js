@@ -14,6 +14,7 @@ import CheckoutContact from "./components/checkout-components/checkoutContact";
 import CheckoutPayment from "./components/checkout-components/checkoutPayment";
 import ConfirmationDetails from "./components/checkout-components/checkoutConfirmation";
 import MyOrders from "./components/orderHistory/orderHistory-components/myOrders";
+import Account from "./components/account/account-components/account";
 import ViewOrder from "./components/view/view-components/viewOrder";
 import withModifyOrder from "./hoc/withModifyOrder";
 import withNewOrder from "./hoc/withNewOrder";
@@ -51,6 +52,7 @@ class App extends React.Component {
 				<Router history={history}>
 					<NavBar />
 					<Switch>
+						{/**Order Route*/}
 						<Route path="/order" exact component={withNewOrder(SpecialOrder)} />
 						<Route path="/checkout/details" component={CheckoutContact} />
 						<Route path="/checkout/payment" exact component={CheckoutPayment} />
@@ -59,9 +61,24 @@ class App extends React.Component {
 							exact
 							component={ConfirmationDetails}
 						/>
+						{/**Account Route*/}
 						<PrivateRoute
-							component={MyOrders}
-							path="/myorders"
+							component={Account}
+							path="/account"
+							exact
+							isLoading={this.state.isLoading}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
+						<PrivateRoute
+							component={Account}
+							path="/account/details"
+							exact
+							isLoading={this.state.isLoading}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
+						<PrivateRoute
+							component={Account}
+							path="/account/orders"
 							exact
 							isLoading={this.state.isLoading}
 							isAuthenticated={this.state.isAuthenticated}

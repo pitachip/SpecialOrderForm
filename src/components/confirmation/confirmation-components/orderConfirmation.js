@@ -2,7 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { persistor } from "../../../store";
-import { reset, getFormValues } from "redux-form";
+import { reset } from "redux-form";
 //ui components
 import { Card, Divider } from "semantic-ui-react";
 //app components
@@ -12,15 +12,15 @@ import ConfirmationOrderDetails from "./confirmationOrderDetails";
 import ConfirmationOrderTotals from "./confirmationOrderTotals";
 import ConfirmationPaymentDetails from "./confirmationPaymentDetails";
 import ConfirmationPickupDetails from "./confirmationPickupDetails";
+import ConfirmationHeaderModified from "./confirmationHeaderModified";
 //css
 import "../confirmation-css/orderConfirmation.css";
 
 class OrderConfirmation extends React.Component {
+	state = { rootUrl: "" };
 	componentDidMount = async () => {
 		window.scrollTo(0, 0);
-		/**
-		 * Clear out the redux persist values and the redux form values
-		 */
+		this.setState({ rootUrl: this.props.rootUrl });
 		await persistor.purge();
 		this.props.reset("checkoutContactForm");
 		this.props.reset("paymentInformationForm");
@@ -40,10 +40,17 @@ class OrderConfirmation extends React.Component {
 			<Card fluid color="green" centered>
 				<Card.Content>
 					<Card.Header>
-						<ConfirmationHeader
-							orderNumber={orderNumber}
-							customerEmail={customerInformation.email}
-						/>
+						{this.state.rootUrl !== "/" ? (
+							<ConfirmationHeaderModified
+								orderNumber={orderNumber}
+								customerEmail={customerInformation.email}
+							/>
+						) : (
+							<ConfirmationHeader
+								orderNumber={orderNumber}
+								customerEmail={customerInformation.email}
+							/>
+						)}
 					</Card.Header>
 					<Divider />
 					{orderDetails.shippingMethod === "delivery" ? (
@@ -73,9 +80,7 @@ class OrderConfirmation extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		order: state.order,
-		customerInformation: getFormValues("checkoutContactForm")(state),
-		paymentInformation: getFormValues("paymentInformationForm")(state),
+		rootUrl: state.navigation.rootUrl,
 	};
 };
 

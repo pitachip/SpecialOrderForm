@@ -8,11 +8,13 @@ import Col from "react-bootstrap/Col";
 import CheckoutProgressBar from "./checkoutProgressBar";
 import CheckoutContactForm from "./checkout-forms/checkoutContactForm";
 import OrderSummary from "./orderSummary";
+import ModifyDisclaimer from "../modifyDisclaimer";
 //css
 import "./checkout-css/checkoutDetails.css";
 
 class CheckoutDetails extends React.Component {
 	render() {
+		const { rootUrl } = this.props;
 		const progressBar = [
 			{
 				icon: "food",
@@ -48,19 +50,22 @@ class CheckoutDetails extends React.Component {
 			},
 		];
 		return (
-			<div className="container-fluid checkoutDetailsContainer">
-				<div className="checkoutSteps">
-					<CheckoutProgressBar progressBarData={progressBar} />
+			<>
+				{rootUrl !== "/" ? <ModifyDisclaimer /> : null}
+				<div className="container-fluid checkoutDetailsContainer">
+					<div className="checkoutSteps">
+						<CheckoutProgressBar progressBarData={progressBar} />
+					</div>
+					<Row>
+						<Col md={6}>
+							<CheckoutContactForm />
+						</Col>
+						<Col md={6}>
+							<OrderSummary />
+						</Col>
+					</Row>
 				</div>
-				<Row>
-					<Col md={6}>
-						<CheckoutContactForm />
-					</Col>
-					<Col md={6}>
-						<OrderSummary />
-					</Col>
-				</Row>
-			</div>
+			</>
 		);
 	}
 }
@@ -68,6 +73,7 @@ class CheckoutDetails extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		totals: state.order.totals,
+		rootUrl: state.navigation.rootUrl,
 	};
 };
 

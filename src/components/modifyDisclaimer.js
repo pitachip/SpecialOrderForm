@@ -3,18 +3,21 @@ import React from "react";
 import { connect } from "react-redux";
 //ui components
 import { Message, Container, Icon } from "semantic-ui-react";
+//css
+import "../App.css";
 
 class ModifyDisclaimer extends React.Component {
 	state = { hideMessage: false };
 
 	render() {
 		return (
-			<Container fluid>
+			<Container fluid className="modifyDisclaimer">
 				<Message
 					icon
 					hidden={this.state.hideMessage}
 					warning
 					onDismiss={() => this.setState({ hideMessage: true })}
+					size="mini"
 				>
 					<Icon name="warning" />
 					<Message.Content>
