@@ -9,6 +9,8 @@ import MyOrders from "../../orderHistory/orderHistory-components/myOrders";
 import MyProfile from "../../profile/profile-components/myProfile";
 //actions
 import { setActiveMenuTab } from "../../../actions";
+//css
+import "../account-css/account.css";
 
 class Account extends React.Component {
 	renderAccountComponent() {
@@ -28,7 +30,7 @@ class Account extends React.Component {
 
 	render() {
 		return (
-			<Grid columns={2}>
+			<Grid columns={2} className="accountGrid">
 				<Grid.Column width={3}>
 					<AccountMenu />
 				</Grid.Column>
