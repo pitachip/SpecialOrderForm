@@ -1,6 +1,9 @@
 const INITIAL_STATE = {
 	user: null,
-	metaData: null,
+	metaData: {
+		firstname: "",
+		lastName: "",
+	},
 	authLoading: true,
 	authForm: "",
 	showAuthMessage: false,
@@ -34,6 +37,8 @@ export default (state = INITIAL_STATE, action) => {
 			};
 		case "SET_AUTH_FORM":
 			return { ...state, authForm: action.payload };
+		case "SET_PROFILE_FIRSTNAME":
+			return { ...state, metaData: { firstName: action.payload } };
 		default:
 			return state;
 	}

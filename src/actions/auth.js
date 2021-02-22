@@ -244,6 +244,32 @@ export const authStateChanged = (user, authLoadingFlag) => async (dispatch) => {
 	}
 };
 
+export const updateUserMetaData = (firstName, lastName) => async (dispatch) => {
+	try {
+		//update user info in firebase
+		const updateUserInfo = await auth.currentUser;
+		await updateUserInfo.updateProfile({
+			displayName: `${firstName} ${lastName}`,
+		});
+
+		const userToken = await getUserToken();
+		await pitachip.put(
+			"/user",
+			{
+				metaData: {
+					firstName,
+					lastName,
+				},
+			},
+			{
+				headers: { Authorization: `Bearer ${userToken.token}` },
+			}
+		);
+	} catch (error) {
+		return error;
+	}
+};
+
 export const setAuthMessage = (
 	message,
 	showAuthMessage,
