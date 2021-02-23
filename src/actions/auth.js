@@ -1,4 +1,4 @@
-import { auth, guestAuth } from "../apis/firebase";
+import { auth, guestAuth, authProvider } from "../apis/firebase";
 import pitachip from "../apis/pitachip";
 import { getUserToken } from "../utils/authUtils";
 
@@ -247,7 +247,7 @@ export const authStateChanged = (user, authLoadingFlag) => async (dispatch) => {
 export const updateUserMetaData = (firstName, lastName) => async (dispatch) => {
 	try {
 		//update user info in firebase
-		const updateUserInfo = await auth.currentUser;
+		const updateUserInfo = auth.currentUser;
 		await updateUserInfo.updateProfile({
 			displayName: `${firstName} ${lastName}`,
 		});
@@ -267,6 +267,49 @@ export const updateUserMetaData = (firstName, lastName) => async (dispatch) => {
 		);
 	} catch (error) {
 		return error;
+	}
+};
+
+export const verifyUserPassword = (currentPassword) => async (dispatch) => {
+	try {
+		const user = auth.currentUser;
+		const credential = authProvider.EmailAuthProvider.credential(
+			auth.currentUser.email,
+			currentPassword
+		);
+		const reauth = await user.reauthenticateWithCredential(credential);
+
+		return reauth;
+	} catch (error) {
+		const errorMessage = createErrorMessage(error.code);
+		dispatch({
+			type: "SET_AUTH_MESSAGE",
+			payload: {
+				message: errorMessage,
+				showAuthMessage: true,
+				authMessageVariant: "danger",
+			},
+		});
+	}
+};
+
+export const updateUserPassword = (newPassword) => async (dispatch) => {
+	try {
+		const currentUser = auth.currentUser;
+		const userToken = await getUserToken();
+		const updatePassword = await pitachip.put(
+			"/auth/updatepassword",
+			{
+				uid: currentUser.uid,
+				password: newPassword,
+			},
+			{
+				headers: { Authorization: `Bearer ${userToken.token}` },
+			}
+		);
+		return updatePassword;
+	} catch (error) {
+		console.log(error);
 	}
 };
 

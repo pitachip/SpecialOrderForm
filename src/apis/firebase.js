@@ -16,3 +16,4 @@ firebase.initializeApp(firebaseAuth);
 
 export const auth = firebase.auth();
 export const guestAuth = firebase.auth;
+export const authProvider = firebase.auth;
