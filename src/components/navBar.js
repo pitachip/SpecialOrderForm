@@ -51,11 +51,14 @@ class NavBar extends React.Component {
 					className="ml-auto"
 					alignRight
 				>
-					<NavDropdown.Item as={Link} to="/myorders">
+					<NavDropdown.Item as={Link} to="/account/details">
+						My Account
+					</NavDropdown.Item>
+					<NavDropdown.Item as={Link} to="/account/orders">
 						My Orders
 					</NavDropdown.Item>
-					<NavDropdown.Item eventKey="4.2" disabled>
-						Profile (Under Construction)
+					<NavDropdown.Item as={Link} to="/order">
+						Place a New Order
 					</NavDropdown.Item>
 					<NavDropdown.Divider />
 					<NavDropdown.Item eventKey="4.4" onClick={this.signoutClicked}>
