@@ -20,6 +20,7 @@ class OrderHistoryTabs extends React.Component {
 		loadingOrders: true,
 		loadingText: "Loading all orders...",
 		filterString: "",
+		activePage: 1,
 	};
 
 	componentDidMount = async () => {
@@ -34,6 +35,7 @@ class OrderHistoryTabs extends React.Component {
 		this.setState({
 			filterString: filterString,
 			loadingOrders: true,
+			activePage: 1,
 		});
 		this.props.setActiveTab(tab);
 		await this.props.getMyOrders(1, filterString);
@@ -41,14 +43,18 @@ class OrderHistoryTabs extends React.Component {
 	};
 
 	pageChanged = async (page) => {
-		this.setState({ loadingOrders: true, loadingText: "Loading..." });
+		this.setState({
+			loadingOrders: true,
+			loadingText: "Loading...",
+			activePage: page,
+		});
 		await this.props.getMyOrders(page, this.state.filterString);
 		this.setState({ loadingOrders: false });
 	};
 
 	render() {
 		const { pagination, activeTab, orders } = this.props;
-		const { loadingOrders } = this.state;
+		const { loadingOrders, activePage } = this.state;
 		const panes = [
 			{
 				menuItem: "All",
@@ -65,6 +71,7 @@ class OrderHistoryTabs extends React.Component {
 								<div className="paginationAlign">
 									<Pagination
 										defaultActivePage={1}
+										activePage={activePage}
 										totalPages={pagination.totalPages}
 										onPageChange={(e, data) =>
 											this.pageChanged(data.activePage)

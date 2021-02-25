@@ -44,7 +44,8 @@ class ContactInformation extends React.Component {
 		this.setState({ saving: true, disabled: true });
 		await this.props.updateUserMetaData(
 			this.state.firstName,
-			this.state.lastName
+			this.state.lastName,
+			this.state.email
 		);
 		this.setState({ saving: false });
 	};
@@ -127,7 +128,7 @@ class ContactInformation extends React.Component {
 									<Form.Input
 										label="First Name"
 										value={firstName}
-										disabled={disabled}
+										readOnly={disabled}
 										onChange={(e) =>
 											this.setState({ firstName: e.target.value })
 										}
@@ -135,7 +136,7 @@ class ContactInformation extends React.Component {
 									<Form.Input
 										label="Last Name"
 										value={lastName}
-										disabled={disabled}
+										readOnly={disabled}
 										onChange={(e) =>
 											this.setState({ lastName: e.target.value })
 										}

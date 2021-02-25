@@ -8,7 +8,6 @@ class NoOrdersFound extends React.Component {
 		return (
 			<Message>
 				<Message.Header>No Orders Found</Message.Header>
-				<p>We're sorry, we couldn't find an order with that number.</p>
 			</Message>
 		);
 	}

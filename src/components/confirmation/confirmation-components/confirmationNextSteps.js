@@ -27,7 +27,11 @@ class ConfirmationNextSteps extends React.Component {
 								<span>or</span>
 							</h5>
 						</div>
-						<Button fluid compact onClick={() => history.push("/myorders")}>
+						<Button
+							fluid
+							compact
+							onClick={() => history.push("/account/orders")}
+						>
 							View Your Orders
 						</Button>
 					</Card.Body>

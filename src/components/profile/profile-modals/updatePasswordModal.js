@@ -67,6 +67,8 @@ class UpdatePasswordModal extends React.Component {
 				);
 				this.setState({ updatingPassword: false });
 				this.props.close();
+			} else {
+				this.setState({ updatingPassword: false });
 			}
 		}
 	};
