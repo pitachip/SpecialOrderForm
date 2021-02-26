@@ -59,7 +59,7 @@ class CreditCardForm extends React.Component {
 		const { createPaymentIntent, orderTotals } = this.props;
 		try {
 			const paymentIntentSecret = await createPaymentIntent(
-				orderTotals.total * 100
+				+(orderTotals.total * 100).toFixed(2)
 			);
 			this.setState({ paymentIntentSecret });
 		} catch (error) {
@@ -71,7 +71,7 @@ class CreditCardForm extends React.Component {
 		const { createPaymentIntent, orderTotals } = this.props;
 		if (orderTotals !== prevProps.orderTotals) {
 			const paymentIntentSecret = await createPaymentIntent(
-				orderTotals.total * 100
+				+(orderTotals.total * 100).toFixed(2)
 			);
 			this.setState({ paymentIntentSecret });
 		}

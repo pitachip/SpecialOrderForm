@@ -86,8 +86,8 @@ export const calculateTotals = (
 		totals.total = totals.subTotal - totals.tax + totals.delivery;
 		totals.tax = 0;
 	} else {
-		totals.tax = totals.subTotal * menuConfigSettings.taxRate;
-		totals.total = totals.subTotal + totals.tax + totals.delivery;
+		totals.tax = +(totals.subTotal * menuConfigSettings.taxRate).toFixed(2);
+		totals.total = +(totals.subTotal + totals.tax + totals.delivery).toFixed(2);
 	}
 
 	return totals;
