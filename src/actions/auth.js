@@ -107,7 +107,7 @@ export const createUserAccount = (
 			type: "SET_USER",
 			payload: {
 				user: createUser.user,
-				metaDat: createUser.metaData,
+				metaData: createUser.metaData,
 				authLoading: false,
 				errorMessage: "",
 				showAuthErrorMessage: false,
