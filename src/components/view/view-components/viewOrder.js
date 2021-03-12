@@ -1,6 +1,7 @@
 //libs
 import React from "react";
 import { connect } from "react-redux";
+import ReactToPrint from "react-to-print";
 //ui components
 import {
 	Card,
@@ -9,6 +10,8 @@ import {
 	Loader,
 	Message,
 	Container,
+	Grid,
+	Button,
 } from "semantic-ui-react";
 //app components
 import ViewOrderHeader from "./viewOrderHeader";
@@ -63,7 +66,6 @@ class ViewOrder extends React.Component {
 	};
 
 	renderViewOrder = (order) => {
-		console.log(order);
 		const {
 			orderNumber,
 			customerInformation,
@@ -74,38 +76,61 @@ class ViewOrder extends React.Component {
 			paymentInformation,
 			pickupInformation,
 		} = order;
+
+		const pageStyle = `{
+			@media print {
+				body {margin-top: 50mm; margin-bottom: 50mm; 
+					  margin-left: 0mm; margin-right: 0mm}
+		   }
+		   @media screen {
+			body {margin-top: 50mm; margin-bottom: 50mm; 
+				  margin-left: 0mm; margin-right: 0mm}
+	   }
+		}`;
+
 		return (
 			<Container className="viewOrderContainer">
-				<Card fluid color="green" centered>
-					<Card.Content>
-						<Card.Header>
-							<ViewOrderHeader
-								orderNumber={orderNumber}
-								customerEmail={customerInformation.email}
-							/>
-						</Card.Header>
-						<Divider />
-						{orderDetails.shippingMethod === "delivery" ? (
-							<ViewDeliveryDetails
-								deliveryInformation={deliveryInformation}
-								orderDate={orderDetails.orderDate}
-							/>
-						) : (
-							<ViewPickupDetails
-								pickupInformation={pickupInformation}
-								orderDetails={orderDetails}
-							/>
-						)}
-						<Divider />
-						<ViewOrderDetails
-							orderItems={orderItems}
-							specialInstructions={orderDetails.specialInstructions}
+				<Grid columns={2}>
+					<Grid.Column width={14}>
+						<Card fluid color="green" ref={(el) => (this.componentRef = el)}>
+							<Card.Content>
+								<Card.Header>
+									<ViewOrderHeader
+										orderNumber={orderNumber}
+										customerEmail={customerInformation.email}
+									/>
+								</Card.Header>
+								<Divider />
+								{orderDetails.shippingMethod === "delivery" ? (
+									<ViewDeliveryDetails
+										deliveryInformation={deliveryInformation}
+										orderDate={orderDetails.orderDate}
+									/>
+								) : (
+									<ViewPickupDetails
+										pickupInformation={pickupInformation}
+										orderDetails={orderDetails}
+									/>
+								)}
+								<Divider />
+								<ViewOrderDetails
+									orderItems={orderItems}
+									specialInstructions={orderDetails.specialInstructions}
+								/>
+								<ViewOrderTotals orderTotals={orderTotals} />
+								<Divider />
+								<ViewPaymentDetails paymentInformation={paymentInformation} />
+							</Card.Content>
+						</Card>
+					</Grid.Column>
+					<Grid.Column width={2}>
+						<ReactToPrint
+							trigger={() => <Button compact>Print Order</Button>}
+							content={() => this.componentRef}
+							pageStyle={pageStyle}
 						/>
-						<ViewOrderTotals orderTotals={orderTotals} />
-						<Divider />
-						<ViewPaymentDetails paymentInformation={paymentInformation} />
-					</Card.Content>
-				</Card>
+					</Grid.Column>
+				</Grid>
 			</Container>
 		);
 	};
@@ -122,9 +147,4 @@ class ViewOrder extends React.Component {
 		}
 	}
 }
-
-const mapStateToProps = (state) => {
-	return {};
-};
-
-export default connect(mapStateToProps, { getOrder })(ViewOrder);
+export default connect(null, { getOrder })(ViewOrder);

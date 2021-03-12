@@ -13,7 +13,6 @@ import SpecialOrder from "./components/SpecialOrder";
 import CheckoutContact from "./components/checkout-components/checkoutContact";
 import CheckoutPayment from "./components/checkout-components/checkoutPayment";
 import ConfirmationDetails from "./components/checkout-components/checkoutConfirmation";
-import MyOrders from "./components/orderHistory/orderHistory-components/myOrders";
 import Account from "./components/account/account-components/account";
 import ViewOrder from "./components/view/view-components/viewOrder";
 import withModifyOrder from "./hoc/withModifyOrder";
