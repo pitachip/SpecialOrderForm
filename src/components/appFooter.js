@@ -18,7 +18,7 @@ class AppFooter extends React.Component {
 					<p className="text-muted">Developed By Rend Alsaadi</p>
 				</Navbar.Brand>
 				<div>
-					<Label size="tiny">v1.2</Label>
+					<Label size="tiny">v1.2.1</Label>
 				</div>
 			</Navbar>
 		);

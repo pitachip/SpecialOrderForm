@@ -122,6 +122,7 @@ class App extends React.Component {
 		);
 	}
 }
+
 export default connect(null, {
 	getStoreInformation,
 	getMenuConfig,
