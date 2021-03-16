@@ -75,12 +75,12 @@ export const calculateTotals = (
 		let modifierTotal = 0;
 		each(item.modifiers, (modifier) => {
 			each(modifier.modifierChoices, (modifierChoice) => {
-				modifierTotal = modifierTotal + modifierChoice.price;
+				modifierTotal = +(modifierTotal + modifierChoice.price).toFixed(2);
 			});
 		});
 		totals.subTotal =
-			totals.subTotal +
-			item.quantity * ((item.basePrice + modifierTotal) / 100);
+			+(totals.subTotal +
+			item.quantity * ((item.basePrice + modifierTotal) / 100)).toFixed(2);
 	});
 	if (taxExempt) {
 		totals.total = totals.subTotal - totals.tax + totals.delivery;

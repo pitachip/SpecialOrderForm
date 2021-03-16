@@ -89,12 +89,12 @@ class UnivForm extends React.Component {
 				//Adding tax and delivery as line items to the invoice
 				const deliveryAndTax = [
 					{
-						basePrice: orderTotals.delivery * 100,
+						basePrice: +(orderTotals.delivery * 100).toFixed(2),
 						quantity: 1,
 						name: "Delivery",
 					},
 					{
-						basePrice: orderTotals.tax * 100,
+						basePrice: +(orderTotals.tax * 100).toFixed(2),
 						quantity: 1,
 						name: "Tax",
 					},
