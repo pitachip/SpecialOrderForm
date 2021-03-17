@@ -15,10 +15,13 @@ export const signInWithEmailAndPassword = (email, password) => async (
 
 		if (signInAttempt) {
 			const userToken = await getUserToken();
-			const userMetaData = await pitachip.get("/user/", {
-				headers: { Authorization: `Bearer ${userToken.token}` },
-			});
-			metaData = userMetaData.data.metaData;
+			const userMetaData = await pitachip.get(
+				`/user/${signInAttempt.user.uid}`,
+				{
+					headers: { Authorization: `Bearer ${userToken.token}` },
+				}
+			);
+			metaData = userMetaData.data[0].metaData;
 		}
 		dispatch({
 			type: "SET_USER",
@@ -216,15 +219,15 @@ export const authStateChanged = (user, authLoadingFlag) => async (dispatch) => {
 	let metaData = {};
 	if (user) {
 		const userToken = await getUserToken();
-		const userMetaData = await pitachip.get("/user/", {
+		const userMetaData = await pitachip.get(`/user/${user.uid}`, {
 			headers: { Authorization: `Bearer ${userToken.token}` },
 		});
-		metaData = userMetaData;
+		metaData = userMetaData.data[0].metaData;
 		dispatch({
 			type: "SET_USER",
 			payload: {
 				user: user,
-				metaData: metaData.data ? metaData.data.metaData : {},
+				metaData: metaData ? metaData : {},
 				authLoading: authLoadingFlag,
 				errorMessage: "",
 				showAuthErrorMessage: false,
