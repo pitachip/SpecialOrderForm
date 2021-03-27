@@ -2,6 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import ReactToPrint from "react-to-print";
+import Iframe from "react-iframe";
 //ui components
 import {
 	Card,

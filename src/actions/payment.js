@@ -65,13 +65,16 @@ export const updateSpecialOrder = (modifiedOrder, modifiedOrderId) => async (
 	}
 };
 
-export const createPaymentIntent = (amount) => async (dispatch) => {
+export const createPaymentIntent = (amount, description) => async (
+	dispatch
+) => {
 	try {
 		const userToken = await getUserToken();
 		const paymentIntent = await pitachip.post(
 			"/payment/intent",
 			{
 				amount,
+				description,
 			},
 			{
 				headers: { Authorization: `Bearer ${userToken.token}` },

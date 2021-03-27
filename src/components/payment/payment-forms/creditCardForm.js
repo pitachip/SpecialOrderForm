@@ -10,7 +10,10 @@ import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
 import SubmissionError from "../payment-components/submissionError";
 import { paymentCheckboxField, paymentInputField } from "./paymentFormFields";
 //utils
-import { formatOrderForDb } from "../../../utils/orderCheckoutUtils";
+import {
+	formatOrderForDb,
+	formatStripeDescription,
+} from "../../../utils/orderCheckoutUtils";
 import { history } from "../../../utils/history";
 //actions
 import {
@@ -56,10 +59,13 @@ class CreditCardForm extends React.Component {
 
 	async componentDidMount() {
 		//create a payment intent on load
-		const { createPaymentIntent, orderTotals } = this.props;
+		const { createPaymentIntent, orderTotals, order } = this.props;
+		const description = formatStripeDescription(order);
+
 		try {
 			const paymentIntentSecret = await createPaymentIntent(
-				+(orderTotals.total * 100).toFixed(2)
+				+(orderTotals.total * 100).toFixed(2),
+				description
 			);
 			this.setState({ paymentIntentSecret });
 		} catch (error) {
@@ -68,10 +74,14 @@ class CreditCardForm extends React.Component {
 	}
 
 	async componentDidUpdate(prevProps, prevState) {
-		const { createPaymentIntent, orderTotals } = this.props;
+		const { createPaymentIntent, orderTotals, order } = this.props;
+
+		const description = formatStripeDescription(order);
+
 		if (orderTotals !== prevProps.orderTotals) {
 			const paymentIntentSecret = await createPaymentIntent(
-				+(orderTotals.total * 100).toFixed(2)
+				+(orderTotals.total * 100).toFixed(2),
+				description
 			);
 			this.setState({ paymentIntentSecret });
 		}
