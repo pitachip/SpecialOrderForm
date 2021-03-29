@@ -20,18 +20,11 @@ class Disclaimer extends React.Component {
 		return (
 			<Alert variant="info">
 				<Row>
-					<Col md={10}>
-						Please note that this order form for catering clients who have tax
-						exempt status or have a form of payment other than credit card (e.g.
-						check, purchase order). Please place catering orders at least 12
-						hours in advance.
-					</Col>
-					<Col md={2}>
-						<Button onClick={this.handleOpen}>Location & Hours</Button>
-						<StoreInformation
-							show={this.state.showModal}
-							close={this.handleClose}
-						/>
+					<Col>
+						Please note that this order form is for catering clients who have
+						tax exempt status or have a form of payment other than credit card
+						(e.g. check, purchase order). Please place catering orders at least
+						12 hours in advance.
 					</Col>
 				</Row>
 			</Alert>
@@ -40,3 +33,14 @@ class Disclaimer extends React.Component {
 }
 
 export default Disclaimer;
+
+/**
+ * TODO: Will do this in v1.3
+ * 					<Col md={2}>
+						<Button onClick={this.handleOpen}>Location & Hours</Button>
+						<StoreInformation
+							show={this.state.showModal}
+							close={this.handleClose}
+						/>
+					</Col>
+ */

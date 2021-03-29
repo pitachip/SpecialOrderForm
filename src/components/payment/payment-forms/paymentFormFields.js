@@ -2,6 +2,9 @@
 import React from "react";
 //ui components
 import { Form, Checkbox } from "semantic-ui-react";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import { MdHelp } from "react-icons/md";
 //css
 import "../../checkout-components/checkout-css/checkoutForm.css";
 
@@ -26,11 +29,25 @@ export const paymentInputField = ({
 	meta,
 	errorMessagePrefix,
 	css,
+	tooltipText,
+	showToolTip,
 }) => {
 	return (
 		<>
 			<Form.Field>
-				<label className={css ? css : null}>{label}</label>
+				<label className={css ? css : null}>
+					{label}{" "}
+					{showToolTip ? (
+						<span>
+							<OverlayTrigger
+								placement="right"
+								overlay={<Tooltip>{tooltipText}</Tooltip>}
+							>
+								<MdHelp />
+							</OverlayTrigger>
+						</span>
+					) : null}
+				</label>
 				<input
 					placeholder={placeholder}
 					onChange={input.onChange}

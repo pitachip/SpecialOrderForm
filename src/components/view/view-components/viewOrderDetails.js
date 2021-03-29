@@ -72,7 +72,6 @@ class ViewOrderDetails extends React.Component {
 		});
 	};
 	render() {
-		console.log(this.state.activeIndex);
 		const { orderItems, specialInstructions } = this.props;
 		return (
 			<>

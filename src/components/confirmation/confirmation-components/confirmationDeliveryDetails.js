@@ -7,7 +7,7 @@ import "../confirmation-css/orderConfirmation.css";
 
 class ConfirmationDeliveryDetails extends React.Component {
 	render() {
-		const { orderDate } = this.props;
+		const { orderDate, customerInformation } = this.props;
 		const {
 			firstName,
 			lastName,
@@ -25,7 +25,17 @@ class ConfirmationDeliveryDetails extends React.Component {
 				<Grid.Row className="confirmationDeliveryDetailsRow">
 					<Header as="h3">Delivery Details</Header>
 				</Grid.Row>
-				<Grid.Row columns={2} className="confirmationDeliveryDetailsRow">
+				<Grid.Row columns={3} className="confirmationDeliveryDetailsRow">
+					<Grid.Column textAlign="center">
+						<Header as="h5">Customer</Header>
+						<div className="deliverDetails">
+							<p>
+								{customerInformation.firstName} {customerInformation.lastName}
+							</p>
+							<p>{customerInformation.phoneNumber}</p>
+							<p>{customerInformation.email}</p>
+						</div>
+					</Grid.Column>
 					<Grid.Column textAlign="center">
 						<Header as="h5">Delivery Contact</Header>
 						<div className="deliveryDetails">

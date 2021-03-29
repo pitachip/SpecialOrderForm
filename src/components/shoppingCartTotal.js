@@ -94,8 +94,8 @@ class ShoppingCartTotal extends React.Component {
 									placement="left"
 									overlay={
 										<Tooltip>
-											If you're a tax exempt organization don't worry, we'll ask
-											for this information during checkout
+											If you're a tax exempt organization we'll ask for this
+											information during checkout
 										</Tooltip>
 									}
 								>

@@ -9,10 +9,6 @@ export const getStates = () => {
 			abbreviation: "NJ",
 		},
 		{
-			name: "New York",
-			abbreviation: "NY",
-		},
-		{
 			name: "Pennsylvania",
 			abbreviation: "PA",
 		},

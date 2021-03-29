@@ -57,11 +57,13 @@ class OrderConfirmation extends React.Component {
 						<ConfirmationDeliveryDetails
 							deliveryInformation={deliveryInformation}
 							orderDate={orderDetails.orderDate}
+							customerInformation={customerInformation}
 						/>
 					) : (
 						<ConfirmationPickupDetails
 							pickupInformation={pickupInformation}
 							orderDetails={orderDetails}
+							customerInformation={customerInformation}
 						/>
 					)}
 					<Divider />

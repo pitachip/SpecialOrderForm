@@ -44,12 +44,14 @@ class OrderHistoryTable extends React.Component {
 		return formattedDate;
 	};
 
-	renderPaymentType = (paymentType) => {
+	renderPaymentType = (paymentType, purchaseOrder) => {
 		switch (paymentType) {
 			case "cc":
 				return "Credit Card";
 			case "check":
-				return "Check";
+				if (purchaseOrder) {
+					return "Purchase Order";
+				} else return "Check";
 			case "univ":
 				return "University Money Account";
 			default:
@@ -66,6 +68,7 @@ class OrderHistoryTable extends React.Component {
 				paymentInformation,
 				createdAt,
 			} = order;
+
 			return (
 				<Table.Row key={orderNumber}>
 					<Table.Cell>#{orderNumber}</Table.Cell>
@@ -83,7 +86,10 @@ class OrderHistoryTable extends React.Component {
 						/>
 					</Table.Cell>
 					<Table.Cell>
-						{this.renderPaymentType(paymentInformation.paymentType)}
+						{this.renderPaymentType(
+							paymentInformation.paymentType,
+							paymentInformation.purchaseOrder
+						)}
 					</Table.Cell>
 					<Table.Cell>
 						<OrderStatusButton content={paymentInformation.paymentStatus} />

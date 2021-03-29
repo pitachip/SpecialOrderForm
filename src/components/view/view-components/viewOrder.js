@@ -2,7 +2,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import ReactToPrint from "react-to-print";
-import Iframe from "react-iframe";
 //ui components
 import {
 	Card,
@@ -106,11 +105,13 @@ class ViewOrder extends React.Component {
 									<ViewDeliveryDetails
 										deliveryInformation={deliveryInformation}
 										orderDate={orderDetails.orderDate}
+										customerInformation={customerInformation}
 									/>
 								) : (
 									<ViewPickupDetails
 										pickupInformation={pickupInformation}
 										orderDetails={orderDetails}
+										customerInformation={customerInformation}
 									/>
 								)}
 								<Divider />

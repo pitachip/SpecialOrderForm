@@ -268,6 +268,8 @@ class CreditCardForm extends React.Component {
 							component={paymentInputField}
 							label="Tax Exempt EIN"
 							placeholder="Tax Exempt ID# 141232"
+							showToolTip={true}
+							tooltipText="If you do not have it you can enter your institution name and we will take care of the rest."
 						/>
 					) : null}
 					<Image src="/assets/poweredByStripe.png" size="small" />
