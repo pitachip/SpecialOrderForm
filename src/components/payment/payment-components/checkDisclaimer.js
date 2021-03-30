@@ -28,12 +28,6 @@ class CheckDisclaimer extends React.Component {
 								send to 1600 North Broad Street, Unit 7, Philadelphia, PA 19121
 							</List.Item>
 							<List.Item>
-								If paying with a purchase order, use invoice to obtain a
-								purchase order number from your institution. We are listed as
-								Fala Filly Inc DBA Pita Chip. Reply to the order confirmation
-								email with your purchase order number.
-							</List.Item>
-							<List.Item>
 								<a
 									onClick={() =>
 										this.setState({ openPennInstructionsModal: true })
