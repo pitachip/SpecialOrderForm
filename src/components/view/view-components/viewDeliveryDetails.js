@@ -7,6 +7,7 @@ import "../view-css/viewOrder.css";
 
 class ViewDeliveryDetails extends React.Component {
 	render() {
+		const { customerInformation } = this.props;
 		const { orderDate } = this.props;
 		const {
 			firstName,
@@ -25,7 +26,17 @@ class ViewDeliveryDetails extends React.Component {
 				<Grid.Row className="confirmationDeliveryDetailsRow">
 					<Header as="h3">Delivery Details</Header>
 				</Grid.Row>
-				<Grid.Row columns={2} className="confirmationDeliveryDetailsRow">
+				<Grid.Row columns={3} className="confirmationDeliveryDetailsRow">
+					<Grid.Column textAlign="center">
+						<Header as="h5">Customer</Header>
+						<div className="deliverDetails">
+							<p>
+								{customerInformation.firstName} {customerInformation.lastName}
+							</p>
+							<p>{customerInformation.email}</p>
+							<p>{customerInformation.phoneNumber}</p>
+						</div>
+					</Grid.Column>
 					<Grid.Column textAlign="center">
 						<Header as="h5">Delivery Contact</Header>
 						<div className="deliveryDetails">

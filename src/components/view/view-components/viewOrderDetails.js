@@ -1,17 +1,26 @@
 //libs
 import React from "react";
+import includes from "lodash/includes";
 //ui components
 import { Grid, Header, Accordion, Icon, Table } from "semantic-ui-react";
 //css
 import "../view-css/viewOrder.css";
 
 class ViewOrderDetails extends React.Component {
-	state = { activeIndex: null };
+	state = { activeIndex: [] };
 
 	handleModifierAccordionClick = (e, accordion) => {
-		const newIndex =
-			this.state.activeIndex === accordion.index ? null : accordion.index;
-		this.setState({ activeIndex: newIndex });
+		const { index } = accordion;
+		const { activeIndex } = this.state;
+		let newState;
+
+		if (activeIndex.indexOf(index) > -1) {
+			newState = activeIndex.filter((i) => i !== index);
+		} else {
+			newState = [...activeIndex, index];
+		}
+
+		this.setState({ activeIndex: newState });
 	};
 
 	//TODO: Figure out how to remove comma off end of last item
@@ -26,14 +35,14 @@ class ViewOrderDetails extends React.Component {
 		return (
 			<Accordion fluid>
 				<Accordion.Title
-					active={this.state.activeIndex === index}
+					active={includes(this.state.activeIndex, index)}
 					index={index}
 					onClick={(e, index) => this.handleModifierAccordionClick(e, index)}
 				>
 					<Icon name="dropdown" />
 					Details
 				</Accordion.Title>
-				<Accordion.Content active={this.state.activeIndex === index}>
+				<Accordion.Content active={includes(this.state.activeIndex, index)}>
 					<ul>
 						{modifiers.map((modifier) => {
 							return (

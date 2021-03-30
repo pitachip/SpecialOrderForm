@@ -105,11 +105,13 @@ class ViewOrder extends React.Component {
 									<ViewDeliveryDetails
 										deliveryInformation={deliveryInformation}
 										orderDate={orderDetails.orderDate}
+										customerInformation={customerInformation}
 									/>
 								) : (
 									<ViewPickupDetails
 										pickupInformation={pickupInformation}
 										orderDetails={orderDetails}
+										customerInformation={customerInformation}
 									/>
 								)}
 								<Divider />

@@ -19,6 +19,7 @@ import {
 	updateOrderDate,
 	updatePickupInstructions,
 	setRetrieveOrder,
+	setRootUrl,
 	setSpecialInstructionsToggle,
 	updateOrderTotals,
 } from "../actions";
@@ -34,7 +35,7 @@ const withModifyOrder = (SpecialOrder) => {
 
 		async componentDidMount() {
 			window.scrollTo(0, 0);
-			const { navigation, setRetrieveOrder } = this.props;
+			const { navigation, setRetrieveOrder, setRootUrl } = this.props;
 			if (navigation.retrieveOrder) {
 				try {
 					const order = await this.props.getOrder(
@@ -42,6 +43,7 @@ const withModifyOrder = (SpecialOrder) => {
 					);
 					this.setState({ isLoading: false });
 					setRetrieveOrder(false);
+					setRootUrl(`/modify/${order._id}/`);
 					this.setOrderData(order);
 				} catch (error) {
 					console.log(error);
@@ -247,6 +249,7 @@ const composedModifyOrder = compose(
 		updateOrderDate,
 		updatePickupInstructions,
 		setRetrieveOrder,
+		setRootUrl,
 		setSpecialInstructionsToggle,
 		change,
 		updateOrderTotals,

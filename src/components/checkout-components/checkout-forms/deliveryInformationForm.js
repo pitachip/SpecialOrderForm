@@ -109,19 +109,13 @@ const DeliveryInformationForm = () => {
 					name="address1"
 					component={deliveryInputField}
 					type="text"
-					placeholder="1234 Pita Chip Way"
 					errorMessagePrefix="Address"
 					validate={required}
 				/>
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>Address 2</Form.Label>
-				<Field
-					name="address2"
-					component={deliveryInputField}
-					type="text"
-					placeholder="Unit 7"
-				/>
+				<Field name="address2" component={deliveryInputField} type="text" />
 			</Form.Group>
 			<Form.Row>
 				<Form.Group as={Col}>
@@ -130,7 +124,6 @@ const DeliveryInformationForm = () => {
 						name="city"
 						component={deliveryInputField}
 						type="text"
-						placeholder="City"
 						errorMessagePrefix="City"
 						validate={required}
 					/>
@@ -141,7 +134,6 @@ const DeliveryInformationForm = () => {
 						name="state"
 						component={deliverySelectField}
 						states={states}
-						placeholder="Choose State"
 						validate={required}
 						errorMessagePrefix="State"
 					/>
@@ -151,7 +143,6 @@ const DeliveryInformationForm = () => {
 					<Field
 						name="zip"
 						type="number"
-						placeholder="XXXXX"
 						component={deliveryInputField}
 						errorMessagePrefix="Zip"
 						validate={[required, validateZipCode]}
