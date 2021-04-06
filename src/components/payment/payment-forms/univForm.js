@@ -126,7 +126,8 @@ class UnivForm extends React.Component {
 				} else {
 					const modifiedSpecialOrder = await updateSpecialOrder(
 						formattedOrder,
-						orderToModify._id
+						orderToModify._id,
+						true
 					);
 
 					history.push(`${navigation.rootUrl}checkout/confirmation`, {
