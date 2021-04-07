@@ -45,15 +45,18 @@ export const createSpecialOrder = (specialOrder) => async (dispatch) => {
 	}
 };
 
-export const updateSpecialOrder = (modifiedOrder, modifiedOrderId) => async (
-	dispatch
-) => {
+export const updateSpecialOrder = (
+	modifiedOrder,
+	modifiedOrderId,
+	sendEmail
+) => async (dispatch) => {
 	try {
 		const userToken = await getUserToken();
 		const modifySpecialOrder = await pitachip.put(
 			`/specialorder/${modifiedOrderId}`,
 			{
 				modifiedOrder: modifiedOrder,
+				sendEmail,
 			},
 			{
 				headers: { Authorization: `Bearer ${userToken.token}` },
