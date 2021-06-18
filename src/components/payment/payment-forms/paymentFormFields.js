@@ -49,6 +49,7 @@ export const paymentInputField = ({
 					) : null}
 				</label>
 				<input
+					maxLength={30}
 					placeholder={placeholder}
 					onChange={input.onChange}
 					value={input.value}
@@ -62,6 +63,9 @@ export const paymentInputField = ({
 						{meta.error}
 					</span>
 				) : null}
+				<small className="text-muted">
+					Characters Remaining: {30 - input.value.length}
+				</small>
 			</Form.Field>
 		</>
 	);

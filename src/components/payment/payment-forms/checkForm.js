@@ -206,7 +206,7 @@ class CheckForm extends React.Component {
 						<Field
 							name="taxExemptId"
 							component={paymentInputField}
-							label="Tax Exempt EIN"
+							label="Tax Exempt ID"
 							placeholder="Tax Exempt ID# 141232"
 							showToolTip={true}
 							tooltipText="If you do not have it you can enter your institution name and we will take care of the rest."
