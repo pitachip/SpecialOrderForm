@@ -16,6 +16,7 @@ import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
 import {
 	updateOrderTotals,
 	createNewInvoice,
+	updateInvoice,
 	createSpecialOrder,
 	refundCreditCard,
 	voidInvoice,
@@ -65,11 +66,6 @@ class UnivForm extends React.Component {
 		if (this.props.valid) {
 			this.setState({ submitting: true });
 
-			if (this.props.navigation.rootUrl === "/") {
-			} else {
-				await this.modifyPurchase(this.props.orderToModify);
-			}
-
 			const {
 				//data
 				contactInformation,
@@ -82,41 +78,43 @@ class UnivForm extends React.Component {
 				//methods
 				createSpecialOrder,
 				createNewInvoice,
+				updateInvoice,
 				updateSpecialOrder,
 			} = this.props;
 
-			try {
-				//Adding tax and delivery as line items to the invoice
-				const deliveryAndTax = [
-					{
-						basePrice: +(orderTotals.delivery * 100).toFixed(2),
-						quantity: 1,
-						name: "Delivery",
-					},
-					{
-						basePrice: +(orderTotals.tax * 100).toFixed(2),
-						quantity: 1,
-						name: "Tax",
-					},
-				];
-				//create the invoice
-				const newInvoice = await createNewInvoice(
-					contactInformation,
-					orderItems,
-					deliveryAndTax,
-					paymentInformation
-				);
-				//format order for db
-				const formattedOrder = formatOrderForDb(
-					order,
-					contactInformation,
-					paymentInformation,
-					newInvoice.data,
-					"",
-					"Pending"
-				);
+			//Adding tax and delivery as line items to the invoice
+			const deliveryAndTax = [
+				{
+					basePrice: +(orderTotals.delivery * 100).toFixed(2),
+					quantity: 1,
+					name: "Delivery",
+				},
+				{
+					basePrice: +(orderTotals.tax * 100).toFixed(2),
+					quantity: 1,
+					name: "Tax",
+				},
+			];
 
+			try {
 				if (this.props.navigation.rootUrl === "/") {
+					const newInvoice = await createNewInvoice(
+						contactInformation,
+						orderItems,
+						deliveryAndTax,
+						paymentInformation
+					);
+
+					//format order for db
+					const formattedOrder = formatOrderForDb(
+						order,
+						contactInformation,
+						paymentInformation,
+						newInvoice.data,
+						"",
+						"Pending"
+					);
+
 					//save order to the db
 					const newSpecialOrder = await createSpecialOrder(formattedOrder);
 
@@ -124,6 +122,29 @@ class UnivForm extends React.Component {
 						orderConfirmation: newSpecialOrder,
 					});
 				} else {
+					//void invoice or refund payment
+					await this.modifyPurchase(this.props.orderToModify);
+
+					//Root URL is the modify one so we'll update the exisitng order and invoice
+					const updatedInvoice = await updateInvoice(
+						contactInformation,
+						orderItems,
+						deliveryAndTax,
+						paymentInformation,
+						orderToModify.userId
+					);
+
+					//format the order for the db
+					const formattedOrder = formatOrderForDb(
+						order,
+						contactInformation,
+						paymentInformation,
+						updatedInvoice.data,
+						"",
+						"Pending"
+					);
+
+					//modify order in the db
 					const modifiedSpecialOrder = await updateSpecialOrder(
 						formattedOrder,
 						orderToModify._id,
@@ -241,6 +262,7 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
 	updateOrderTotals,
 	createNewInvoice,
+	updateInvoice,
 	createSpecialOrder,
 	refundCreditCard,
 	voidInvoice,

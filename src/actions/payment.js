@@ -1,31 +1,58 @@
 import pitachip from "../apis/pitachip";
 import { getUserToken } from "../utils/authUtils";
 
-export const createNewInvoice = (
-	contactInformation,
-	orderItems,
-	deliveryAndTax,
-	paymentInformation
-) => async (dispatch) => {
-	try {
-		const userToken = await getUserToken();
-		const createInvoice = await pitachip.post(
-			"/payment/invoice",
-			{
-				contactInformation,
-				orderItems,
-				deliveryAndTax,
-				paymentInformation,
-			},
-			{
-				headers: { Authorization: `Bearer ${userToken.token}` },
-			}
-		);
-		return createInvoice;
-	} catch (error) {
-		return error;
-	}
-};
+export const createNewInvoice =
+	(contactInformation, orderItems, deliveryAndTax, paymentInformation) =>
+	async (dispatch) => {
+		try {
+			const userToken = await getUserToken();
+			const createInvoice = await pitachip.post(
+				"/payment/invoice",
+				{
+					contactInformation,
+					orderItems,
+					deliveryAndTax,
+					paymentInformation,
+				},
+				{
+					headers: { Authorization: `Bearer ${userToken.token}` },
+				}
+			);
+			return createInvoice;
+		} catch (error) {
+			return error;
+		}
+	};
+
+export const updateInvoice =
+	(
+		contactInformation,
+		orderItems,
+		deliveryAndTax,
+		paymentInformation,
+		userId
+	) =>
+	async (dispatch) => {
+		try {
+			const userToken = await getUserToken();
+			const updateInvoice = await pitachip.put(
+				"/payment/invoice",
+				{
+					contactInformation,
+					orderItems,
+					deliveryAndTax,
+					paymentInformation,
+					userId,
+				},
+				{
+					headers: { Authorization: `Bearer ${userToken.token}` },
+				}
+			);
+			return updateInvoice;
+		} catch (error) {
+			return error;
+		}
+	};
 
 export const createSpecialOrder = (specialOrder) => async (dispatch) => {
 	try {
@@ -45,70 +72,62 @@ export const createSpecialOrder = (specialOrder) => async (dispatch) => {
 	}
 };
 
-export const updateSpecialOrder = (
-	modifiedOrder,
-	modifiedOrderId,
-	sendEmail
-) => async (dispatch) => {
-	try {
-		const userToken = await getUserToken();
-		const modifySpecialOrder = await pitachip.put(
-			`/specialorder/${modifiedOrderId}`,
-			{
-				modifiedOrder: modifiedOrder,
-				sendEmail,
-			},
-			{
-				headers: { Authorization: `Bearer ${userToken.token}` },
-			}
-		);
-		return modifySpecialOrder;
-	} catch (error) {
-		return error;
-	}
-};
-
-export const createPaymentIntent = (amount, description) => async (
-	dispatch
-) => {
-	try {
-		const userToken = await getUserToken();
-		const paymentIntent = await pitachip.post(
-			"/payment/intent",
-			{
-				amount,
-				description,
-			},
-			{
-				headers: { Authorization: `Bearer ${userToken.token}` },
-			}
-		);
-		return paymentIntent.data;
-	} catch (error) {
-		return error;
-	}
-};
-
-export const completePayment = (
-	paymentIntentSecret,
-	stripe,
-	elements,
-	cardElement
-) => async (dispatch) => {
-	try {
-		const completePayment = await stripe.confirmCardPayment(
-			paymentIntentSecret,
-			{
-				payment_method: {
-					card: elements.getElement(cardElement),
+export const updateSpecialOrder =
+	(modifiedOrder, modifiedOrderId, sendEmail) => async (dispatch) => {
+		try {
+			const userToken = await getUserToken();
+			const modifySpecialOrder = await pitachip.put(
+				`/specialorder/${modifiedOrderId}`,
+				{
+					modifiedOrder: modifiedOrder,
+					sendEmail,
 				},
-			}
-		);
-		return completePayment;
-	} catch (error) {
-		return error;
-	}
-};
+				{
+					headers: { Authorization: `Bearer ${userToken.token}` },
+				}
+			);
+			return modifySpecialOrder;
+		} catch (error) {
+			return error;
+		}
+	};
+
+export const createPaymentIntent =
+	(amount, description) => async (dispatch) => {
+		try {
+			const userToken = await getUserToken();
+			const paymentIntent = await pitachip.post(
+				"/payment/intent",
+				{
+					amount,
+					description,
+				},
+				{
+					headers: { Authorization: `Bearer ${userToken.token}` },
+				}
+			);
+			return paymentIntent.data;
+		} catch (error) {
+			return error;
+		}
+	};
+
+export const completePayment =
+	(paymentIntentSecret, stripe, elements, cardElement) => async (dispatch) => {
+		try {
+			const completePayment = await stripe.confirmCardPayment(
+				paymentIntentSecret,
+				{
+					payment_method: {
+						card: elements.getElement(cardElement),
+					},
+				}
+			);
+			return completePayment;
+		} catch (error) {
+			return error;
+		}
+	};
 
 export const getPaymentIntent = (paymentIntentId) => async (dispatch) => {
 	try {
@@ -125,26 +144,25 @@ export const getPaymentIntent = (paymentIntentId) => async (dispatch) => {
 	}
 };
 
-export const refundCreditCard = (paymentIntentId, amount) => async (
-	dispatch
-) => {
-	try {
-		const userToken = await getUserToken();
-		const refundCreditCard = await pitachip.post(
-			"/payment/refund/creditcard",
-			{
-				paymentIntentId: paymentIntentId,
-				amount,
-			},
-			{
-				headers: { Authorization: `Bearer ${userToken.token}` },
-			}
-		);
-		return refundCreditCard;
-	} catch (error) {
-		return error;
-	}
-};
+export const refundCreditCard =
+	(paymentIntentId, amount) => async (dispatch) => {
+		try {
+			const userToken = await getUserToken();
+			const refundCreditCard = await pitachip.post(
+				"/payment/refund/creditcard",
+				{
+					paymentIntentId: paymentIntentId,
+					amount,
+				},
+				{
+					headers: { Authorization: `Bearer ${userToken.token}` },
+				}
+			);
+			return refundCreditCard;
+		} catch (error) {
+			return error;
+		}
+	};
 
 export const voidInvoice = (invoiceId) => async (dispatch) => {
 	try {
