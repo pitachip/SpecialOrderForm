@@ -72,14 +72,8 @@ class OrderSummary extends React.Component {
 			this.props.location.pathname === "/checkout/payment" &&
 			this.props.contactInformation
 		) {
-			const {
-				address1,
-				address2,
-				city,
-				state,
-				zip,
-				deliveryInstructions,
-			} = this.props.contactInformation;
+			const { address1, address2, city, state, zip, deliveryInstructions } =
+				this.props.contactInformation;
 			return (
 				<>
 					<hr />
@@ -216,6 +210,23 @@ class OrderSummary extends React.Component {
 					</Col>
 				</Row>
 				<Row>
+					<Col md={8}>
+						<p>Tip</p>
+					</Col>
+					<Col md={4} className="shoppingCartTotalPrice">
+						<p>
+							<NumberFormat
+								value={this.props.totals.tip}
+								displayType={"text"}
+								thousandSeparator={true}
+								prefix={"$"}
+								decimalScale={2}
+								fixedDecimalScale="true"
+							/>
+						</p>
+					</Col>
+				</Row>
+				<Row>
 					<Col md={6}>
 						<p>Tax</p>
 					</Col>
@@ -311,11 +322,8 @@ class OrderSummary extends React.Component {
 	};
 
 	render() {
-		const {
-			shippingMethod,
-			location,
-			pickupInformation,
-		} = this.props.orderDetails;
+		const { shippingMethod, location, pickupInformation } =
+			this.props.orderDetails;
 		return (
 			<div className="sticky-top orderSummaryOffset">
 				<Card>

@@ -87,6 +87,23 @@ class ShoppingCartTotal extends React.Component {
 				</Row>
 				<Row>
 					<Col md={8}>
+						<p>Tip</p>
+					</Col>
+					<Col md={4} className="shoppingCartTotalPrice">
+						<p>
+							<NumberFormat
+								value={this.props.totals.tip}
+								displayType={"text"}
+								thousandSeparator={true}
+								prefix={"$"}
+								decimalScale={2}
+								fixedDecimalScale="true"
+							/>
+						</p>
+					</Col>
+				</Row>
+				<Row>
+					<Col md={8}>
 						<p>
 							Tax
 							<span>
@@ -127,18 +144,22 @@ class ShoppingCartTotal extends React.Component {
 				</Row>
 				<Row>
 					<Col md={8}>
-						<p>Total</p>
+						<p>
+							<b>Total</b>
+						</p>
 					</Col>
 					<Col md={4} className="shoppingCartTotalPrice">
 						<p>
-							<NumberFormat
-								value={this.props.totals.total}
-								displayType={"text"}
-								thousandSeparator={true}
-								prefix={"$"}
-								decimalScale={2}
-								fixedDecimalScale="true"
-							/>
+							<b>
+								<NumberFormat
+									value={this.props.totals.total}
+									displayType={"text"}
+									thousandSeparator={true}
+									prefix={"$"}
+									decimalScale={2}
+									fixedDecimalScale="true"
+								/>
+							</b>
 						</p>
 					</Col>
 				</Row>

@@ -9,6 +9,7 @@ import { Form, Image } from "semantic-ui-react";
 import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
 import SubmissionError from "../payment-components/submissionError";
 import { paymentCheckboxField, paymentInputField } from "./paymentFormFields";
+import Tip from "../payment-components/tip";
 //utils
 import {
 	formatOrderForDb,
@@ -94,6 +95,7 @@ class CreditCardForm extends React.Component {
 			removeTaxFromTotal = {
 				subTotal: totals.subTotal,
 				tax: 0,
+				tip: totals.tip,
 				delivery: totals.delivery,
 				total: totals.total - totals.tax,
 			};
@@ -105,6 +107,7 @@ class CreditCardForm extends React.Component {
 				subTotal: totals.subTotal,
 				tax: totals.subTotal * this.props.menuConfig.settings.taxRate,
 				delivery: totals.delivery,
+				tip: totals.tip,
 				total:
 					totals.subTotal +
 					totals.subTotal * this.props.menuConfig.settings.taxRate +
@@ -273,6 +276,7 @@ class CreditCardForm extends React.Component {
 							tooltipText="If you do not have it you can enter your institution name and we will take care of the rest."
 						/>
 					) : null}
+					<Tip />
 					<Image src="/assets/poweredByStripe.png" size="small" />
 					<SubmissionError
 						errorHeader={submissionError.header}
