@@ -79,8 +79,8 @@ class CheckForm extends React.Component {
 			updateSpecialOrder,
 		} = this.props;
 
-		//Adding tax and delivery as line items to the invoice
-		const deliveryAndTax = [
+		//Adding tax delivery and tip as line items to the invoice
+		const deliveryTaxTip = [
 			{
 				basePrice: +(orderTotals.delivery * 100).toFixed(2),
 				quantity: 1,
@@ -91,6 +91,11 @@ class CheckForm extends React.Component {
 				quantity: 1,
 				name: "Tax",
 			},
+			{
+				basePrice: +(orderTotals.tip * 100).toFixed(2),
+				quantity: 1,
+				name: "Tip",
+			},
 		];
 
 		try {
@@ -98,8 +103,7 @@ class CheckForm extends React.Component {
 				const newInvoice = await createNewInvoice(
 					contactInformation,
 					orderItems,
-					deliveryAndTax,
-					paymentInformation
+					deliveryTaxTip
 				);
 
 				//format order for db
@@ -126,8 +130,7 @@ class CheckForm extends React.Component {
 				const updatedInvoice = await updateInvoice(
 					contactInformation,
 					orderItems,
-					deliveryAndTax,
-					paymentInformation,
+					deliveryTaxTip,
 					orderToModify.userId
 				);
 

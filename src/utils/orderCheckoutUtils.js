@@ -59,7 +59,8 @@ export const calculateTotals = (
 	orderItems,
 	menuConfigSettings,
 	shippingMethod,
-	paymentInformation
+	paymentInformation,
+	tip
 ) => {
 	const deliveryFee = menuConfigSettings.cateringDeliveryFee;
 	const taxExempt = paymentInformation ? paymentInformation.taxExempt : null;
@@ -67,7 +68,7 @@ export const calculateTotals = (
 	let totals = {
 		subTotal: 0,
 		tax: 0,
-		tip: 0,
+		tip: tip,
 		total: 0,
 		delivery: shippingMethod === "delivery" ? deliveryFee : 0,
 	};
@@ -216,7 +217,11 @@ export const formatStripeDescription = (order) => {
 		"\n" +
 		"Delivery - " +
 		"$" +
-		order.totals.delivery.toFixed(2);
+		order.totals.delivery.toFixed(2) +
+		"\n" +
+		"Tip - " +
+		"$" +
+		order.totals.tip.toFixed(2);
 
 	return formattedDescription;
 };

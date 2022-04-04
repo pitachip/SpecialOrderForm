@@ -179,7 +179,8 @@ class MenuItemDetail extends React.Component {
 				this.props.orderItems,
 				this.props.menuConfig.settings,
 				this.props.orderDetails.shippingMethod,
-				this.props.paymentInformation
+				this.props.paymentInformation,
+				this.props.totals.tip
 			);
 			this.props.updateOrderTotals(calculatedAmounts);
 			this.setState({ validationErrors: [] });
@@ -335,6 +336,7 @@ const mapStateToProps = (state) => {
 		orderItems: state.order.orderItems,
 		menuConfig: state.menu.menuConfig,
 		orderDetails: state.order.orderDetails,
+		totals: state.order.totals,
 		selection: state.menu.selection,
 		validationErrors: state.menu.validationErrors,
 		paymentInformation: getFormValues("paymentInformationForm")(state),

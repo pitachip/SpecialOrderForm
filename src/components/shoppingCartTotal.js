@@ -26,7 +26,8 @@ class ShoppingCartTotal extends React.Component {
 				this.props.orderItems,
 				this.props.menuConfig.settings,
 				this.props.orderDetails.shippingMethod,
-				this.props.paymentInformation
+				this.props.paymentInformation,
+				this.props.totals.tip
 			);
 			this.props.updateOrderTotals(calculatedAmounts);
 		}
