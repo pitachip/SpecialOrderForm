@@ -14,6 +14,7 @@ import "../orderHistory-css/orderActions.css";
 class OrderActions extends React.Component {
 	render() {
 		const { orderDetails } = this.props;
+		console.log("Props in the order actions: ", this.props);
 		return (
 			<div>
 				<Button.Group vertical compact className="block">

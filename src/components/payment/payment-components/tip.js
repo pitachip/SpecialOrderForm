@@ -7,7 +7,6 @@ import { Button, Header } from "semantic-ui-react";
 import { calculateTotals } from "../../../utils/orderCheckoutUtils";
 //actions
 import { updateOrderTotals } from "../../../actions";
-import getStoredState from "redux-persist/es/getStoredState";
 
 const Tip = () => {
 	const orderTotals = useSelector((state) => state.order.totals);
@@ -23,11 +22,12 @@ const Tip = () => {
 			tax: updatedTotal.tax,
 			tip: updatedTotal.tip,
 			delivery: updatedTotal.delivery,
-			total:
+			total: +(
 				updatedTotal.subTotal +
 				updatedTotal.tax +
 				updatedTotal.tip +
-				updatedTotal.delivery,
+				updatedTotal.delivery
+			).toFixed(2),
 		};
 		dispatch(updateOrderTotals(updatedTotal));
 	};
@@ -37,6 +37,7 @@ const Tip = () => {
 			<Header as="h5">100% of your tip supports our restaurant</Header>
 			<Button.Group>
 				<Button
+					type="button"
 					active={activeButton === "1"}
 					onClick={() => {
 						tipAmountUpdated(0.1);
@@ -47,6 +48,7 @@ const Tip = () => {
 					<p>${parseFloat(orderTotals.subTotal * 0.1).toFixed(2)}</p>
 				</Button>
 				<Button
+					type="button"
 					active={activeButton === "2"}
 					onClick={() => {
 						tipAmountUpdated(0.15);
@@ -57,6 +59,7 @@ const Tip = () => {
 					<p>${parseFloat(orderTotals.subTotal * 0.15).toFixed(2)}</p>
 				</Button>
 				<Button
+					type="button"
 					active={activeButton === "3"}
 					onClick={() => {
 						tipAmountUpdated(0.18);
@@ -67,6 +70,7 @@ const Tip = () => {
 					<p>${parseFloat(orderTotals.subTotal * 0.18).toFixed(2)}</p>
 				</Button>
 				<Button
+					type="button"
 					active={activeButton === "4"}
 					onClick={() => {
 						tipAmountUpdated(0);

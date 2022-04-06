@@ -8,7 +8,7 @@ import "../view-css/viewOrder.css";
 
 class ViewOrderTotals extends React.Component {
 	render() {
-		const { subTotal, tax, delivery, total } = this.props.orderTotals;
+		const { subTotal, tax, delivery, tip, total } = this.props.orderTotals;
 		return (
 			<Grid container>
 				<Grid.Row className="confirmationDeliveryDetailsRow" columns={2}>
@@ -56,6 +56,34 @@ class ViewOrderTotals extends React.Component {
 								<span className="orderConfirmationTotalField">
 									<NumberFormat
 										value={tax}
+										displayType={"text"}
+										thousandSeparator={true}
+										prefix={"$"}
+										decimalScale={2}
+										fixedDecimalScale="true"
+									/>
+								</span>
+							</p>
+						</div>
+					</Grid.Column>
+				</Grid.Row>
+				<Grid.Row className="confirmationDeliveryDetailsRow" columns={2}>
+					<Grid.Column className="orderConfirmationTotalColumnPadding">
+						<div className="orderConfirmationDot">
+							<p>
+								<span className="orderConfirmationTotalField">Tip</span>
+							</p>
+						</div>
+					</Grid.Column>
+					<Grid.Column
+						className="orderConfirmationTotalColumnPadding"
+						textAlign="left"
+					>
+						<div>
+							<p>
+								<span className="orderConfirmationTotalField">
+									<NumberFormat
+										value={tip}
 										displayType={"text"}
 										thousandSeparator={true}
 										prefix={"$"}

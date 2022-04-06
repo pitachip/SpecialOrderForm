@@ -98,8 +98,6 @@ export const calculateTotals = (
 		).toFixed(2);
 	}
 
-	console.log("Result from Calculate Totals: ", totals);
-
 	return totals;
 };
 
@@ -192,6 +190,7 @@ export const formatOrderForDb = (
 		orderTotals: {
 			subTotal: order.totals.subTotal,
 			tax: order.totals.tax,
+			tip: order.totals.tip,
 			delivery: order.totals.delivery,
 			total: order.totals.total,
 		},

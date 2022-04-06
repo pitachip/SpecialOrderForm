@@ -9,6 +9,7 @@ import CheckDisclaimer from "../payment-components/checkDisclaimer";
 import { paymentCheckboxField, paymentInputField } from "./paymentFormFields";
 import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
 import SubmissionError from "../payment-components/submissionError";
+import Tip from "../payment-components/tip";
 //actions
 import {
 	updateOrderTotals,
@@ -174,6 +175,7 @@ class CheckForm extends React.Component {
 			removeTaxFromTotal = {
 				subTotal: totals.subTotal,
 				tax: 0,
+				tip: totals.tip,
 				delivery: totals.delivery,
 				total: totals.total - totals.tax,
 			};
@@ -184,11 +186,13 @@ class CheckForm extends React.Component {
 			addTaxToTotal = {
 				subTotal: totals.subTotal,
 				tax: totals.subTotal * this.props.menuConfig.settings.taxRate,
+				tip: totals.tip,
 				delivery: totals.delivery,
 				total:
 					totals.subTotal +
 					totals.subTotal * this.props.menuConfig.settings.taxRate +
-					totals.delivery,
+					totals.delivery +
+					totals.tip,
 			};
 
 			this.props.updateOrderTotals(addTaxToTotal);
@@ -235,6 +239,7 @@ class CheckForm extends React.Component {
 							tooltipText="If you do not have it you can enter your institution name and we will take care of the rest."
 						/>
 					) : null}
+					<Tip />
 					<SubmissionError
 						errorHeader={submissionError.header}
 						errorMessage={submissionError.message}
