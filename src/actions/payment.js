@@ -23,13 +23,7 @@ export const createNewInvoice =
 	};
 
 export const updateInvoice =
-	(
-		contactInformation,
-		orderItems,
-		deliveryAndTax,
-		paymentInformation,
-		userId
-	) =>
+	(contactInformation, orderItems, deliveryTaxTip, userId) =>
 	async (dispatch) => {
 		try {
 			const userToken = await getUserToken();
@@ -38,8 +32,7 @@ export const updateInvoice =
 				{
 					contactInformation,
 					orderItems,
-					deliveryAndTax,
-					paymentInformation,
+					deliveryTaxTip,
 					userId,
 				},
 				{

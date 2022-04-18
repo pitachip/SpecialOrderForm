@@ -169,7 +169,6 @@ class RepeatOrderButton extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	console.log(state);
 	return {
 		menuConfig: state.menu.menuConfig,
 		storeInformation: state.storeInformation.storeInformation,

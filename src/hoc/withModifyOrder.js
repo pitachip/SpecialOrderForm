@@ -116,6 +116,7 @@ const withModifyOrder = (SpecialOrder) => {
 				pickupInformation,
 				deliveryInformation,
 				paymentInformation,
+				orderTotals,
 			} = order;
 			each(orderItems, (item) => {
 				addItemToOrder(
@@ -222,7 +223,7 @@ const withModifyOrder = (SpecialOrder) => {
 				this.props.menuConfig.settings,
 				orderDetails.shippingMethod,
 				paymentInformation,
-				this.props.totals.tip
+				orderTotals.tip
 			);
 			updateOrderTotals(calculatedAmounts);
 		};
@@ -235,7 +236,6 @@ const mapStateToProps = (state) => {
 		navigation: state.navigation,
 		storeInformation: state.storeInformation.storeInformation,
 		menuConfig: state.menu.menuConfig,
-		totals: state.order.totals,
 	};
 };
 

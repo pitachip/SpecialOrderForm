@@ -136,7 +136,6 @@ class UnivForm extends React.Component {
 						contactInformation,
 						orderItems,
 						deliveryTaxTip,
-						paymentInformation,
 						orderToModify.userId
 					);
 
