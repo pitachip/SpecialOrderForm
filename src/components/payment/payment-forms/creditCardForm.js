@@ -277,7 +277,11 @@ class CreditCardForm extends React.Component {
 						/>
 					) : null}
 					<Tip />
-					<Image src="/assets/poweredByStripe.png" size="small" />
+					<Image
+						className="stripeLogo"
+						src="/assets/poweredByStripe.png"
+						size="small"
+					/>
 					<SubmissionError
 						errorHeader={submissionError.header}
 						errorMessage={submissionError.message}
