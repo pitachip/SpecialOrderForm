@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
 	orderItems: [],
-	totals: { subTotal: 0, tax: 0, delivery: 0, total: 0 },
+	totals: { subTotal: 0, tax: 0, tip: 0, delivery: 0, total: 0 },
 	orderDetails: {
 		shippingMethod: "delivery",
 		orderDate: new Date(),

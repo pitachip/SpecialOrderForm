@@ -9,6 +9,7 @@ import CheckDisclaimer from "../payment-components/checkDisclaimer";
 import { paymentCheckboxField, paymentInputField } from "./paymentFormFields";
 import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
 import SubmissionError from "../payment-components/submissionError";
+import Tip from "../payment-components/tip";
 //actions
 import {
 	updateOrderTotals,
@@ -79,8 +80,8 @@ class CheckForm extends React.Component {
 			updateSpecialOrder,
 		} = this.props;
 
-		//Adding tax and delivery as line items to the invoice
-		const deliveryAndTax = [
+		//Adding tax delivery and tip as line items to the invoice
+		const deliveryTaxTip = [
 			{
 				basePrice: +(orderTotals.delivery * 100).toFixed(2),
 				quantity: 1,
@@ -91,6 +92,11 @@ class CheckForm extends React.Component {
 				quantity: 1,
 				name: "Tax",
 			},
+			{
+				basePrice: +(orderTotals.tip * 100).toFixed(2),
+				quantity: 1,
+				name: "Tip",
+			},
 		];
 
 		try {
@@ -98,8 +104,7 @@ class CheckForm extends React.Component {
 				const newInvoice = await createNewInvoice(
 					contactInformation,
 					orderItems,
-					deliveryAndTax,
-					paymentInformation
+					deliveryTaxTip
 				);
 
 				//format order for db
@@ -126,8 +131,7 @@ class CheckForm extends React.Component {
 				const updatedInvoice = await updateInvoice(
 					contactInformation,
 					orderItems,
-					deliveryAndTax,
-					paymentInformation,
+					deliveryTaxTip,
 					orderToModify.userId
 				);
 
@@ -171,6 +175,7 @@ class CheckForm extends React.Component {
 			removeTaxFromTotal = {
 				subTotal: totals.subTotal,
 				tax: 0,
+				tip: totals.tip,
 				delivery: totals.delivery,
 				total: totals.total - totals.tax,
 			};
@@ -181,11 +186,13 @@ class CheckForm extends React.Component {
 			addTaxToTotal = {
 				subTotal: totals.subTotal,
 				tax: totals.subTotal * this.props.menuConfig.settings.taxRate,
+				tip: totals.tip,
 				delivery: totals.delivery,
 				total:
 					totals.subTotal +
 					totals.subTotal * this.props.menuConfig.settings.taxRate +
-					totals.delivery,
+					totals.delivery +
+					totals.tip,
 			};
 
 			this.props.updateOrderTotals(addTaxToTotal);
@@ -232,6 +239,7 @@ class CheckForm extends React.Component {
 							tooltipText="If you do not have it you can enter your institution name and we will take care of the rest."
 						/>
 					) : null}
+					<Tip />
 					<SubmissionError
 						errorHeader={submissionError.header}
 						errorMessage={submissionError.message}

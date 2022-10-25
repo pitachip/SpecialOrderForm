@@ -116,6 +116,7 @@ const withModifyOrder = (SpecialOrder) => {
 				pickupInformation,
 				deliveryInformation,
 				paymentInformation,
+				orderTotals,
 			} = order;
 			each(orderItems, (item) => {
 				addItemToOrder(
@@ -221,7 +222,8 @@ const withModifyOrder = (SpecialOrder) => {
 				orderItems,
 				this.props.menuConfig.settings,
 				orderDetails.shippingMethod,
-				paymentInformation
+				paymentInformation,
+				orderTotals.tip
 			);
 			updateOrderTotals(calculatedAmounts);
 		};

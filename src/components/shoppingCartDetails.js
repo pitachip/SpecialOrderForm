@@ -86,7 +86,8 @@ class ShoppingCartDetails extends React.Component {
 			this.props.orderItems,
 			this.props.menuConfig.settings,
 			e.target.value,
-			this.props.paymentInformation
+			this.props.paymentInformation,
+			this.props.totals.tip
 		);
 		this.props.updateOrderTotals(calculatedAmounts);
 	};
@@ -302,6 +303,7 @@ const mapStateToProps = (state) => {
 		menuConfig: state.menu.menuConfig,
 		showSpecialInstructionsTextArea: state.menu.showSpecialInstructionsTextArea,
 		orderItems: state.order.orderItems,
+		totals: state.order.totals,
 		auth: state.auth,
 		navigation: state.navigation,
 		paymentInformation: getFormValues("paymentInformationForm")(state),

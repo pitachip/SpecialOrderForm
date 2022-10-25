@@ -27,7 +27,7 @@ import { history } from "../../../utils/history";
 import "../orderHistory-css/orderActions.css";
 
 class RepeatOrderButton extends React.Component {
-	repeatOrderClicked = (order) => {
+	repeatOrderClicked = (order, orderTotals) => {
 		const {
 			addItemToOrder,
 			updateShippingMethod,
@@ -149,7 +149,8 @@ class RepeatOrderButton extends React.Component {
 			orderItems,
 			this.props.menuConfig.settings,
 			orderDetails.shippingMethod,
-			paymentInformation
+			paymentInformation,
+			order.orderTotals.tip
 		);
 		updateOrderTotals(calculatedAmounts);
 

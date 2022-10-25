@@ -12,6 +12,7 @@ import {
 	required,
 } from "./paymentFormFields";
 import CheckoutNavigation from "../../checkout-components/checkoutNavigation";
+import Tip from "../payment-components/tip";
 //actions
 import {
 	updateOrderTotals,
@@ -82,8 +83,8 @@ class UnivForm extends React.Component {
 				updateSpecialOrder,
 			} = this.props;
 
-			//Adding tax and delivery as line items to the invoice
-			const deliveryAndTax = [
+			//Adding tax delivery and tip as line items to the invoice
+			const deliveryTaxTip = [
 				{
 					basePrice: +(orderTotals.delivery * 100).toFixed(2),
 					quantity: 1,
@@ -94,6 +95,11 @@ class UnivForm extends React.Component {
 					quantity: 1,
 					name: "Tax",
 				},
+				{
+					basePrice: +(orderTotals.tip * 100).toFixed(2),
+					quantity: 1,
+					name: "Tip",
+				},
 			];
 
 			try {
@@ -101,7 +107,7 @@ class UnivForm extends React.Component {
 					const newInvoice = await createNewInvoice(
 						contactInformation,
 						orderItems,
-						deliveryAndTax,
+						deliveryTaxTip,
 						paymentInformation
 					);
 
@@ -129,8 +135,7 @@ class UnivForm extends React.Component {
 					const updatedInvoice = await updateInvoice(
 						contactInformation,
 						orderItems,
-						deliveryAndTax,
-						paymentInformation,
+						deliveryTaxTip,
 						orderToModify.userId
 					);
 
@@ -176,6 +181,7 @@ class UnivForm extends React.Component {
 				subTotal: totals.subTotal,
 				tax: 0,
 				delivery: totals.delivery,
+				tip: totals.tip,
 				total: totals.total - totals.tax,
 			};
 
@@ -186,10 +192,12 @@ class UnivForm extends React.Component {
 				subTotal: totals.subTotal,
 				tax: totals.subTotal * this.props.menuConfig.settings.taxRate,
 				delivery: totals.delivery,
+				tip: totals.tip,
 				total:
 					totals.subTotal +
 					totals.subTotal * this.props.menuConfig.settings.taxRate +
-					totals.delivery,
+					totals.delivery +
+					totals.tip,
 			};
 
 			this.props.updateOrderTotals(addTaxToTotal);
@@ -221,7 +229,7 @@ class UnivForm extends React.Component {
 					/>
 					{taxExempt ? (
 						<Field
-							name="taxExemptNumber"
+							name="taxExemptId"
 							component={paymentInputField}
 							label="Tax Exempt ID"
 							placeholder="Tax Exempt ID# 141232"
@@ -229,6 +237,7 @@ class UnivForm extends React.Component {
 							tooltipText="If you do not have it you can enter your institution name and we will take care of the rest."
 						/>
 					) : null}
+					<Tip />
 					<CheckoutNavigation
 						backNav="/checkout/details"
 						backText="Back to Contact"

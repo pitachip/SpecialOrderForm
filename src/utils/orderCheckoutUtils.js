@@ -51,7 +51,7 @@ export const formatSelectionForCheckout = (
 };
 
 /**
- * Refactor so that there's one calculate totals.
+ * TODO: Refactor so that there's one calculate totals.
  * Need to think through the dfiferent functions that use it and
  * what params need to be included
  */
@@ -59,7 +59,8 @@ export const calculateTotals = (
 	orderItems,
 	menuConfigSettings,
 	shippingMethod,
-	paymentInformation
+	paymentInformation,
+	tip
 ) => {
 	const deliveryFee = menuConfigSettings.cateringDeliveryFee;
 	const taxExempt = paymentInformation ? paymentInformation.taxExempt : null;
@@ -67,6 +68,7 @@ export const calculateTotals = (
 	let totals = {
 		subTotal: 0,
 		tax: 0,
+		tip: tip,
 		total: 0,
 		delivery: shippingMethod === "delivery" ? deliveryFee : 0,
 	};
@@ -84,11 +86,16 @@ export const calculateTotals = (
 		).toFixed(2);
 	});
 	if (taxExempt) {
-		totals.total = totals.subTotal - totals.tax + totals.delivery;
+		totals.total = totals.subTotal - totals.tax + totals.delivery + totals.tip;
 		totals.tax = 0;
 	} else {
 		totals.tax = +(totals.subTotal * menuConfigSettings.taxRate).toFixed(2);
-		totals.total = +(totals.subTotal + totals.tax + totals.delivery).toFixed(2);
+		totals.total = +(
+			totals.subTotal +
+			totals.tax +
+			totals.delivery +
+			totals.tip
+		).toFixed(2);
 	}
 
 	return totals;
@@ -183,6 +190,7 @@ export const formatOrderForDb = (
 		orderTotals: {
 			subTotal: order.totals.subTotal,
 			tax: order.totals.tax,
+			tip: order.totals.tip,
 			delivery: order.totals.delivery,
 			total: order.totals.total,
 		},
@@ -208,7 +216,11 @@ export const formatStripeDescription = (order) => {
 		"\n" +
 		"Delivery - " +
 		"$" +
-		order.totals.delivery.toFixed(2);
+		order.totals.delivery.toFixed(2) +
+		"\n" +
+		"Tip - " +
+		"$" +
+		order.totals.tip.toFixed(2);
 
 	return formattedDescription;
 };
