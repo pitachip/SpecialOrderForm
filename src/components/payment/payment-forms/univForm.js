@@ -136,7 +136,9 @@ class UnivForm extends React.Component {
 						contactInformation,
 						orderItems,
 						deliveryTaxTip,
-						orderToModify.userId
+						orderToModify.userId,
+						paymentInformation,
+						orderToModify.orderNumber
 					);
 
 					//format the order for the db

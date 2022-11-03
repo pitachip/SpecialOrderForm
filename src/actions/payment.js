@@ -23,7 +23,14 @@ export const createNewInvoice =
 	};
 
 export const updateInvoice =
-	(contactInformation, orderItems, deliveryTaxTip, userId) =>
+	(
+		contactInformation,
+		orderItems,
+		deliveryTaxTip,
+		userId,
+		paymentInformation,
+		orderNumber
+	) =>
 	async (dispatch) => {
 		try {
 			const userToken = await getUserToken();
@@ -34,6 +41,8 @@ export const updateInvoice =
 					orderItems,
 					deliveryTaxTip,
 					userId,
+					paymentInformation,
+					orderNumber,
 				},
 				{
 					headers: { Authorization: `Bearer ${userToken.token}` },
