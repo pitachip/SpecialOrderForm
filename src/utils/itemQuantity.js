@@ -30,7 +30,7 @@ class ItemQuantity extends React.Component {
 								value={{
 									style: {
 										fontSize: "4em",
-										color: "rgb(178, 19, 0)",
+										color: "rgb(203, 208, 118)",
 										padding: "15px",
 									},
 								}}
@@ -44,7 +44,7 @@ class ItemQuantity extends React.Component {
 								value={{
 									style: {
 										fontSize: "4em",
-										color: "rgb(178, 19, 0)",
+										color: "rgb(203, 208, 118)",
 										padding: "15px",
 									},
 								}}
