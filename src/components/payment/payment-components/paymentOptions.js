@@ -25,11 +25,13 @@ class PaymentOptions extends React.Component {
 			addTaxToTotal = {
 				subTotal: totals.subTotal,
 				tax: totals.subTotal * this.props.menuConfig.settings.taxRate,
+				tip: totals.tip,
 				delivery: totals.delivery,
 				total:
 					totals.subTotal +
 					totals.subTotal * this.props.menuConfig.settings.taxRate +
-					totals.delivery,
+					totals.delivery +
+					totals.tip,
 			};
 
 			this.props.updateOrderTotals(addTaxToTotal);

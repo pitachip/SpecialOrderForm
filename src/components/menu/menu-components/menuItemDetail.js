@@ -239,7 +239,7 @@ class MenuItemDetail extends React.Component {
 	renderModifierSections = (modifiers) => {
 		return modifiers.map((modifier) => {
 			return (
-				<Card fluid color="red" key={modifier.name}>
+				<Card fluid key={modifier.name}>
 					<Card.Content>
 						<Card.Header
 							className={`${modifier.min_number_options > 0 ? "required" : ""}`}
@@ -273,7 +273,7 @@ class MenuItemDetail extends React.Component {
 				</div>
 				<Form onSubmit={(e) => this.formSubmitted(e)}>
 					{modifiers ? this.renderModifierSections(modifiers) : null}
-					<Card fluid color="red">
+					<Card fluid>
 						<Card.Content>
 							<Card.Header className="specialInstructions">
 								Special Instructions

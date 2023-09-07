@@ -89,7 +89,7 @@ class NavBar extends React.Component {
 					<a className="navbar-brand" href="/order">
 						<img
 							src="/assets/logo.png"
-							width="50"
+							width="130"
 							height="50"
 							className="d-inline-block align-top"
 							alt="Pita Chip Logo"
