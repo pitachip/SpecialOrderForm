@@ -14,8 +14,8 @@
 
 .btn-primary {
 	color: #fff;
-	background-color: #b21300;
-	border-color: #b21300; /*set the color you want here*/
+	background-color: #698590;
+	border-color: #698590; /*set the color you want here*/
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -23,8 +23,8 @@
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
 	color: #fff;
-	background-color: #ee3a25;
-	border-color: #ee3a25; /*set the color you want here*/
+	background-color: #becccd;
+	border-color: #becccd; /*set the color you want here*/
 }
 
 .specialInstructions {
@@ -42,4 +42,9 @@
 
 .itemMargin {
 	margin-bottom: 15px;
+}
+
+.ui.card,
+.ui.cards>.card {
+	box-shadow:  0 0 1px #d4d4d5, 0 2px 0 0 #cbd076, 0 1px 3px 0 #d4d4d5 !important
 }
