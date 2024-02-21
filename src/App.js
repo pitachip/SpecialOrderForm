@@ -3,6 +3,13 @@ import React from "react";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { auth } from "./apis/firebase";
+import {
+	HeaderSubheader,
+	Embed,
+	Dimmer,
+	Header,
+	Icon,
+} from "semantic-ui-react";
 //utils
 import { history } from "./utils/history";
 //app components
@@ -48,6 +55,24 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="appContainer">
+				{/**
+				 * 				<Dimmer active page>
+					<Header as="h2" icon inverted>
+						<Icon name="heart" />
+						Dimmed Message!
+						<HeaderSubheader>Dimmer sub-header</HeaderSubheader>
+						<a href="https://www.google.com" target="new">
+							Link
+						</a>
+					</Header>
+					<Embed
+						id="O6Xo21L0ybE"
+						placeholder="/images/image-16by9.png"
+						source="youtube"
+					/>
+				</Dimmer>
+				 *
+				 */}
 				<Router history={history}>
 					<NavBar />
 					<Switch>
